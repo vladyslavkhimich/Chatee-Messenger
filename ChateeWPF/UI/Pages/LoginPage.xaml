@@ -1,0 +1,78 @@
+﻿<local:BasePage x:TypeArguments="core:LoginPageViewModel" x:Class="ChateeWPF.LoginPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ChateeWPF"
+      xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="950"
+      Title="LoginPage">
+
+    <Grid Background="{StaticResource BackgroundVeryLightBrush}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Grid>
+            <TabControl Background="{StaticResource BackgroundVeryLightBrush}" 
+                        BorderThickness="0" 
+                        Margin="25 50">
+                <TabItem Header="Sign In" Style="{StaticResource SignInUpTabItemStyle}">
+                    <StackPanel Margin="0 20">
+                        <TextBlock Text="E-MAIL" 
+                                   FontSize="20"/>
+                        <TextBox Style="{StaticResource SignTextBox}" 
+                                 HorizontalAlignment="Stretch" 
+                                 Tag="Enter your e-mail"/>
+                        <TextBlock Text="PASSWORD" 
+                                   Margin="0 5 0 0" 
+                                   FontSize="20"/>
+                        <PasswordBox Style="{StaticResource PasswordBox}" 
+                                     HorizontalAlignment="Stretch" 
+                                     Tag="Enter your password"/>
+                        <Button Style="{StaticResource TextButton}" 
+                                Content="I can't remember my password" 
+                                HorizontalAlignment="Right" 
+                                Margin="0 5 0 0"/>
+                        <Button Style="{StaticResource SignButton}" Content="Sign In"/>
+                    </StackPanel>
+                </TabItem>
+                <TabItem Header="Sign Up" 
+                         Style="{StaticResource SignInUpTabItemStyle}" 
+                         Margin="5 0 0 0">
+                    <StackPanel Margin="0 20">
+                        <TextBlock Text="USERNAME" FontSize="20"/>
+                        <TextBox Style="{StaticResource SignTextBox}" 
+                                 HorizontalAlignment="Stretch" 
+                                 Tag="Enter your username"/>
+                        <TextBlock Text="E-MAIL" FontSize="20"/>
+                        <TextBox Style="{StaticResource SignTextBox}" 
+                                 HorizontalAlignment="Stretch" 
+                                 Tag="Enter your e-mail"/>
+                        <TextBlock Text="PASSWORD" FontSize="20"/>
+                        <PasswordBox Style="{StaticResource PasswordBox}" 
+                                     HorizontalAlignment="Stretch" 
+                                     Tag="Enter at least 6 characters"/>
+                        <TextBlock Text="REPEAT PASSWORD" FontSize="20"/>
+                        <PasswordBox Style="{StaticResource PasswordBox}" 
+                                     HorizontalAlignment="Stretch" 
+                                     Tag="Repeat password"/>
+                        <Button Style="{StaticResource SignButton}" Content="Sign Up"/>
+                    </StackPanel>
+                </TabItem>
+            </TabControl>
+        </Grid>
+        <Border  Grid.Column="1" Background="{StaticResource MainYellowBrush}">
+            <Grid>
+                <Grid.Background>
+                    <ImageBrush TileMode="Tile" 
+                                ViewportUnits="Absolute" 
+                                Viewport="0 0 500 500" 
+                                ImageSource="/Images/background.png"/>
+                </Grid.Background>
+            </Grid>
+        </Border>
+        
+    </Grid>
+</local:BasePage>

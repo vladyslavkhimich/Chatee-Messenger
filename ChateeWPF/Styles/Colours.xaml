@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:ChateeWPF">
+    <!-- Colours -->
+    <Color x:Key="BackgroundLight">#efefef</Color>
+    <Color x:Key="BackgroundVeryLight">#fafafa</Color>
+    <Color x:Key="ForegroundMain">#686868</Color>
+    <Color x:Key="ForegroundDark">#bdbdbd</Color>
+    <Color x:Key="ForegroundBlack">#000000</Color>
+    <Color x:Key="ForegroundLight">#ffffff</Color>
+    <Color x:Key="MainYellow">#ffdf08</Color>
+    <Color x:Key="LightYellow">#fff9d0</Color>
+    <Color x:Key="DarkerYellow">#ffcc00</Color>
+    <Color x:Key="DarkPink">#b30e70</Color>
+
+    <!-- Brushes -->
+    <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource BackgroundLight}"/>
+    <SolidColorBrush x:Key="BackgroundVeryLightBrush" Color="{StaticResource BackgroundVeryLight}"/>
+    <SolidColorBrush x:Key="ForegroundMainBrush" Color="{StaticResource ForegroundMain}"/>
+    <SolidColorBrush x:Key="ForegroundBlackBrush" Color="{StaticResource ForegroundBlack}"/>
+    <SolidColorBrush x:Key="ForegroundDarkBrush" Color="{StaticResource ForegroundDark}"/>
+    <SolidColorBrush x:Key="ForegroundLightBrush" Color="{StaticResource ForegroundLight}"/>
+    <SolidColorBrush x:Key="MainYellowBrush" Color="{StaticResource MainYellow}"/>
+    <SolidColorBrush x:Key="LightYellowBrush" Color="{StaticResource LightYellow}"/>
+    <SolidColorBrush x:Key="DarkerYellowBrush" Color="{StaticResource DarkerYellow}"/>
+    <SolidColorBrush x:Key="DarkPinkBrush" Color="{StaticResource DarkPink}"/>
+</ResourceDictionary>
