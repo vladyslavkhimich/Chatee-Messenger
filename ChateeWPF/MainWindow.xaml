@@ -141,7 +141,7 @@
     <Border Background="{StaticResource MainYellowBrush}">
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="275"/>
+                <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="5*"/>
             </Grid.ColumnDefinitions>
             <Grid.Background>
@@ -152,8 +152,13 @@
             </Grid.Background>
             <Frame Grid.Column="1" 
                    x:Name="MainFrame" 
-                   Content="{Binding CurrentPage, Converter={local:ToPageConverter}}"/>
-            <local:SideMenuControl>
+                   NavigationUIVisibility="Hidden"
+                   Content="{Binding ApplicationViewModel.CurrentPage, 
+                Source={x:Static local:ViewModelLocator.Instance}, 
+                Converter={local:ToPageConverter}}"/>
+            <local:SideMenuControl Width="275" Visibility="{Binding ApplicationViewModel.IsSideMenuVisible,
+                Source={x:Static local:ViewModelLocator.Instance}, 
+                Converter={local:BoolToVisibilityCollapsedConverter}}">
                 <local:ChatListControl/>
             </local:SideMenuControl>
         </Grid>

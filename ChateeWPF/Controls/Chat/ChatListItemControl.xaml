@@ -38,6 +38,7 @@
                                 <StackPanel VerticalAlignment="Center">
                                     <TextBlock Text="{Binding Name, FallbackValue=Vladyslav}"  
                                                FontFamily="{StaticResource LatoRegular}" 
+                                               Padding="0 0 0 3"
                                                TextTrimming="CharacterEllipsis"/>
                                     <TextBlock Text="{Binding Message, FallbackValue=Loremipsumdolorsitametseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.}" 
                                                FontFamily="{StaticResource LatoThin}" 

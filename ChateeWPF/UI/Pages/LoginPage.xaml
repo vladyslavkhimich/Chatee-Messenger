@@ -35,7 +35,7 @@
                                 Content="I can't remember my password" 
                                 HorizontalAlignment="Right" 
                                 Margin="0 5 0 0"/>
-                        <Button Style="{StaticResource SignButton}" Content="Sign In"/>
+                        <Button Style="{StaticResource SignButton}" Content="Sign In" Command="{Binding SwitchToChatPageCommand}"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Sign Up" 

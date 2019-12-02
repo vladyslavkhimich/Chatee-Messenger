@@ -1,0 +1,95 @@
+﻿<UserControl x:Class="ChateeWPF.ChatMessageListItemControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChateeWPF"
+             xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
+             mc:Ignorable="d" 
+             Height="Auto"
+             d:DesignWidth="300">
+    <Border Padding="5" 
+            Background="{StaticResource MainYellowBrush}"
+            d:DataContext="{x:Static core:ChatMessageListItemDesignModel.Instance}">
+        <Grid>
+            <Border VerticalAlignment="Top"
+                    HorizontalAlignment="Left"
+                    Visibility="{Binding IsSentByMe, Converter={local:BoolToVisibilityConverterViceVersa}}"
+                    CornerRadius="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                    Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
+                    Width="35"
+                    Background="{StaticResource DarkPinkBrush}"                    
+                    >
+                <TextBlock Text="{Binding Initials}"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           FontSize="20"
+                           />
+            </Border>
+            <Grid Margin="25 0 15 0" 
+                  HorizontalAlignment="{Binding IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}">
+                <Grid.Triggers>
+                    <EventTrigger RoutedEvent="MouseEnter">
+                        <BeginStoryboard>
+                            <Storyboard Storyboard.TargetName="ExtraDetails" Storyboard.TargetProperty="Opacity">
+                                <DoubleAnimation To="1" Duration="00:00:00.5"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                    <EventTrigger RoutedEvent="MouseLeave">
+                        <BeginStoryboard>
+                            <Storyboard Storyboard.TargetName="ExtraDetails" Storyboard.TargetProperty="Opacity">
+                                <DoubleAnimation To="0" Duration="00:00:00.5"/>
+                            </Storyboard>
+                        </BeginStoryboard>
+                    </EventTrigger>
+                </Grid.Triggers>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <Border CornerRadius="10" 
+                    Padding="15"                 
+                    Background="{Binding IsSentByMe, Converter={local:SentByMeToBackgroundConverter}}"
+                        Grid.ColumnSpan="2">
+                    <TextBlock VerticalAlignment="Center"
+                           TextWrapping="Wrap"
+                           FontFamily="{StaticResource LatoRegular}"
+                           Text="{Binding Message}"/>
+                </Border>
+                <Path Grid.Row="1"
+                      Margin="15 0"
+                      HorizontalAlignment="{Binding IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}"
+                      Fill="{Binding IsSentByMe, Converter={local:SentByMeToBackgroundConverter}}" 
+                      Stroke="{StaticResource ForegroundLightBrush}" 
+                      StrokeThickness="0" 
+                      Data="M 0,0 L 10,10 L 20 0 L 0 0" Grid.ColumnSpan="2"/>
+                <StackPanel x:Name="ExtraDetails"
+                            Grid.Row="2"
+                            Opacity="0"
+                            Orientation="Horizontal">
+                    <TextBlock
+                           Text="{Binding MessageSentTime, Converter={local:TimeToDisplayTimeConverter}}"
+                           FontSize="12"
+                           FontFamily="{StaticResource LatoRegular}"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,15,0"
+                           />
+                    <TextBlock
+                           Text="{Binding MessageReadTime, Converter={local:TimeToReadTimeConverter}}"
+                           FontSize="12"
+                           FontFamily="{StaticResource LatoRegular}"
+                           Foreground="{StaticResource ForegroundLightBrush}"
+                           HorizontalAlignment="Right"
+                           Margin="0,0,5,0"
+                           />
+                </StackPanel>
+            </Grid>
+        </Grid>
+    </Border>
+
+</UserControl>
