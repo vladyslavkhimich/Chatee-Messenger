@@ -8,15 +8,11 @@ using System.Windows;
 
 namespace ChateeWPF
 {
-    public class SentByMeToAlignmentConverter : BaseValueConverter<SentByMeToAlignmentConverter>
+    public class HorizontalAlignmentConverter : BaseValueConverter<HorizontalAlignmentConverter>
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(parameter == null)
-                return (bool)value ? HorizontalAlignment.Right : HorizontalAlignment.Left;
-            else
-                return (bool)value ? HorizontalAlignment.Left : HorizontalAlignment.Right;
-
+            return (HorizontalAlignment)value;
         }
 
         public override object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

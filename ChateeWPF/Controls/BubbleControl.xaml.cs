@@ -1,5 +1,4 @@
-﻿using ChateeCore;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,11 +16,11 @@ using System.Windows.Shapes;
 namespace ChateeWPF
 {
     /// <summary>
-    /// Логика взаимодействия для MainUserInterfacePage.xaml
+    /// Логика взаимодействия для BubbleControl.xaml
     /// </summary>
-    public partial class ChatPage : BasePage<ChatMessageListViewModel>
+    public partial class BubbleControl : UserControl
     {
-        public ChatPage()
+        public BubbleControl()
         {
             InitializeComponent();
         }

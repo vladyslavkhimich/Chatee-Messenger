@@ -25,4 +25,8 @@
     <system:String x:Key="FontAwesomeUserIcon">&#xf007;</system:String>
     <system:String x:Key="FontAwesomePictureIcon">&#xf1c5;</system:String>
     <system:String x:Key="FontAwesomeGearIcon">&#xf013;</system:String>
+    <system:String x:Key="FontAwesomeSearchIcon">&#xf002;</system:String>
+    <system:String x:Key="FontAwesomeEllipsisVerticalIcon">&#xf142;</system:String>
+    <system:String x:Key="FontAwesomePaperclipIcon">&#xf0c6;</system:String>
+    <system:String x:Key="FontAwesomeSmileIcon">&#xf118;</system:String>
 </ResourceDictionary>

@@ -9,7 +9,7 @@
              Height="Auto"
              d:DesignWidth="300">
     <Border Padding="5" 
-            Background="{StaticResource MainYellowBrush}"
+            Background="Transparent"
             d:DataContext="{x:Static core:ChatMessageListItemDesignModel.Instance}">
         <Grid>
             <Border VerticalAlignment="Top"
@@ -70,6 +70,7 @@
                 <StackPanel x:Name="ExtraDetails"
                             Grid.Row="2"
                             Opacity="0"
+                            HorizontalAlignment="{Binding IsSentByMe, Converter={local:SentByMeToAlignmentConverter}, ConverterParameter=True}"
                             Orientation="Horizontal">
                     <TextBlock
                            Text="{Binding MessageSentTime, Converter={local:TimeToDisplayTimeConverter}}"

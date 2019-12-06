@@ -88,6 +88,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Controls\BubbleControl.xaml.cs">
+      <DependentUpon>BubbleControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\Chat\ChatMessageListItemControl.xaml.cs">
       <DependentUpon>ChatMessageListItemControl.xaml</DependentUpon>
     </Compile>
@@ -100,15 +103,20 @@
     <Compile Include="Controls\Chat\ChatListItemControl.xaml.cs">
       <DependentUpon>ChatListItemControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Menu\VerticalMenu.xaml.cs">
+      <DependentUpon>VerticalMenu.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\SideMenuControl.xaml.cs">
       <DependentUpon>SideMenuControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Styles\AttachedProperties\BaseAttachedProperty.cs" />
+    <Compile Include="Styles\AttachedProperties\IsFocusedProperty.cs" />
     <Compile Include="Styles\AttachedProperties\HasTextProperty.cs" />
     <Compile Include="Styles\Converters\Base\BaseValueConverter.cs" />
     <Compile Include="Styles\Converters\BoolToVisibilityCollapsedConverter.cs" />
     <Compile Include="Styles\Converters\SentByMeToBackgroundConverter.cs" />
     <Compile Include="Styles\Converters\SentByMeToAlignmentConverter.cs" />
+    <Compile Include="Styles\Converters\HorizontalAlignmentConverter.cs" />
     <Compile Include="Styles\Converters\TimeToReadTimeConverter.cs" />
     <Compile Include="Styles\Converters\TimeToDisplayTimeConverter.cs" />
     <Compile Include="Styles\Converters\BoolToVisibilityConverterViceVersa.cs" />
@@ -126,6 +134,10 @@
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="WindowResizer\WindowResize.cs" />
+    <Page Include="Controls\BubbleControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Controls\Chat\ChatMessageListItemControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,6 +151,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Chat\ChatListItemControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\Menu\VerticalMenu.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -7,7 +7,7 @@
       xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
       mc:Ignorable="d" 
       d:DesignHeight="600" d:DesignWidth="950"
-      Title="LoginPage">
+      >
 
     <Grid Background="{StaticResource BackgroundVeryLightBrush}">
         <Grid.ColumnDefinitions>
@@ -24,6 +24,7 @@
                                    FontSize="20"/>
                         <TextBox Style="{StaticResource SignTextBox}" 
                                  HorizontalAlignment="Stretch" 
+                                 local:IsFocusedProperty.Value="True"
                                  Tag="Enter your e-mail"/>
                         <TextBlock Text="PASSWORD" 
                                    Margin="0 5 0 0" 
@@ -35,7 +36,11 @@
                                 Content="I can't remember my password" 
                                 HorizontalAlignment="Right" 
                                 Margin="0 5 0 0"/>
-                        <Button Style="{StaticResource SignButton}" Content="Sign In" Command="{Binding SwitchToChatPageCommand}"/>
+                        <Button 
+                            Style="{StaticResource SignButton}" 
+                            Content="Sign In" 
+                            IsDefault="True"
+                            Command="{Binding SwitchToChatPageCommand}"/>
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Sign Up" 
@@ -47,7 +52,7 @@
                                  HorizontalAlignment="Stretch" 
                                  Tag="Enter your username"/>
                         <TextBlock Text="E-MAIL" FontSize="20"/>
-                        <TextBox Style="{StaticResource SignTextBox}" 
+                        <TextBox Style="{StaticResource SignTextBox}"
                                  HorizontalAlignment="Stretch" 
                                  Tag="Enter your e-mail"/>
                         <TextBlock Text="PASSWORD" FontSize="20"/>
