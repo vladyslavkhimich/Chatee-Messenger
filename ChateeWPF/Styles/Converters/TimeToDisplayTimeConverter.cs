@@ -12,8 +12,8 @@ namespace ChateeWPF
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var time = (DateTimeOffset)value;
-            if (time.Date == DateTimeOffset.UtcNow.Date)
+            var time = (DateTime)value;
+            if (time.Date == DateTime.UtcNow.Date)
                 return time.ToLocalTime().ToString("HH:mm");
             return time.ToLocalTime().ToString("HH:mm, MMM yyyy");
         }

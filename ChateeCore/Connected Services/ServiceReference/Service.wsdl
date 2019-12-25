@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:tns="http://tempuri.org/" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="Service" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsp:Policy wsu:Id="NetTcpBinding_IService_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <msb:BinaryEncoding xmlns:msb="http://schemas.microsoft.com/ws/06/2004/mspolicy/netbinary1" />
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <msf:WindowsTransportSecurity xmlns:msf="http://schemas.microsoft.com/ws/2006/05/framing/policy">
+                  <msf:ProtectionLevel>EncryptAndSign</msf:ProtectionLevel>
+                </msf:WindowsTransportSecurity>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256 />
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict />
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+        <wsaw:UsingAddressing />
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="http://tempuri.org/Imports">
+      <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd0" namespace="http://tempuri.org/" />
+      <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd1" namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+      <xsd:import schemaLocation="http://localhost:8301/?xsd=xsd2" namespace="http://schemas.datacontract.org/2004/07/WCF_Server" />
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IService_Connect_InputMessage">
+    <wsdl:part name="parameters" element="tns:Connect" />
+  </wsdl:message>
+  <wsdl:message name="IService_Connect_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ConnectResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_LoginOnServer_InputMessage">
+    <wsdl:part name="parameters" element="tns:LoginOnServer" />
+  </wsdl:message>
+  <wsdl:message name="IService_LoginOnServer_OutputMessage">
+    <wsdl:part name="parameters" element="tns:LoginOnServerResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_Register_InputMessage">
+    <wsdl:part name="parameters" element="tns:Register" />
+  </wsdl:message>
+  <wsdl:message name="IService_Register_OutputMessage">
+    <wsdl:part name="parameters" element="tns:RegisterResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserByEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserByEmail" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserByEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserByEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserInterlocutors_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserInterlocutors" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserInterlocutors_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserInterlocutorsResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUsersByUsername_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsersByUsername" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUsersByUsername_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUsersByUsernameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CheckEmailDatabaseExistence_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckEmailDatabaseExistence" />
+  </wsdl:message>
+  <wsdl:message name="IService_CheckEmailDatabaseExistence_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckEmailDatabaseExistenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CheckUsernameDatabaseExistence_InputMessage">
+    <wsdl:part name="parameters" element="tns:CheckUsernameDatabaseExistence" />
+  </wsdl:message>
+  <wsdl:message name="IService_CheckUsernameDatabaseExistence_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CheckUsernameDatabaseExistenceResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetNextUserID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNextUserID" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetNextUserID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNextUserIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ConnectCallback_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ConnectCallback" />
+  </wsdl:message>
+  <wsdl:message name="IService_ConnectCallback_InputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ConnectCallbackResponse" />
+  </wsdl:message>
+  <wsdl:portType name="IService">
+    <wsdl:operation name="Connect">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/Connect" message="tns:IService_Connect_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ConnectResponse" message="tns:IService_Connect_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="LoginOnServer">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/LoginOnServer" message="tns:IService_LoginOnServer_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/LoginOnServerResponse" message="tns:IService_LoginOnServer_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/Register" message="tns:IService_Register_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/RegisterResponse" message="tns:IService_Register_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserByEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUserByEmail" message="tns:IService_GetUserByEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUserByEmailResponse" message="tns:IService_GetUserByEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserInterlocutors">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUserInterlocutors" message="tns:IService_GetUserInterlocutors_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUserInterlocutorsResponse" message="tns:IService_GetUserInterlocutors_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUsersByUsername">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUsersByUsername" message="tns:IService_GetUsersByUsername_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUsersByUsernameResponse" message="tns:IService_GetUsersByUsername_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckEmailDatabaseExistence">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CheckEmailDatabaseExistence" message="tns:IService_CheckEmailDatabaseExistence_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CheckEmailDatabaseExistenceResponse" message="tns:IService_CheckEmailDatabaseExistence_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CheckUsernameDatabaseExistence">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CheckUsernameDatabaseExistence" message="tns:IService_CheckUsernameDatabaseExistence_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CheckUsernameDatabaseExistenceResponse" message="tns:IService_CheckUsernameDatabaseExistence_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNextUserID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetNextUserID" message="tns:IService_GetNextUserID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetNextUserIDResponse" message="tns:IService_GetNextUserID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ConnectCallback">
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ConnectCallback" message="tns:IService_ConnectCallback_OutputCallbackMessage" />
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ConnectCallbackResponse" message="tns:IService_ConnectCallback_InputCallbackMessage" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="NetTcpBinding_IService" type="tns:IService">
+    <wsp:PolicyReference URI="#NetTcpBinding_IService_policy" />
+    <soap12:binding transport="http://schemas.microsoft.com/soap/tcp" />
+    <wsdl:operation name="Connect">
+      <soap12:operation soapAction="http://tempuri.org/IService/Connect" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="LoginOnServer">
+      <soap12:operation soapAction="http://tempuri.org/IService/LoginOnServer" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Register">
+      <soap12:operation soapAction="http://tempuri.org/IService/Register" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserByEmail">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetUserByEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserInterlocutors">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetUserInterlocutors" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUsersByUsername">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetUsersByUsername" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckEmailDatabaseExistence">
+      <soap12:operation soapAction="http://tempuri.org/IService/CheckEmailDatabaseExistence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CheckUsernameDatabaseExistence">
+      <soap12:operation soapAction="http://tempuri.org/IService/CheckUsernameDatabaseExistence" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNextUserID">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetNextUserID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ConnectCallback">
+      <soap12:operation soapAction="http://tempuri.org/IService/ConnectCallback" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Service">
+    <wsdl:port name="NetTcpBinding_IService" binding="tns:NetTcpBinding_IService">
+      <soap12:address location="net.tcp://localhost:8302/" />
+      <wsa10:EndpointReference>
+        <wsa10:Address>net.tcp://localhost:8302/</wsa10:Address>
+        <Identity xmlns="http://schemas.xmlsoap.org/ws/2006/02/addressingidentity">
+          <Upn>DELLG3\Владелец</Upn>
+        </Identity>
+      </wsa10:EndpointReference>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

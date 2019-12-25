@@ -11,5 +11,6 @@ namespace ChateeWPF
     {
         public static ViewModelLocator Instance { get; private set; } = new ViewModelLocator();
         public static ApplicationViewModel ApplicationViewModel => IoCContainer.Get<ApplicationViewModel>();
+        public static SettingsViewModel SettingsViewModel => IoCContainer.Get<SettingsViewModel>();
     }
 }

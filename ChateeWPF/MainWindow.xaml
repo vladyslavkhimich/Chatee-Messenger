@@ -6,7 +6,7 @@
         xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
         xmlns:local="clr-namespace:ChateeWPF"
         mc:Ignorable="d"
-        Title="MainWindow" Height="650" Width="950"
+        Title="MainWindow" Height="700" Width="1100"
         WindowStyle="None"
         AllowsTransparency="True"
         MinWidth="{Binding WindowMinimumWidth}"
@@ -48,7 +48,7 @@
 
                                         <!-- Title Bar -->
                                         <RowDefinition Height="{Binding TitleHeightGridLength, FallbackValue=42}" />
-                                        <!-- Drop shadow -->
+                                        <!-- Internet Connection Bar -->
                                         <RowDefinition Height="Auto" />
                                         <!-- Window Content -->
                                         <RowDefinition Height="*" />
@@ -113,7 +113,20 @@
                                         </Border.Background>
 
                                     </Border>-->
-
+                                    <Border Background="{StaticResource DarkPinkBrush}"
+                                            Grid.Row="1"
+                                            Padding="10"
+                                            Panel.ZIndex="1"
+                                            Visibility="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}, Converter={local:BoolToVisibilityCollapsedConverter}, ConverterParameter=True}"
+                                            >
+                                        <Label HorizontalAlignment="Center"
+                                               VerticalAlignment="Center"
+                                               FontSize="16"
+                                               FontFamily="{StaticResource LatoBold}"
+                                               Foreground="{StaticResource ForegroundLightBrush}"
+                                               Content="No internet connection. Check your network."
+                                               />
+                                    </Border>
                                     <!-- Page Content -->
                                     <Border Grid.Row="2" Padding="{Binding InnerContentPadding}">
                                         <ContentPresenter Content="{TemplateBinding Content}" />
@@ -150,16 +163,19 @@
                             Viewport="0 0 500 500" 
                             ImageSource="/Images/background.png"/>
             </Grid.Background>
-            <Frame Grid.Column="1" 
-                   x:Name="MainFrame" 
-                   NavigationUIVisibility="Hidden"
-                   Content="{Binding ApplicationViewModel.CurrentPage, 
-                Source={x:Static local:ViewModelLocator.Instance}, 
-                Converter={local:ToPageConverter}}"/>
+            <local:SettingsControl Grid.ColumnSpan="2"
+                                   Panel.ZIndex="9"
+                                   Visibility="{Binding ApplicationViewModel.IsSettingsMenuVisible, Source={x:Static local:ViewModelLocator.Instance}, Converter={local:BoolToVisibilityConverter}}"/>
+            <local:UserInformationControl Grid.ColumnSpan="2"
+                                   Panel.ZIndex="9"
+                                   Visibility="{Binding ApplicationViewModel.IsUserInformationVisible, Source={x:Static local:ViewModelLocator.Instance}, Converter={local:BoolToVisibilityConverter}}"/>
+            <local:PageHost Grid.Column="1"
+                            CurrentPage="{Binding ApplicationViewModel.CurrentPage, Source={x:Static local:ViewModelLocator.Instance}}"
+                            CurrentPageViewModel="{Binding ApplicationViewModel.CurrentPageViewModel, Source={x:Static local:ViewModelLocator.Instance}}"                           
+                            />
             <local:SideMenuControl Width="275" Visibility="{Binding ApplicationViewModel.IsSideMenuVisible,
                 Source={x:Static local:ViewModelLocator.Instance}, 
                 Converter={local:BoolToVisibilityCollapsedConverter}}">
-                <local:ChatListControl/>
             </local:SideMenuControl>
         </Grid>
     </Border>

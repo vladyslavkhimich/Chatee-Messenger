@@ -8,10 +8,14 @@ using System.Windows.Controls;
 
 namespace ChateeWPF
 {
-    public class BasePage<ViewModel> : Page where ViewModel : BaseViewModel, new()
+    public class BasePage : Page
     {
-        ViewModel _viewModel;
-        public ViewModel viewModel
+        public BasePage()
+        {
+
+        }
+        object _viewModel;
+        public object viewModelObject
         {
             get { return _viewModel; }
             set
@@ -19,12 +23,28 @@ namespace ChateeWPF
                 if (_viewModel == value)
                     return;
                 else _viewModel = value;
-                this.DataContext = viewModel;
+                this.DataContext = viewModelObject;
             }
         }
-        public BasePage()
+    }
+    public class BasePage<ViewModel> : BasePage where ViewModel : BaseViewModel, new()
+    {
+        public ViewModel viewModel
         {
-            viewModel = new ViewModel();
+            get => (ViewModel)viewModelObject;
+            set => viewModelObject = value;
+        }
+        
+        public BasePage(ViewModel specificViewModel = null) : base()
+        {
+            if (specificViewModel != null)
+                viewModelObject = specificViewModel;
+            else
+                viewModelObject = IoCContainer.Get<ViewModel>();
+        }
+        public BasePage() : base()
+        {
+            viewModelObject = IoCContainer.Get<ViewModel>();
         }
     }
 }

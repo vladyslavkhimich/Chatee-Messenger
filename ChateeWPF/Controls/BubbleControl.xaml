@@ -7,7 +7,7 @@
              xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
              mc:Ignorable="d" 
              d:DataContext="{x:Static core:ChatAttachmentPopupMenuDesignModel.Instance}"
-             d:DesignHeight="100" d:DesignWidth="300">
+             >
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
@@ -23,10 +23,7 @@
                                   ShadowDepth="3"
                                   Color="{StaticResource LightYellow}"/>
             </Border.Effect>
-            <TextBlock VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           FontFamily="{StaticResource LatoRegular}"
-                           Text="test"/>
+            <ContentControl Content="{Binding Converter={local:PopupContentConverter}}"/>
         </Border>
         <Path Grid.Row="1"
               Margin="15 0"

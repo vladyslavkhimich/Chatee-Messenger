@@ -6,18 +6,19 @@
       xmlns:local="clr-namespace:ChateeWPF"
       xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
       mc:Ignorable="d" 
-      d:DesignHeight="600" d:DesignWidth="950"
+      d:DesignHeight="650" d:DesignWidth="950"
       >
 
-    <Grid Background="{StaticResource BackgroundVeryLightBrush}">
+    <Grid Background="{StaticResource ForegroundLightBrush}">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         <Grid>
-            <TabControl Background="{StaticResource BackgroundVeryLightBrush}" 
+            <TabControl Background="{StaticResource ForegroundLightBrush}" 
                         BorderThickness="0" 
-                        Margin="25 50">
+                        Margin="25 50"
+                        SelectedIndex="{Binding SelectedTabIndex}">
                 <TabItem Header="Sign In" Style="{StaticResource SignInUpTabItemStyle}">
                     <StackPanel Margin="0 20">
                         <TextBlock Text="E-MAIL" 
@@ -25,22 +26,61 @@
                         <TextBox Style="{StaticResource SignTextBox}" 
                                  HorizontalAlignment="Stretch" 
                                  local:IsFocusedProperty.Value="True"
-                                 Tag="Enter your e-mail"/>
+                                 Tag="Enter your e-mail"
+                                 local:HasErrorAttachedProperty.HasError="{Binding IsLoginEmailHasError}"
+                                 >
+                            <TextBox.Text>
+                                <Binding Path="LoginEmail">
+                                    <Binding.ValidationRules>
+                                        <core:EmailValidationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBlock Text="PASSWORD" 
                                    Margin="0 5 0 0" 
                                    FontSize="20"/>
-                        <PasswordBox Style="{StaticResource PasswordBox}" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <PasswordBox Style="{StaticResource PasswordBox}" 
                                      HorizontalAlignment="Stretch" 
-                                     Tag="Enter your password"/>
-                        <Button Style="{StaticResource TextButton}" 
+                                     Tag="Enter your password"
+                                     MaxLength="14"
+                                     PasswordChanged="LoginPasswordBox_PasswordChanged"
+                                     />
+                            <TextBlock Text="{StaticResource FontAwesomeErrorIcon}"
+                                       FontFamily="{StaticResource FontAwesome}"
+                                       Foreground="{StaticResource ErrorRedBrush}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Grid.Column="1"
+                                       Margin="10 5"
+                                       ToolTip="{Binding LoginPasswordErrorToolTip}"
+                                       Visibility="{Binding IsLoginPasswordHasError, Converter={local:BoolToVisibilityCollapsedConverter}}"
+                                       />
+                        </Grid>
+                        
+                            <Button Style="{StaticResource TextButton}" 
                                 Content="I can't remember my password" 
                                 HorizontalAlignment="Right" 
-                                Margin="0 5 0 0"/>
-                        <Button 
+                                Margin="0 5 0 0"
+                                    Grid.Column="1"/>
+                        
+                            <Button 
                             Style="{StaticResource SignButton}" 
                             Content="Sign In" 
                             IsDefault="True"
-                            Command="{Binding SwitchToChatPageCommand}"/>
+                            Command="{Binding LoginCommand}"/>
+                        <CheckBox Style="{StaticResource CheckBoxStyle}"
+                                      Content="Keep me logged in"
+                                      FontSize="18"
+                                  Margin="3"
+                                      HorizontalAlignment="Right"
+                                      IsChecked="{Binding IsKeepLoggedIn}"
+                                      />
                     </StackPanel>
                 </TabItem>
                 <TabItem Header="Sign Up" 
@@ -50,20 +90,96 @@
                         <TextBlock Text="USERNAME" FontSize="20"/>
                         <TextBox Style="{StaticResource SignTextBox}" 
                                  HorizontalAlignment="Stretch" 
-                                 Tag="Enter your username"/>
+                                 Tag="Enter at least 5 symbols"
+                                 local:HasErrorAttachedProperty.HasError="{Binding IsRegisterUsernameHasError}">
+                            <TextBox.Text>
+                                <Binding Path="RegisterUsername">
+                                    <Binding.ValidationRules>
+                                        <core:NameValidationRule/>
+                                        <core:UsernameExistenceValidationRule/>
+                                        <core:UsernameLengthValidationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
+                        <TextBlock Text="NAME" FontSize="20"/>
+                        <TextBox Style="{StaticResource SignTextBox}" 
+                                 HorizontalAlignment="Stretch" 
+                                 Tag="Enter your name"
+                                 local:HasErrorAttachedProperty.HasError="{Binding IsRegisterNameHasError}"
+                                 >
+                            <TextBox.Text>
+                                <Binding Path="RegisterName">
+                                    <Binding.ValidationRules>
+                                        <core:NameValidationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBlock Text="E-MAIL" FontSize="20"/>
                         <TextBox Style="{StaticResource SignTextBox}"
                                  HorizontalAlignment="Stretch" 
-                                 Tag="Enter your e-mail"/>
+                                 Tag="Enter your e-mail"
+                                 local:HasErrorAttachedProperty.HasError="{Binding IsRegisterEmailHasError}"
+                                 >
+                            <TextBox.Text>
+                                <Binding Path="RegisterEmail">
+                                    <Binding.ValidationRules>
+                                        <core:EmailValidationRule/>
+                                        <core:EmailExistenceValidationRule/>
+                                    </Binding.ValidationRules>
+                                </Binding>
+                            </TextBox.Text>
+                        </TextBox>
                         <TextBlock Text="PASSWORD" FontSize="20"/>
-                        <PasswordBox Style="{StaticResource PasswordBox}" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <PasswordBox Style="{StaticResource PasswordBox}" 
                                      HorizontalAlignment="Stretch" 
-                                     Tag="Enter at least 6 characters"/>
+                                     Tag="Enter from 6 to 14 characters"
+                                     MaxLength="14"
+                                     PasswordChanged="RegisterPasswordBox_PasswordChanged"
+                                     />
+                            <TextBlock Text="{StaticResource FontAwesomeErrorIcon}"
+                                       FontFamily="{StaticResource FontAwesome}"
+                                       Foreground="{StaticResource ErrorRedBrush}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Grid.Column="1"
+                                       Margin="10 5"
+                                       ToolTip="{Binding RegisterPasswordErrorToolTip}"
+                                       Visibility="{Binding IsRegisterPasswordHasError, Converter={local:BoolToVisibilityCollapsedConverter}}"
+                                       />
+                        </Grid>
                         <TextBlock Text="REPEAT PASSWORD" FontSize="20"/>
-                        <PasswordBox Style="{StaticResource PasswordBox}" 
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <PasswordBox Style="{StaticResource PasswordBox}" 
                                      HorizontalAlignment="Stretch" 
-                                     Tag="Repeat password"/>
-                        <Button Style="{StaticResource SignButton}" Content="Sign Up"/>
+                                     Tag="Repeat password"
+                                     MaxLength="14"
+                                     PasswordChanged="RepeatRegisterPasswordBox_PasswordChanged"
+                                     />
+                            <TextBlock Text="{StaticResource FontAwesomeErrorIcon}"
+                                       FontFamily="{StaticResource FontAwesome}"
+                                       Foreground="{StaticResource ErrorRedBrush}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Grid.Column="1"
+                                       Margin="10 5"
+                                       ToolTip="{Binding RepeatRegisterPasswordErrorToolTip}"
+                                       Visibility="{Binding IsRepeatRegisterPasswordHasError, Converter={local:BoolToVisibilityCollapsedConverter}}"
+                                       />
+                        </Grid>
+                        <Button Style="{StaticResource SignButton}" 
+                                Content="Sign Up"
+                                Command="{Binding RegisterCommand}"/>
                     </StackPanel>
                 </TabItem>
             </TabControl>

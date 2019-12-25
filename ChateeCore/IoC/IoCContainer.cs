@@ -14,14 +14,19 @@ namespace ChateeCore
         {
             return Kernel.Get<T>();
         }
-        public static void Setup()
+        public static void Setup(List<FileAttachment> filesFromDatabase)
         {
-            BindViewModels();
+            BindViewModels(filesFromDatabase);
         }
 
-        private static void BindViewModels()
+        private static void BindViewModels(List<FileAttachment> filesFromDatabase)
         {
             Kernel.Bind<ApplicationViewModel>().ToConstant(new ApplicationViewModel()).InSingletonScope();
+            Kernel.Bind<SettingsViewModel>().ToConstant(new SettingsViewModel()).InSingletonScope();
+            Kernel.Bind<UserInformationViewModel>().ToConstant(new UserInformationViewModel()).InSingletonScope();
+            Kernel.Bind<ChatListViewModel>().ToConstant(new ChatListViewModel()).InSingletonScope();
+            Kernel.Bind<FileListViewModel>().ToConstant(new FileListViewModel(filesFromDatabase)).InSingletonScope();
+            Kernel.Bind<UserListViewModel>().ToConstant(new UserListViewModel()).InSingletonScope();
         }
     }
 }

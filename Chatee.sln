@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChateeWPF", "ChateeWPF\Chat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChateeCore", "ChateeCore\ChateeCore.csproj", "{65A1CDC5-EAF9-49D4-9330-3F9AC1EDE792}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WCF_Server", "WCF_Server\WCF_Server.csproj", "{9000A63E-B1BD-407E-90F2-2592B486B632}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Host", "Host\Host.csproj", "{B727481D-6AFF-4FFE-BD53-E2E4C774FD4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +25,14 @@ Global
 		{65A1CDC5-EAF9-49D4-9330-3F9AC1EDE792}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{65A1CDC5-EAF9-49D4-9330-3F9AC1EDE792}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{65A1CDC5-EAF9-49D4-9330-3F9AC1EDE792}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9000A63E-B1BD-407E-90F2-2592B486B632}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9000A63E-B1BD-407E-90F2-2592B486B632}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9000A63E-B1BD-407E-90F2-2592B486B632}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9000A63E-B1BD-407E-90F2-2592B486B632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B727481D-6AFF-4FFE-BD53-E2E4C774FD4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B727481D-6AFF-4FFE-BD53-E2E4C774FD4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B727481D-6AFF-4FFE-BD53-E2E4C774FD4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B727481D-6AFF-4FFE-BD53-E2E4C774FD4C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

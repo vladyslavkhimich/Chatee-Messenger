@@ -13,7 +13,14 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ContentControl}">
-                        <Grid x:Name="container"  Background="{StaticResource ForegroundLightBrush}">
+
+
+                        <Grid x:Name="container"  
+                              Background="{StaticResource ForegroundLightBrush}">
+                            <Grid.InputBindings>
+                                <MouseBinding MouseAction="LeftClick"
+                                              Command="{Binding OpenMessageCommand}"/>
+                            </Grid.InputBindings>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
@@ -23,11 +30,11 @@
                                     HorizontalAlignment="Left" 
                                     Visibility="{Binding NewMessageAvailable, Converter={local:BoolToVisibilityConverter}, ConverterParameter=True}"/>
                             <Border Grid.Column="0" Padding="8">
-                                <Border Background="{Binding ProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}" 
+                                <Border Background="{Binding Interlocutor.ProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}" 
                                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" 
                                         CornerRadius="{Binding ActualHeight, RelativeSource={RelativeSource Self}}">
                                     <TextBlock FontFamily="{StaticResource LatoRegular}" 
-                                               Text="{Binding Initials, FallbackValue=VK}" 
+                                               Text="{Binding Interlocutor.Initials, FallbackValue=VK}" 
                                                VerticalAlignment="Center" 
                                                HorizontalAlignment="Center" 
                                                Foreground="{StaticResource ForegroundLightBrush}" 
@@ -36,11 +43,11 @@
                             </Border>
                             <Border Padding="8" Grid.Column="1">
                                 <StackPanel VerticalAlignment="Center">
-                                    <TextBlock Text="{Binding Name, FallbackValue=Vladyslav}"  
+                                    <TextBlock Text="{Binding Interlocutor.Name, FallbackValue=Vladyslav}"  
                                                FontFamily="{StaticResource LatoRegular}" 
                                                Padding="0 0 0 3"
                                                TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="{Binding Message, FallbackValue=Loremipsumdolorsitametseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.}" 
+                                    <TextBlock Text="{Binding Interlocutor.LastMessage, FallbackValue=Loremipsumdolorsitametseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.}" 
                                                FontFamily="{StaticResource LatoThin}" 
                                                TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>

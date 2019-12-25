@@ -12,6 +12,7 @@
     <Color x:Key="LightYellow">#fff9d0</Color>
     <Color x:Key="DarkerYellow">#ffcc00</Color>
     <Color x:Key="DarkPink">#b30e70</Color>
+    <Color x:Key="ErrorRed">#d8000c</Color>
 
     <!-- Brushes -->
     <SolidColorBrush x:Key="BackgroundLightBrush" Color="{StaticResource BackgroundLight}"/>
@@ -24,4 +25,5 @@
     <SolidColorBrush x:Key="LightYellowBrush" Color="{StaticResource LightYellow}"/>
     <SolidColorBrush x:Key="DarkerYellowBrush" Color="{StaticResource DarkerYellow}"/>
     <SolidColorBrush x:Key="DarkPinkBrush" Color="{StaticResource DarkPink}"/>
+    <SolidColorBrush x:Key="ErrorRedBrush" Color="{StaticResource ErrorRed}"/>
 </ResourceDictionary>

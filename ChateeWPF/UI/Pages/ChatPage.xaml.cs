@@ -21,9 +21,30 @@ namespace ChateeWPF
     /// </summary>
     public partial class ChatPage : BasePage<ChatMessageListViewModel>
     {
-        public ChatPage()
+        public ChatPage() : base()
         {
             InitializeComponent();
+        }
+        
+        public ChatPage(ChatMessageListViewModel specificViewModel) : base(specificViewModel)
+        {
+            InitializeComponent();
+        }
+
+        private void messageText_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var textBox = sender as TextBox;
+            if (e.Key == Key.Enter)
+            {
+                if (Keyboard.Modifiers.HasFlag(ModifierKeys.Control))
+                {
+                    var index = textBox.CaretIndex;
+                    textBox.Text = textBox.Text.Insert(index, Environment.NewLine);
+                    textBox.CaretIndex = index + Environment.NewLine.Length;
+                }
+                else
+                    viewModel.SendMessage();
+            }
         }
     }
 }

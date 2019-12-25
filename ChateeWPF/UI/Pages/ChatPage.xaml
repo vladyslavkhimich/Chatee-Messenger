@@ -15,72 +15,183 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
+        <Border Background="Transparent" 
+                Grid.RowSpan="2"
+                Panel.ZIndex="1"
+                Visibility="{Binding IsAnyPopupVisible, Converter={local:BoolToVisibilityConverter}}"
+                >
+            <Border.InputBindings>
+                <MouseBinding MouseAction="LeftClick" Command="{Binding PopupClickAwayCommand}"/>
+            </Border.InputBindings>
+        </Border>
         <Grid Height="50">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="Vladyslav"
+            <TextBlock Text="{Binding User.Name}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
-                       Grid.ColumnSpan="2"
+                       Grid.ColumnSpan="2"                       
                        FontFamily="{StaticResource LatoRegular}"
                        Foreground="{StaticResource ForegroundLightBrush}"
-                       FontSize="24"/>
+                       FontSize="24"
+                       Cursor="Hand">
+                <TextBlock.InputBindings>
+                    <MouseBinding Command="{Binding OpenUserInformationCommand}"
+                                  MouseAction="LeftClick"
+                                  />
+                </TextBlock.InputBindings>
+            </TextBlock>
             <StackPanel Orientation="Horizontal" Grid.Column="1">
                 <Button Style="{StaticResource IconButton}" 
                         Background="Transparent"
-                        Content="{StaticResource FontAwesomeSearchIcon}"/>
+                        Content="{StaticResource FontAwesomeSearchIcon}"
+                        Command="{Binding OpenSearchCommand}"
+                        />
                 <Button Style="{StaticResource IconButton}" 
                         Background="Transparent"
                         Content="{StaticResource FontAwesomeEllipsisVerticalIcon}"/>
             </StackPanel>
+            <Grid Grid.ColumnSpan="2"
+                  Visibility="{Binding IsSearchOpened, Converter={local:BoolToVisibilityCollapsedConverter}}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource IconGrowButton}" 
+                        Background="Transparent"
+                        Height="28"
+                        Margin="8 0"
+                        Content="{StaticResource FontAwesomeCancelIcon}"
+                        Command="{Binding CloseSearchCommand}"
+                        />
+                <TextBox
+                     Grid.Column="1" 
+                     Tag="Search Text..." 
+                     Margin="0 5 5 5"
+                     FontSize="16"
+                     local:FocusProperty.Value="{Binding IsSearchOpened}"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Stretch"
+                     Style="{StaticResource SignTextBox}"
+                    >
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding ClearSearchCommand}" Key="Esc"/>
+                        <KeyBinding Command="{Binding SearchCommand}" Key="Return"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+            </Grid>
         </Grid>
-        <local:ChatMessageListControl Grid.Row="1"/>
+        <local:ChatMessageListControl Grid.Row="1"
+                                      DataContext="{Binding}"/>
         
         <local:BubbleControl Grid.Row="1" 
                              DataContext="{Binding AttachmentMenu}"
                              VerticalAlignment="Bottom"
                              HorizontalAlignment="Left"
+                             Panel.ZIndex="2"
+                             
                              Visibility="{Binding viewModel.IsAttachmentMenuVisible, Converter={local:BoolToVisibilityConverter}, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ChatPage}}}"/>
         <Grid Grid.Row="2" 
-              MinHeight="50"
-              MaxHeight="120"
-              Background="{StaticResource ForegroundLightBrush}">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto"/>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="Auto"/>
-            </Grid.ColumnDefinitions>
-            <Button Style="{StaticResource IconGrowButton}" 
+              >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border CornerRadius="15 15 0 0"
+                    MaxHeight="80"
+                    Background="{StaticResource ForegroundLightBrush}"
+                    BorderThickness="0 0 0 3"
+                    BorderBrush="{StaticResource MainYellowBrush }"
+                    Padding="3 7"
+                    Visibility="{Binding AttachmentMenu.IsAttachmentsListVisible, Converter={local:BoolToVisibilityCollapsedConverter}}">
+                <ListView Background="Transparent"
+                              BorderBrush="Transparent"
+                              ItemsSource="{Binding AttachmentMenu.SelectedFiles}"
+                              ItemContainerStyle="{StaticResource FilesList}"
+                              HorizontalContentAlignment="Stretch"
+                              ScrollViewer.VerticalScrollBarVisibility="Auto"
+                              >
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Border CornerRadius="5"
+                                        Background="{StaticResource ForegroundLightBrush}"
+                                        Padding="5"
+                                        Margin="3 5">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"/>
+                                        <ColumnDefinition/>
+                                        <ColumnDefinition Width="Auto"/>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Text="{Binding SelectedFile.Name}"
+                                               VerticalAlignment="Center"
+                                               FontFamily="{StaticResource LatoRegular}"
+                                                   Margin="5 0 0 0"/>
+                                    <Button Grid.Column="2"
+                                            FontFamily="{StaticResource FontAwesome}"
+                                            Content="{StaticResource FontAwesomeCancelIcon}"
+                                            Background="{StaticResource DarkPinkBrush}"
+                                            Command="{Binding DeleteFileCommand}"
+                                            Padding="10 3"
+                                            Margin="0 0 5 0"
+                                            Cursor="Hand"
+                                            VerticalAlignment="Center"
+                                            FontSize="12"
+                                            />
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+
+                </ListView>
+            </Border>
+            <Grid Grid.Row="1"
+                  MaxHeight="120"
+                  MinHeight="50"
+                  Background="{StaticResource ForegroundLightBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Button Style="{StaticResource IconGrowButton}" 
                     Command="{Binding AttachmentButtonCommand}"
                     Height="40"
                     Padding="10 0"
                     Content="{StaticResource FontAwesomePaperclipIcon}"
                     Foreground="{StaticResource ForegroundDarkBrush}"/>
-            <TextBox Grid.Column="1" 
+                <TextBox x:Name="messageText"
+                     Grid.Column="1" 
                      Margin="10 0"
                      Tag="Write a message..." 
+                     Text="{Binding PendingMessageText, UpdateSourceTrigger=PropertyChanged}"
                      Style="{StaticResource SignTextBox}"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Center"
+                     local:IsFocusedProperty.Value="True"
+                     PreviewKeyDown="messageText_PreviewKeyDown"
                      BorderThickness="0"
-                     AcceptsReturn="True"
                      AcceptsTab="True"
                      Background="{StaticResource ForegroundLightBrush}"
                      VerticalScrollBarVisibility="Auto"/>
-            <StackPanel Grid.Column="2" Orientation="Horizontal">
-                <Button Style="{StaticResource IconGrowButton}" 
+                <StackPanel Grid.Column="2" Orientation="Horizontal">
+                    <Button Style="{StaticResource IconGrowButton}" 
                     Height="30"   
                     Content="{StaticResource FontAwesomeSmileIcon}"
                     Foreground="{StaticResource DarkerYellowBrush}"/>
-                <Button Content="Send"
+                    <Button Content="Send"
                         FontSize="16"
+                        Focusable="False"
                         Padding="20 5"
                         Margin="5 10 5 10"
+                        Command="{Binding SendMessageCommand}"
                         Background="{StaticResource DarkPinkBrush}"/>
 
-            </StackPanel>
+                </StackPanel>
+            </Grid>
+            
         </Grid>
     </Grid>
 </local:BasePage>

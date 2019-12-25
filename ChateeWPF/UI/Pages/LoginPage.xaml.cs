@@ -25,5 +25,43 @@ namespace ChateeWPF
         {
             InitializeComponent();
         }
+
+        private void RegisterPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+                ((dynamic)this.DataContext).RegisterPassword = ((PasswordBox)sender).SecurePassword;
+            if (((PasswordBox)sender).SecurePassword.Length < 6)
+            {
+                ((dynamic)this.DataContext).IsRegisterPasswordHasError = true;
+                ((dynamic)this.DataContext).RegisterPasswordErrorToolTip = "Password must contain at least 6 characters";
+            }
+            else
+                ((dynamic)this.DataContext).IsRegisterPasswordHasError = false;
+        }
+        private void RepeatRegisterPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+                ((dynamic)this.DataContext).RepeatRegisterPassword = ((PasswordBox)sender).SecurePassword;
+            if (((PasswordBox)sender).SecurePassword.Length < 6)
+            {
+                ((dynamic)this.DataContext).IsRepeatRegisterPasswordHasError = true;
+                ((dynamic)this.DataContext).RepeatRegisterPasswordErrorToolTip = "Password must contain at least 6 characters";
+            }
+            else
+                ((dynamic)this.DataContext).IsRepeatRegisterPasswordHasError = false;
+        }
+
+        private void LoginPasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
+        {
+            if (this.DataContext != null)
+                ((dynamic)this.DataContext).LoginPassword = ((PasswordBox)sender).SecurePassword;
+            if (((PasswordBox)sender).SecurePassword.Length < 6)
+            {
+                ((dynamic)this.DataContext).IsLoginPasswordHasError = true;
+                ((dynamic)this.DataContext).LoginPasswordErrorToolTip = "Password must contain at least 6 characters";
+            }
+            else
+                ((dynamic)this.DataContext).IsLoginPasswordHasError = false;
+        }
     }
 }

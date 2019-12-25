@@ -14,13 +14,13 @@
         <Grid>
             <Border VerticalAlignment="Top"
                     HorizontalAlignment="Left"
-                    Visibility="{Binding IsSentByMe, Converter={local:BoolToVisibilityConverterViceVersa}}"
+                    Visibility="{Binding Message.IsSentByMe, Converter={local:BoolToVisibilityConverterViceVersa}}"
                     CornerRadius="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
                     Height="{Binding ActualWidth, RelativeSource={RelativeSource Self}}"
                     Width="35"
                     Background="{StaticResource DarkPinkBrush}"                    
                     >
-                <TextBlock Text="{Binding Initials}"
+                <TextBlock Text="{Binding User.Initials}"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            Foreground="{StaticResource ForegroundLightBrush}"
@@ -28,7 +28,7 @@
                            />
             </Border>
             <Grid Margin="25 0 15 0" 
-                  HorizontalAlignment="{Binding IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}">
+                  HorizontalAlignment="{Binding Message.IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}">
                 <Grid.Triggers>
                     <EventTrigger RoutedEvent="MouseEnter">
                         <BeginStoryboard>
@@ -46,49 +46,170 @@
                     </EventTrigger>
                 </Grid.Triggers>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="*"/>
                     <RowDefinition Height="Auto"/>
                     <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <Border CornerRadius="10" 
-                    Padding="15"                 
-                    Background="{Binding IsSentByMe, Converter={local:SentByMeToBackgroundConverter}}"
-                        Grid.ColumnSpan="2">
-                    <TextBlock VerticalAlignment="Center"
-                           TextWrapping="Wrap"
-                           FontFamily="{StaticResource LatoRegular}"
-                           Text="{Binding Message}"/>
-                </Border>
-                <Path Grid.Row="1"
-                      Margin="15 0"
-                      HorizontalAlignment="{Binding IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}"
-                      Fill="{Binding IsSentByMe, Converter={local:SentByMeToBackgroundConverter}}" 
-                      Stroke="{StaticResource ForegroundLightBrush}" 
-                      StrokeThickness="0" 
-                      Data="M 0,0 L 10,10 L 20 0 L 0 0" Grid.ColumnSpan="2"/>
-                <StackPanel x:Name="ExtraDetails"
+                    <Grid Visibility="{Binding Message.IsHasImageAttachment, Converter={local:BoolToVisibilityCollapsedConverter}}">
+                            <Button Style="{StaticResource IconGrowButton}"
+                                            FontFamily="{StaticResource FontAwesome}"
+                                            Content="{StaticResource FontAwesomeDownloadArrowIcon}"
+                                            Foreground="{StaticResource DarkPinkBrush}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="20"
+                                            Height="50"
+                                            Opacity="0"                                                                                        
+                                            Canvas.ZIndex="2"
+                                            Cursor="Hand"
+                                            x:Name="DownloadImageButton"
+                                            Command="{Binding DownloadFileCommand}"
+                                            />
+                        <Border CornerRadius="10"
+                            Margin="0 0 0 15">
+                            <Image DataContext="{Binding ImageAttachment}"
+                               Source="{Binding LocalFilePath}"
+                               MaxWidth="600"
+                               Canvas.ZIndex="1"
+                               local:ClipFromBorderProperty.Value="True"
+                               />
+                        </Border>
+                        <Grid.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation To="1"
+                                                                     Duration="0:0:0.5"
+                                                                     Storyboard.TargetName="DownloadImageButton"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard>
+                                            <DoubleAnimation To="0"
+                                                                     Duration="0:0:0.5"
+                                                                     Storyboard.TargetName="DownloadImageButton"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Grid.Triggers>
+                        </Grid>
+
+                    <Grid Grid.Row="1"
+                          Visibility="{Binding IsHasMessage, Converter={local:BoolToVisibilityCollapsedConverter}}">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        
+                        <Border CornerRadius="10" 
+                            Padding="15"                 
+                            Background="{Binding Message.IsSentByMe, Converter={local:SentByMeToBackgroundConverter}}"
+                            Grid.ColumnSpan="2">
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Grid Background="Transparent"
+                                      Visibility="{Binding Message.IsHasFileAttachment, Converter={local:BoolToVisibilityCollapsedConverter}}">
+                                    <Button Style="{StaticResource IconGrowButton}"
+                                            FontFamily="{StaticResource FontAwesome}"
+                                            Content="{StaticResource FontAwesomeDownloadArrowIcon}"
+                                            Foreground="{StaticResource DarkPinkBrush}"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Center"
+                                            FontSize="20"
+                                            Height="30"
+                                            Opacity="0"                                                                                        
+                                            Canvas.ZIndex="2"
+                                            Cursor="Hand"
+                                            x:Name="DownloadButton"
+                                            Command="{Binding DownloadFileCommand}"
+                                            />
+                                    <Image DataContext="{Binding FileAttachment}"
+                                           Source="{Binding FileTypeImagePath}"                              
+                                           MaxHeight="80"
+                                           Canvas.ZIndex="1"
+                                    />
+                                    <Grid.Triggers>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation To="1"
+                                                                     Duration="0:0:0.5"
+                                                                     Storyboard.TargetName="DownloadButton"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <BeginStoryboard>
+                                                <Storyboard>
+                                                    <DoubleAnimation To="0"
+                                                                     Duration="0:0:0.5"
+                                                                     Storyboard.TargetName="DownloadButton"
+                                                                     Storyboard.TargetProperty="Opacity"
+                                                                     />
+                                                </Storyboard>
+                                            </BeginStoryboard>
+                                        </EventTrigger>
+                                    </Grid.Triggers>
+                                </Grid>
+
+                                
+                                    <TextBlock VerticalAlignment="Center"
+                                           Grid.Row="1"
+                                   TextWrapping="Wrap"
+                                   FontFamily="{StaticResource LatoRegular}"
+                                   Text="{Binding Message.MessageText}"/>
+                            </Grid>
+                        </Border>
+                        <Path Grid.Row="1"
+                          Margin="15 0"
+                          HorizontalAlignment="{Binding Message.IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}"
+                          Fill="{Binding Message.IsSentByMe, Converter={local:SentByMeToBackgroundConverter}}" 
+                          Stroke="{StaticResource ForegroundLightBrush}" 
+                          StrokeThickness="0" 
+                          Data="M 0,0 L 10,10 L 20 0 L 0 0" Grid.ColumnSpan="2"
+                              />
+                        <StackPanel x:Name="ExtraDetails"
                             Grid.Row="2"
                             Opacity="0"
-                            HorizontalAlignment="{Binding IsSentByMe, Converter={local:SentByMeToAlignmentConverter}, ConverterParameter=True}"
+                            HorizontalAlignment="{Binding Message.IsSentByMe, Converter={local:SentByMeToAlignmentConverter}, ConverterParameter=True}"
                             Orientation="Horizontal">
-                    <TextBlock
-                           Text="{Binding MessageSentTime, Converter={local:TimeToDisplayTimeConverter}}"
-                           FontSize="12"
-                           FontFamily="{StaticResource LatoRegular}"
-                           Foreground="{StaticResource ForegroundLightBrush}"
-                           HorizontalAlignment="Right"
-                           Margin="0,0,15,0"
+                            <TextBlock
+                             Text="{Binding Message.MessageSentTime, Converter={local:TimeToDisplayTimeConverter}}"
+                             FontSize="12"
+                             FontFamily="{StaticResource LatoRegular}"
+                             Foreground="{StaticResource ForegroundLightBrush}"
+                             HorizontalAlignment="Right"
+                             Margin="0,0,15,0"
                            />
-                    <TextBlock
-                           Text="{Binding MessageReadTime, Converter={local:TimeToReadTimeConverter}}"
+                            <TextBlock
+                           Text="{Binding Message.MessageReadTime, Converter={local:TimeToReadTimeConverter}}"
                            FontSize="12"
                            FontFamily="{StaticResource LatoRegular}"
                            Foreground="{StaticResource ForegroundLightBrush}"
                            HorizontalAlignment="Right"
                            Margin="0,0,5,0"
                            />
-                </StackPanel>
+                        </StackPanel>
+
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
     </Border>

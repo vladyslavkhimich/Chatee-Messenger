@@ -16,9 +16,9 @@ namespace ChateeCore
         {
             Items = new List<MenuItemViewModel>
             {
-                new MenuItemViewModel { Type = MenuItemType.Header, Text="Attach a file ..." },
-                new MenuItemViewModel { Icon = IconType.File , Text="From computer" },
-                new MenuItemViewModel { Icon = IconType.Picture , Text="From pictures" }
+                new MenuItemViewModel { Type = MenuItemType.Header, Text="Design time header ..." },
+                new MenuItemViewModel { Icon = IconType.File , Text="Menu item 1" },
+                new MenuItemViewModel { Icon = IconType.Picture , Text="Menu item 2" }
             };
         }
         #endregion

@@ -14,10 +14,8 @@ namespace ChateeCore
         #region Constructor
         public ChatListItemDesignModel()
         {
-            Initials = "VK";
-            Name = "Vladyslav";
-            Message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-            ProfilePictureRGB = "ffdf08";
+            
+            
         }
         #endregion
     }

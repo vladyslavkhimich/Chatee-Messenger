@@ -1,0 +1,50 @@
+﻿<UserControl x:Class="ChateeWPF.SideMenuControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChateeWPF"
+             xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+            
+        
+    <Border Background="{StaticResource ForegroundLightBrush}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid Background="{StaticResource MainYellowBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal">
+                    <Button Style="{StaticResource IconButton}" 
+                            Content="{StaticResource FontAwesomeChatIcon}"
+                            Command="{Binding ApplicationViewModel.OpenChatListCommand, Source={x:Static local:ViewModelLocator.Instance}}"
+                            />
+                    <Button Style="{StaticResource IconButton}" 
+                            Content="{StaticResource FontAwesomeUserIcon}"
+                            Command="{Binding ApplicationViewModel.OpenUserListCommand, Source={x:Static local:ViewModelLocator.Instance}}"/>
+                    <Button Style="{StaticResource IconButton}" 
+                            Content="{StaticResource FontAwesomePictureIcon}"
+                            Command="{Binding ApplicationViewModel.OpenFileListCommand, Source={x:Static local:ViewModelLocator.Instance}}"
+                            />
+                </StackPanel>
+                <Button Grid.Column="2" 
+                        Style="{StaticResource IconButton}" 
+                        Content="{StaticResource FontAwesomeGearIcon}"
+                        Command="{Binding SettingsViewModel.OpenCommand, Source={x:Static local:ViewModelLocator.Instance}}"/>
+            </Grid>
+            <ContentPresenter Grid.Row="1"
+                              Content="{Binding ApplicationViewModel.CurrentControl, Source={x:Static local:ViewModelLocator.Instance}, Converter={local:ToUserControlConverter}}"></ContentPresenter>
+        </Grid>
+    </Border>
+        </ControlTemplate>
+    </UserControl.Template>
+</UserControl>

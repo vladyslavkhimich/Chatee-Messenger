@@ -1,0 +1,38 @@
+﻿<UserControl x:Class="ChateeWPF.UserListControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:ChateeWPF"
+             xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="300">
+    <Grid>
+        <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+                <TextBox
+                     Grid.Column="1" 
+                     Tag="Search Text..." 
+                     Margin="0 0 0 0"
+                     FontSize="16"
+                     local:FocusProperty.Value="True"
+                     Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
+                     HorizontalAlignment="Stretch"
+                     Style="{StaticResource SignTextBox}"
+                    >
+                    <TextBox.InputBindings>
+                        <KeyBinding Command="{Binding ClearSearchCommand}" Key="Esc"/>
+                        <KeyBinding Command="{Binding SearchCommand}" Key="Return"/>
+                    </TextBox.InputBindings>
+                </TextBox>
+                <ItemsControl ItemsSource="{Binding Users}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate>
+                            <local:UserListItemControl/>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

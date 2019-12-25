@@ -30,6 +30,11 @@ namespace ChateeWPF
         public int TitleHeight { get; set; } = 40;
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + ResizeBorder); } }
         public ApplicationPages CurrentPage { get; set; } = ApplicationPages.LoginPage;
+        public bool IsSettingsMenuVisible 
+        { 
+            get => IoCContainer.Get<ApplicationViewModel>().IsSettingsMenuVisible;
+            set => IoCContainer.Get<ApplicationViewModel>().IsSettingsMenuVisible = value; 
+        }
         #endregion
         #region Commands
         public ICommand MinimizeCommand { get; set; }

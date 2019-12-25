@@ -14,13 +14,12 @@ namespace ChateeCore
         #region Constructor
         public ChatMessageListItemDesignModel()
         {
-            Initials = "VK";
-            SenderName = "Vladyslav";
-            Message = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
-            ProfilePictureRGB = "ffdf08";
-            IsSentByMe = true;
-            MessageSentTime = DateTimeOffset.UtcNow;
-            MessageReadTime = DateTimeOffset.UtcNow.Subtract(TimeSpan.FromDays(1.1));
+            User.Initials = "OT";
+            User.LastMessage = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
+            User.ProfilePictureRGB = "ffdf08";
+            Message.IsSentByMe = true;
+            Message.MessageSentTime = DateTime.UtcNow;
+            Message.MessageReadTime = DateTime.UtcNow.Subtract(TimeSpan.FromDays(1.1));
         }
         #endregion
     }

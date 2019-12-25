@@ -12,10 +12,10 @@ namespace ChateeWPF
     {
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var time = (DateTimeOffset)value;
-            if (time == DateTimeOffset.MinValue)
+            var time = (DateTime)value;
+            if (time == DateTime.MinValue)
                 return string.Empty;
-            if (time.Date == DateTimeOffset.UtcNow.Date)
+            if (time.Date == DateTime.UtcNow.Date)
                 return $"Read {time.ToLocalTime().ToString("HH:mm")}";
             return $"Read {time.ToLocalTime().ToString("HH:mm, MMM yyyy")}";
         }

@@ -11,14 +11,14 @@ namespace ChateeWPF
 {
     public class ToPageConverter : BaseValueConverter<ToPageConverter>
     {
-        public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public override object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
         {
             switch((ApplicationPages)value)
             {
                 case ApplicationPages.LoginPage:
                     return new LoginPage();
                 case ApplicationPages.ChatPage:
-                    return new ChatPage();
+                    return new ChatPage(parameter as ChatMessageListViewModel);
                 default:
                     Debugger.Break();
                     return null;
