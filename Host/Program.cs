@@ -13,6 +13,7 @@ namespace Host
         {
             using (var host = new ServiceHost(typeof(WCF_Server.Service)))
             {
+                
                 host.Open();
                 Console.WriteLine("Host has started!");
                 Console.ReadKey();

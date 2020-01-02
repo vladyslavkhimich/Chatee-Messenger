@@ -92,7 +92,7 @@
                                 x:Name="EditImageButton"
                                 Command="{Binding EditImageCommand}"
                                 />
-                        <Image Source="/Images/Samples/black-tea.png"/>
+                        <Image Source="{Binding UserProfileImagePath}"/>
                     </Grid>
                 </Grid>
                 <StackPanel Grid.Column="1"

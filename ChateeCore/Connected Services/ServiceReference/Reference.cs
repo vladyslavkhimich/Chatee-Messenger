@@ -22,10 +22,10 @@ namespace ChateeCore.ServiceReference {
         System.Threading.Tasks.Task<string> ConnectAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/LoginOnServer", ReplyAction="http://tempuri.org/IService/LoginOnServerResponse")]
-        void LoginOnServer(WCF_Server.DataContracts.UserContract connectedUser);
+        void LoginOnServer(WCF_Server.DataContracts.UserContract connectedUser, int userServerDatabaseID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/LoginOnServer", ReplyAction="http://tempuri.org/IService/LoginOnServerResponse")]
-        System.Threading.Tasks.Task LoginOnServerAsync(WCF_Server.DataContracts.UserContract connectedUser);
+        System.Threading.Tasks.Task LoginOnServerAsync(WCF_Server.DataContracts.UserContract connectedUser, int userServerDatabaseID);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Register", ReplyAction="http://tempuri.org/IService/RegisterResponse")]
         bool Register(WCF_Server.DataContracts.UserContract userToRegister);
@@ -68,13 +68,73 @@ namespace ChateeCore.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextUserID", ReplyAction="http://tempuri.org/IService/GetNextUserIDResponse")]
         System.Threading.Tasks.Task<int> GetNextUserIDAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextChatID", ReplyAction="http://tempuri.org/IService/GetNextChatIDResponse")]
+        int GetNextChatID();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextChatID", ReplyAction="http://tempuri.org/IService/GetNextChatIDResponse")]
+        System.Threading.Tasks.Task<int> GetNextChatIDAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserName", ReplyAction="http://tempuri.org/IService/ChangeUserNameResponse")]
+        bool ChangeUserName(int userID, string name);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserName", ReplyAction="http://tempuri.org/IService/ChangeUserNameResponse")]
+        System.Threading.Tasks.Task<bool> ChangeUserNameAsync(int userID, string name);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserEmail", ReplyAction="http://tempuri.org/IService/ChangeUserEmailResponse")]
+        bool ChangeUserEmail(int userID, string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserEmail", ReplyAction="http://tempuri.org/IService/ChangeUserEmailResponse")]
+        System.Threading.Tasks.Task<bool> ChangeUserEmailAsync(int userID, string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserPassword", ReplyAction="http://tempuri.org/IService/ChangeUserPasswordResponse")]
+        bool ChangeUserPassword(int userID, byte[] passwordHash);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserPassword", ReplyAction="http://tempuri.org/IService/ChangeUserPasswordResponse")]
+        System.Threading.Tasks.Task<bool> ChangeUserPasswordAsync(int userID, byte[] passwordHash);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserUsername", ReplyAction="http://tempuri.org/IService/ChangeUserUsernameResponse")]
+        bool ChangeUserUsername(int userID, string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserUsername", ReplyAction="http://tempuri.org/IService/ChangeUserUsernameResponse")]
+        System.Threading.Tasks.Task<bool> ChangeUserUsernameAsync(int userID, string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserBio", ReplyAction="http://tempuri.org/IService/ChangeUserBioResponse")]
+        bool ChangeUserBio(int userID, string bio);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserBio", ReplyAction="http://tempuri.org/IService/ChangeUserBioResponse")]
+        System.Threading.Tasks.Task<bool> ChangeUserBioAsync(int userID, string bio);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserAvatar", ReplyAction="http://tempuri.org/IService/ChangeUserAvatarResponse")]
+        bool ChangeUserAvatar(int userID, byte[] avatar, string avatarCheckSum, string avatarName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserAvatar", ReplyAction="http://tempuri.org/IService/ChangeUserAvatarResponse")]
+        System.Threading.Tasks.Task<bool> ChangeUserAvatarAsync(int userID, byte[] avatar, string avatarCheckSum, string avatarName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SendMessage", ReplyAction="http://tempuri.org/IService/SendMessageResponse")]
+        bool SendMessage(int sentByUserID, int sentToUserID, WCF_Server.DataContracts.MessageContract messageContract);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SendMessage", ReplyAction="http://tempuri.org/IService/SendMessageResponse")]
+        System.Threading.Tasks.Task<bool> SendMessageAsync(int sentByUserID, int sentToUserID, WCF_Server.DataContracts.MessageContract messageContract);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/IsServerHasChat", ReplyAction="http://tempuri.org/IService/IsServerHasChatResponse")]
+        bool IsServerHasChat(int userID1, int userID2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/IsServerHasChat", ReplyAction="http://tempuri.org/IService/IsServerHasChatResponse")]
+        System.Threading.Tasks.Task<bool> IsServerHasChatAsync(int userID1, int userID2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateChat", ReplyAction="http://tempuri.org/IService/CreateChatResponse")]
+        bool CreateChat(int userID1, int userID2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateChat", ReplyAction="http://tempuri.org/IService/CreateChatResponse")]
+        System.Threading.Tasks.Task<bool> CreateChatAsync(int userID1, int userID2);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IServiceCallback {
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ConnectCallback", ReplyAction="http://tempuri.org/IService/ConnectCallbackResponse")]
-        void ConnectCallback(string testCallbackString);
+        [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService/ReceiveMessage")]
+        void ReceiveMessage(string Message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -113,12 +173,12 @@ namespace ChateeCore.ServiceReference {
             return base.Channel.ConnectAsync();
         }
         
-        public void LoginOnServer(WCF_Server.DataContracts.UserContract connectedUser) {
-            base.Channel.LoginOnServer(connectedUser);
+        public void LoginOnServer(WCF_Server.DataContracts.UserContract connectedUser, int userServerDatabaseID) {
+            base.Channel.LoginOnServer(connectedUser, userServerDatabaseID);
         }
         
-        public System.Threading.Tasks.Task LoginOnServerAsync(WCF_Server.DataContracts.UserContract connectedUser) {
-            return base.Channel.LoginOnServerAsync(connectedUser);
+        public System.Threading.Tasks.Task LoginOnServerAsync(WCF_Server.DataContracts.UserContract connectedUser, int userServerDatabaseID) {
+            return base.Channel.LoginOnServerAsync(connectedUser, userServerDatabaseID);
         }
         
         public bool Register(WCF_Server.DataContracts.UserContract userToRegister) {
@@ -175,6 +235,86 @@ namespace ChateeCore.ServiceReference {
         
         public System.Threading.Tasks.Task<int> GetNextUserIDAsync() {
             return base.Channel.GetNextUserIDAsync();
+        }
+        
+        public int GetNextChatID() {
+            return base.Channel.GetNextChatID();
+        }
+        
+        public System.Threading.Tasks.Task<int> GetNextChatIDAsync() {
+            return base.Channel.GetNextChatIDAsync();
+        }
+        
+        public bool ChangeUserName(int userID, string name) {
+            return base.Channel.ChangeUserName(userID, name);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangeUserNameAsync(int userID, string name) {
+            return base.Channel.ChangeUserNameAsync(userID, name);
+        }
+        
+        public bool ChangeUserEmail(int userID, string email) {
+            return base.Channel.ChangeUserEmail(userID, email);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangeUserEmailAsync(int userID, string email) {
+            return base.Channel.ChangeUserEmailAsync(userID, email);
+        }
+        
+        public bool ChangeUserPassword(int userID, byte[] passwordHash) {
+            return base.Channel.ChangeUserPassword(userID, passwordHash);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangeUserPasswordAsync(int userID, byte[] passwordHash) {
+            return base.Channel.ChangeUserPasswordAsync(userID, passwordHash);
+        }
+        
+        public bool ChangeUserUsername(int userID, string username) {
+            return base.Channel.ChangeUserUsername(userID, username);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangeUserUsernameAsync(int userID, string username) {
+            return base.Channel.ChangeUserUsernameAsync(userID, username);
+        }
+        
+        public bool ChangeUserBio(int userID, string bio) {
+            return base.Channel.ChangeUserBio(userID, bio);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangeUserBioAsync(int userID, string bio) {
+            return base.Channel.ChangeUserBioAsync(userID, bio);
+        }
+        
+        public bool ChangeUserAvatar(int userID, byte[] avatar, string avatarCheckSum, string avatarName) {
+            return base.Channel.ChangeUserAvatar(userID, avatar, avatarCheckSum, avatarName);
+        }
+        
+        public System.Threading.Tasks.Task<bool> ChangeUserAvatarAsync(int userID, byte[] avatar, string avatarCheckSum, string avatarName) {
+            return base.Channel.ChangeUserAvatarAsync(userID, avatar, avatarCheckSum, avatarName);
+        }
+        
+        public bool SendMessage(int sentByUserID, int sentToUserID, WCF_Server.DataContracts.MessageContract messageContract) {
+            return base.Channel.SendMessage(sentByUserID, sentToUserID, messageContract);
+        }
+        
+        public System.Threading.Tasks.Task<bool> SendMessageAsync(int sentByUserID, int sentToUserID, WCF_Server.DataContracts.MessageContract messageContract) {
+            return base.Channel.SendMessageAsync(sentByUserID, sentToUserID, messageContract);
+        }
+        
+        public bool IsServerHasChat(int userID1, int userID2) {
+            return base.Channel.IsServerHasChat(userID1, userID2);
+        }
+        
+        public System.Threading.Tasks.Task<bool> IsServerHasChatAsync(int userID1, int userID2) {
+            return base.Channel.IsServerHasChatAsync(userID1, userID2);
+        }
+        
+        public bool CreateChat(int userID1, int userID2) {
+            return base.Channel.CreateChat(userID1, userID2);
+        }
+        
+        public System.Threading.Tasks.Task<bool> CreateChatAsync(int userID1, int userID2) {
+            return base.Channel.CreateChatAsync(userID1, userID2);
         }
     }
 }

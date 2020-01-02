@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static WCF_Server.DataContracts;
 
 namespace ChateeCore
 {
@@ -18,6 +19,7 @@ namespace ChateeCore
         protected bool isSearchOpened { get; set; }
         #endregion
         #region Public Properties
+        public ApplicationViewModel ApplicationViewModel => IoCContainer.Get<ApplicationViewModel>();
         public Chat Chat { get; set; }
         public ObservableCollection<ChatMessageListItemViewModel> Messages 
         {   get => messages;
@@ -32,7 +34,7 @@ namespace ChateeCore
         public ObservableCollection<ChatMessageListItemViewModel> FilteredMessages { get; 
             set; }
         public string DisplayTitle { get; set; }
-        public User User { get; set; }
+        public User Interlocutor { get; set; }
         public ChatAttachmentPopupMenuViewModel AttachmentMenu { get; set; }
         public bool IsAttachmentMenuVisible { get; set; } = false;
         
@@ -48,6 +50,7 @@ namespace ChateeCore
                     SearchText = string.Empty;
             }
         }
+        public bool IsMessagesSent { get; set; }
         public string PendingMessageText { get; set; }
         public string SearchText
         {
@@ -65,12 +68,13 @@ namespace ChateeCore
         #region Public Commands
         public ICommand AttachmentButtonCommand { get; set; }
         public ICommand PopupClickAwayCommand { get; set; }
-        public ICommand SendMessageCommand { get; set; }
+        public ICommand SendMessageAsyncCommand { get; set; }
         public ICommand OpenUserInformationCommand { get; set; }
         public ICommand SearchCommand { get; set; }
         public ICommand ClearSearchCommand { get; set; }
         public ICommand OpenSearchCommand { get; set; }
         public ICommand CloseSearchCommand { get; set; }
+        public ICommand SendMessageTestCommand { get; set; }
         #endregion
         #region Constructors
         public ChatMessageListViewModel()
@@ -80,7 +84,7 @@ namespace ChateeCore
         }
         public ChatMessageListViewModel(User user, Chat chat)
         {
-            User = user;
+            Interlocutor = user;
             Chat = chat;
             messages = new ObservableCollection<ChatMessageListItemViewModel>();
             foreach (var message in Chat.Messages)
@@ -95,12 +99,13 @@ namespace ChateeCore
         {
             AttachmentButtonCommand = new RelayCommand(AttachmentButton);
             PopupClickAwayCommand = new RelayCommand(PopupClickAway);
-            SendMessageCommand = new RelayCommand(SendMessage);
+            SendMessageAsyncCommand = new RelayCommand(SendMessageAsync);
             OpenUserInformationCommand = new RelayCommand(OpenUserInformation);
             SearchCommand = new RelayCommand(Search);
             ClearSearchCommand = new RelayCommand(ClearSearch);
             OpenSearchCommand = new RelayCommand(OpenSearch);
             CloseSearchCommand = new RelayCommand(CloseSearch);
+            SendMessageTestCommand = new RelayCommand(SendMessageTest);
         }
         #endregion
         #region Commands methods
@@ -112,45 +117,94 @@ namespace ChateeCore
         {
             IsAttachmentMenuVisible = false;
         }
-        public void SendMessage()
+        public void SendMessageAsync()
         {
             if (string.IsNullOrEmpty(PendingMessageText) && AttachmentMenu.SelectedFiles.Count == 0)
                 return;
             if (Messages == null)
                 Messages = new ObservableCollection<ChatMessageListItemViewModel>();
             if (FilteredMessages == null)
-                FilteredMessages = new ObservableCollection<ChatMessageListItemViewModel>();
-            ChatMessageListItemViewModel message;
-            if(AttachmentMenu.SelectedFiles.Count > 0)
             {
-                for(int i = 0; i < AttachmentMenu.SelectedFiles.Count; i++)
+                FilteredMessages = new ObservableCollection<ChatMessageListItemViewModel>();
+                ApplicationViewModel.ServiceClient.CreateChat(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID);
+            }
+            Message newMessage;
+            if (AttachmentMenu.SelectedFiles.Count > 0)
+            {
+                for (int i = 0; i < AttachmentMenu.SelectedFiles.Count; i++)
                 {
-                    // TODO: Define if file is image and if yes send it without file name
-                    if(ExtensionTypesContainer.IsImage(AttachmentMenu.SelectedFiles[i].SelectedFile.Name))
-                         message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, AttachmentMenu.SelectedFiles[i].SelectedFile.Name, "", AttachmentMenu.SelectedFiles[i].SelectedFile.FullName), User);
-                    else
-                         message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, AttachmentMenu.SelectedFiles[i].SelectedFile.Name, AttachmentMenu.SelectedFiles[i].SelectedFile.FullName, ""), User);
-                    FilteredMessages.Add(message);
+                    newMessage = new Message(Chat.ChatID, ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, true, DateTime.MinValue, DateTime.MinValue, AttachmentMenu.SelectedFiles[i].SelectedFileInfo.Name, FileHelper.ComputeFileCheckSum(AttachmentMenu.SelectedFiles[i].SelectedFileInfo.FullName), AttachmentMenu.SelectedFiles[i].SelectedFileInfo.FullName);
+                    RunCommandAsync(() => IsMessagesSent, async () => SendMessage(newMessage));
                 }
                 AttachmentMenu.SelectedFiles = null;
                 AttachmentMenu.IsAttachmentsListVisible = false;
                 if (!string.IsNullOrEmpty(PendingMessageText))
                 {
-                    message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, PendingMessageText), User);
-                    FilteredMessages.Add(message);
+                    newMessage = new Message(Chat.ChatID, ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, true, DateTime.MinValue, DateTime.MinValue, PendingMessageText);
+                    RunCommandAsync(() => IsMessagesSent, async () => SendMessage(newMessage)).ContinueWith(t => 
+                    {
+                        PendingMessageText = string.Empty;
+                    });
                 }
             }
             else
-            { 
-                message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, PendingMessageText), User);                
-                FilteredMessages.Add(message);
+            {
+                newMessage = new Message(Chat.ChatID, ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, true, DateTime.MinValue, DateTime.MinValue, PendingMessageText);
+                //RunCommandAsync(() => IsMessagesSent, async () => SendMessage(newMessage)).ContinueWith(t => 
+                //{
+                //    PendingMessageText = string.Empty;
+                //});
+                Task.Run(() => SendMessage(newMessage));
             }
-            PendingMessageText = string.Empty;
+            //ChatMessageListItemViewModel message;
+            //if(AttachmentMenu.SelectedFiles.Count > 0)
+            //{
+            //    for(int i = 0; i < AttachmentMenu.SelectedFiles.Count; i++)
+            //    {
+            //        // TODO: Define if file is image and if yes send it without file name
+            //        if(ExtensionTypesContainer.IsImage(AttachmentMenu.SelectedFiles[i].SelectedFile.Name))
+            //             message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, AttachmentMenu.SelectedFiles[i].SelectedFile.Name, "", AttachmentMenu.SelectedFiles[i].SelectedFile.FullName), User);
+            //        else
+            //             message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, AttachmentMenu.SelectedFiles[i].SelectedFile.Name, AttachmentMenu.SelectedFiles[i].SelectedFile.FullName, ""), User);
+            //        FilteredMessages.Add(message);
+            //    }
+            //    AttachmentMenu.SelectedFiles = null;
+            //    AttachmentMenu.IsAttachmentsListVisible = false;
+            //    if (!string.IsNullOrEmpty(PendingMessageText))
+            //    {
+            //        message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, PendingMessageText), User);
+            //        FilteredMessages.Add(message);
+            //    }
+            //}
+            //else
+            //{ 
+            //    message = new ChatMessageListItemViewModel(new Message(1, 1, true, DateTime.MinValue, DateTime.UtcNow, PendingMessageText), User);                
+            //    FilteredMessages.Add(message);
+            //}
+        }
+        public void SendMessage(Message messageToSend)
+        {
+            ChatMessageListItemViewModel newMessageListItem = new ChatMessageListItemViewModel(messageToSend, Interlocutor);
+            RunCommandAsync(() => newMessageListItem.IsMessageSent, async () =>
+            {
+                ApplicationViewModel.ServiceClient.SendMessage(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID, new MessageContract
+                {
+                    ChatID = Chat.ChatID,
+                    UserID = ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID,
+                    MessageText = string.IsNullOrEmpty(newMessageListItem.Message.MessageText) ? string.Empty : newMessageListItem.Message.MessageText,
+                    IsSentByMe = true,
+                    MessageReadTime = DateTime.MinValue,
+                    MessageSentTime = DateTime.UtcNow,
+                    FileCheckSum = string.IsNullOrEmpty(newMessageListItem.Message.FileCheckSum) ? string.Empty : newMessageListItem.Message.FileCheckSum,
+                    FileName = string.IsNullOrEmpty(newMessageListItem.Message.FileName) ? string.Empty : newMessageListItem.Message.FileName,
+                    FileBytes = string.IsNullOrEmpty(newMessageListItem.Message.FilePath) ? null : FileHelper.ConvertFileToArrayOfBytes(newMessageListItem.Message.FilePath)
+                });
+            });
         }
         public void OpenUserInformation()
         {
             IoCContainer.Get<ApplicationViewModel>().IsUserInformationVisible = true;
-            IoCContainer.Get<UserInformationViewModel>().User = User;
+            IoCContainer.Get<UserInformationViewModel>().User = Interlocutor;
         }
         public void Search()
         {
@@ -181,6 +235,17 @@ namespace ChateeCore
             IsSearchOpened = false;
         }
 
+        #endregion
+        #region Helper Methods
+        public void SendMessageToTheServer(Message message)
+        {
+            ChatMessageListItemViewModel messageToSend = new ChatMessageListItemViewModel(message, ApplicationViewModel.CurrentUser);
+            FilteredMessages.Add(messageToSend);
+        }
+        public void SendMessageTest()
+        {
+            ApplicationViewModel.ServiceClient.SendMessage(1, 2, new MessageContract());
+        }
         #endregion
     }
 }

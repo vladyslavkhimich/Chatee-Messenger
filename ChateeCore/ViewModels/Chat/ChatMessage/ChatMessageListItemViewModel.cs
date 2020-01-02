@@ -15,6 +15,8 @@ namespace ChateeCore
         public ChatMessageListItemImageAttachmentViewModel ImageAttachment { get; set; }
         public ChatMessageListItemFileAttachmentViewModel FileAttachment { get; set; }
         public bool IsHasMessage => Message.MessageText != null;
+        public bool IsMessageSent { get; set; }
+        public bool IsMessageRead { get; set; }
         #region Public Commands
         public ICommand DownloadFileCommand { get; set; }
         #endregion
@@ -23,14 +25,14 @@ namespace ChateeCore
         {
             DownloadFileCommand = new RelayCommand(DownloadFile);
         }
-        public ChatMessageListItemViewModel(Message message, User user, string filePath = "")
+        public ChatMessageListItemViewModel(Message message, User user)
         {
             Message = message;
             User = user;
-            if (message.FileCheckSum != string.Empty && !ExtensionTypesContainer.IsImage(message.FileCheckSum))
-                FileAttachment = new ChatMessageListItemFileAttachmentViewModel(message.FileCheckSum, user);
-            else if (message.FileCheckSum != string.Empty && ExtensionTypesContainer.IsImage(message.FileCheckSum))
-                ImageAttachment = new ChatMessageListItemImageAttachmentViewModel(message.FileCheckSum);
+            if (message.FileCheckSum != null && !ExtensionTypesContainer.IsImage(message.FilePath))
+                FileAttachment = new ChatMessageListItemFileAttachmentViewModel(message.FilePath, user);
+            else if (message.FileCheckSum != null && ExtensionTypesContainer.IsImage(message.FilePath))
+                ImageAttachment = new ChatMessageListItemImageAttachmentViewModel(message.FilePath);
             DownloadFileCommand = new RelayCommand(DownloadFile);
         }
         #endregion

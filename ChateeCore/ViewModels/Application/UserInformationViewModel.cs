@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using static WCF_Server.DataContracts;
 
 namespace ChateeCore
 {
@@ -13,6 +14,7 @@ namespace ChateeCore
         #region Public Properties
         public User User { get; set; }
         public bool IsOpenChatVisible { get; set; } = false;
+        public ApplicationViewModel ApplicationViewModel => IoCContainer.Get<ApplicationViewModel>();
         #endregion
         #region Public Commands
         public ICommand CloseCommand { get; set; }
@@ -49,19 +51,36 @@ namespace ChateeCore
         }
         public void OpenChat()
         {
-            User TestUser = new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto.");
-            ObservableCollection<Message> TestMessages = new ObservableCollection<Message>();
-            TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message", "C:/Users/Владелец/source/repos/Chatee/ChateeWPF/Images/Samples/black-tea.png"));
-            TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message", "D:/Test/TestFiles/Palermo Story.txt"));
+            User Interlocutor = new User(User);
+            if (ApplicationViewModel.ClientDatabase.ChatContracts.ToList().Find(chat => ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID == chat.UserID1 && Interlocutor.UserID == chat.UserID2 || Interlocutor.UserID == chat.UserID2 && ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID == chat.UserID1) == null)
+            { 
+                bool isServerHasChat = ApplicationViewModel.ServiceClient.IsServerHasChat(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID);
+                if (!isServerHasChat)
+                {
+                    Chat newChat = CreateLocalChat(Interlocutor);
+                    ChatMessageListViewModel TestMessageList = new ChatMessageListViewModel(Interlocutor, newChat);
+                    IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, TestMessageList);
+                }
+            }
+            //ObservableCollection<Message> TestMessages = new ObservableCollection<Message>();
+            //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
+            //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
+            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
+            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
+            //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
+            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message", "C:/Users/Владелец/source/repos/Chatee/ChateeWPF/Images/Samples/black-tea.png"));
+            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message", "D:/Test/TestFiles/Palermo Story.txt"));
 
-            Chat TestChat = new Chat(1, 1, 2, TestMessages);
-            ChatMessageListViewModel TestMessageList = new ChatMessageListViewModel(TestUser, TestChat);
-            IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, TestMessageList);
+            //Chat TestChat = new Chat(1, 1, 2, TestMessages);
+            
+        }
+        #endregion
+        #region Helper Methods
+        public Chat CreateLocalChat(User interlocutor)
+        {
+            Chat newChat = new Chat(ApplicationViewModel.ServiceClient.GetNextChatID(), ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, interlocutor.UserID);
+            IoCContainer.Get<ChatListViewModel>().Chats.Add(new ChatListItemViewModel(interlocutor, newChat));
+            return newChat;
         }
         #endregion
     }

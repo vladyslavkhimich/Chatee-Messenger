@@ -25,6 +25,12 @@ namespace WCF_Server
             [DataMember]
             public byte[] PasswordHash { get; set; }
             [DataMember]
+            public byte[] AvatarBytes { get; set; }
+            [DataMember]
+            public string AvatarCheckSum { get; set; }
+            [DataMember]
+            public string AvatarFileName { get; set; }
+            [DataMember]
             public string Name { get; set; }
             [DataMember]
             public string Bio { get; set; }
@@ -32,8 +38,10 @@ namespace WCF_Server
             public string Initials { get; set; }
             [DataMember]
             public string ProfilePictureRGB { get; set; }
-            [NotMapped]
+            [IgnoreDataMember]
             public bool IsKeepLoggedIn { get; set; }
+            [IgnoreDataMember]
+            public int ServerDatabaseUserID { get; set; }
             [DataMember]
             [NotMapped]
             public ObservableCollection<ChatContract> Chats { get; set; }
@@ -47,14 +55,17 @@ namespace WCF_Server
                 Username = userContract.Username;
                 Email = userContract.Email;
                 PasswordHash = userContract.PasswordHash;
+                AvatarBytes = userContract.AvatarBytes;
+                AvatarCheckSum = userContract.AvatarCheckSum;
+                AvatarFileName = userContract.AvatarFileName;
                 Name = userContract.Name;
                 Bio = userContract.Bio;
                 Initials = userContract.Initials;
-                ProfilePictureRGB = userContract.ProfilePictureRGB;;
+                ProfilePictureRGB = userContract.ProfilePictureRGB;
             }
             public UserContract(WCF_Server.DataContracts.UserContract userContract, bool isKeepLoggedIn)
             {
-                UserID = userContract.UserID;
+                ServerDatabaseUserID = userContract.UserID;
                 Username = userContract.Username;
                 Email = userContract.Email;
                 PasswordHash = userContract.PasswordHash;
@@ -76,7 +87,17 @@ namespace WCF_Server
             [DataMember]
             public int UserID2 { get; set; }
             [DataMember]
+            [NotMapped]
             public ObservableCollection<MessageContract> Messages { get; set; }
+            public ChatContract()
+            {
+
+            }
+            public ChatContract(int userID1, int userID2)
+            {
+                UserID1 = userID1;
+                UserID2 = userID2;
+            }
         }
         [DataContract]
         public class MessageContract
@@ -98,6 +119,14 @@ namespace WCF_Server
             public DateTime MessageSentTime { get; set; }
             [DataMember]
             public string FileCheckSum { get; set; }
+            [DataMember]
+            public byte[] FileBytes { get; set; }
+            [DataMember]
+            public string FileName { get; set; }
+            public MessageContract()
+            {
+
+            }
         }
         [DataContract]
         public class FileContract

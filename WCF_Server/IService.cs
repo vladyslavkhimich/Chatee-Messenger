@@ -15,7 +15,7 @@ namespace WCF_Server
         [OperationContract]
         string Connect();
         [OperationContract]
-        void LoginOnServer(UserContract connectedUser);
+        void LoginOnServer(UserContract connectedUser, int userServerDatabaseID);
         [OperationContract]
         bool Register(UserContract userToRegister);
         [OperationContract]
@@ -30,11 +30,30 @@ namespace WCF_Server
         bool CheckUsernameDatabaseExistence(string username);
         [OperationContract]
         int GetNextUserID();
+        [OperationContract]
+        int GetNextChatID();
+        [OperationContract]
+        bool ChangeUserName(int userID, string name);
+        [OperationContract]
+        bool ChangeUserEmail(int userID, string email);
+        [OperationContract]
+        bool ChangeUserPassword(int userID, byte[] passwordHash);
+        [OperationContract]
+        bool ChangeUserUsername(int userID, string username);
+        [OperationContract]
+        bool ChangeUserBio(int userID, string bio);
+        [OperationContract]
+        bool ChangeUserAvatar(int userID, byte[] avatar, string avatarCheckSum, string avatarName);
+        [OperationContract]
+        bool SendMessage(int sentByUserID, int sentToUserID, MessageContract messageContract = null);
+        [OperationContract]
+        bool IsServerHasChat(int userID1, int userID2);
+        [OperationContract]
+        bool CreateChat(int userID1, int userID2);
     }
-    // TODO: Delete this interface if it is not needed
     public interface IServiceCallback
     {
-        [OperationContract]
-        void ConnectCallback(string testCallbackString);
+        [OperationContract(IsOneWay = true)]
+        void ReceiveMessage(MessageContract Message);
     }
 }

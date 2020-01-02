@@ -11,6 +11,7 @@ namespace ChateeCore
         #region Public Properties
         public ChatMessageListViewModel ParentChatMessageList { get; set; }
         public ImageAttachment ImageAttachment { get; set; }
+        public bool IsImageLoading { get; set; } = false;
         public string LocalFilePath { get; set; }
         #endregion
         #region Constructors

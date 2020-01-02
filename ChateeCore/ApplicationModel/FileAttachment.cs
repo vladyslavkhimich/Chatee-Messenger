@@ -31,7 +31,7 @@ namespace ChateeCore
         }
         public FileAttachment(string fileID, string filePath, int userID)
         {
-            FileCheckSum = fileID;
+            FileCheckSum = FileHelper.ComputeFileCheckSum(filePath);
             FilePath = filePath;
             FileName = new FileInfo(filePath).Name;
             UserID = userID;

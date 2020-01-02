@@ -9,7 +9,432 @@
 //------------------------------------------------------------------------------
 
 namespace ChateeWPF.ServiceReference {
+    using System.Runtime.Serialization;
+    using System;
     
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DataContracts.UserContract", Namespace="http://schemas.datacontract.org/2004/07/WCF_Server")]
+    [System.SerializableAttribute()]
+    public partial class DataContractsUserContract : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string BioField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ChateeWPF.ServiceReference.DataContractsChatContract[] ChatsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string EmailField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string InitialsField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string NameField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] PasswordHashField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string ProfilePictureRGBField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string UsernameField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Bio {
+            get {
+                return this.BioField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.BioField, value) != true)) {
+                    this.BioField = value;
+                    this.RaisePropertyChanged("Bio");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ChateeWPF.ServiceReference.DataContractsChatContract[] Chats {
+            get {
+                return this.ChatsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ChatsField, value) != true)) {
+                    this.ChatsField = value;
+                    this.RaisePropertyChanged("Chats");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Email {
+            get {
+                return this.EmailField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.EmailField, value) != true)) {
+                    this.EmailField = value;
+                    this.RaisePropertyChanged("Email");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Initials {
+            get {
+                return this.InitialsField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.InitialsField, value) != true)) {
+                    this.InitialsField = value;
+                    this.RaisePropertyChanged("Initials");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Name {
+            get {
+                return this.NameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.NameField, value) != true)) {
+                    this.NameField = value;
+                    this.RaisePropertyChanged("Name");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] PasswordHash {
+            get {
+                return this.PasswordHashField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.PasswordHashField, value) != true)) {
+                    this.PasswordHashField = value;
+                    this.RaisePropertyChanged("PasswordHash");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string ProfilePictureRGB {
+            get {
+                return this.ProfilePictureRGBField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.ProfilePictureRGBField, value) != true)) {
+                    this.ProfilePictureRGBField = value;
+                    this.RaisePropertyChanged("ProfilePictureRGB");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserID {
+            get {
+                return this.UserIDField;
+            }
+            set {
+                if ((this.UserIDField.Equals(value) != true)) {
+                    this.UserIDField = value;
+                    this.RaisePropertyChanged("UserID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string Username {
+            get {
+                return this.UsernameField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.UsernameField, value) != true)) {
+                    this.UsernameField = value;
+                    this.RaisePropertyChanged("Username");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DataContracts.ChatContract", Namespace="http://schemas.datacontract.org/2004/07/WCF_Server")]
+    [System.SerializableAttribute()]
+    public partial class DataContractsChatContract : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private ChateeWPF.ServiceReference.DataContractsMessageContract[] MessagesField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserID1Field;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserID2Field;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatID {
+            get {
+                return this.ChatIDField;
+            }
+            set {
+                if ((this.ChatIDField.Equals(value) != true)) {
+                    this.ChatIDField = value;
+                    this.RaisePropertyChanged("ChatID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public ChateeWPF.ServiceReference.DataContractsMessageContract[] Messages {
+            get {
+                return this.MessagesField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessagesField, value) != true)) {
+                    this.MessagesField = value;
+                    this.RaisePropertyChanged("Messages");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserID1 {
+            get {
+                return this.UserID1Field;
+            }
+            set {
+                if ((this.UserID1Field.Equals(value) != true)) {
+                    this.UserID1Field = value;
+                    this.RaisePropertyChanged("UserID1");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserID2 {
+            get {
+                return this.UserID2Field;
+            }
+            set {
+                if ((this.UserID2Field.Equals(value) != true)) {
+                    this.UserID2Field = value;
+                    this.RaisePropertyChanged("UserID2");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="DataContracts.MessageContract", Namespace="http://schemas.datacontract.org/2004/07/WCF_Server")]
+    [System.SerializableAttribute()]
+    public partial class DataContractsMessageContract : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int ChatIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private byte[] FileCheckSumField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private bool IsSentByMeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int MessageIDField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime MessageReadTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private System.DateTime MessageSentTimeField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private string MessageTextField;
+        
+        [System.Runtime.Serialization.OptionalFieldAttribute()]
+        private int UserIDField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int ChatID {
+            get {
+                return this.ChatIDField;
+            }
+            set {
+                if ((this.ChatIDField.Equals(value) != true)) {
+                    this.ChatIDField = value;
+                    this.RaisePropertyChanged("ChatID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public byte[] FileCheckSum {
+            get {
+                return this.FileCheckSumField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.FileCheckSumField, value) != true)) {
+                    this.FileCheckSumField = value;
+                    this.RaisePropertyChanged("FileCheckSum");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public bool IsSentByMe {
+            get {
+                return this.IsSentByMeField;
+            }
+            set {
+                if ((this.IsSentByMeField.Equals(value) != true)) {
+                    this.IsSentByMeField = value;
+                    this.RaisePropertyChanged("IsSentByMe");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int MessageID {
+            get {
+                return this.MessageIDField;
+            }
+            set {
+                if ((this.MessageIDField.Equals(value) != true)) {
+                    this.MessageIDField = value;
+                    this.RaisePropertyChanged("MessageID");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime MessageReadTime {
+            get {
+                return this.MessageReadTimeField;
+            }
+            set {
+                if ((this.MessageReadTimeField.Equals(value) != true)) {
+                    this.MessageReadTimeField = value;
+                    this.RaisePropertyChanged("MessageReadTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public System.DateTime MessageSentTime {
+            get {
+                return this.MessageSentTimeField;
+            }
+            set {
+                if ((this.MessageSentTimeField.Equals(value) != true)) {
+                    this.MessageSentTimeField = value;
+                    this.RaisePropertyChanged("MessageSentTime");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public string MessageText {
+            get {
+                return this.MessageTextField;
+            }
+            set {
+                if ((object.ReferenceEquals(this.MessageTextField, value) != true)) {
+                    this.MessageTextField = value;
+                    this.RaisePropertyChanged("MessageText");
+                }
+            }
+        }
+        
+        [System.Runtime.Serialization.DataMemberAttribute()]
+        public int UserID {
+            get {
+                return this.UserIDField;
+            }
+            set {
+                if ((this.UserIDField.Equals(value) != true)) {
+                    this.UserIDField = value;
+                    this.RaisePropertyChanged("UserID");
+                }
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference.IService", CallbackContract=typeof(ChateeWPF.ServiceReference.IServiceCallback))]
@@ -21,11 +446,53 @@ namespace ChateeWPF.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Connect", ReplyAction="http://tempuri.org/IService/ConnectResponse")]
         System.Threading.Tasks.Task<string> ConnectAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DoWork", ReplyAction="http://tempuri.org/IService/DoWorkResponse")]
-        void DoWork();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/LoginOnServer", ReplyAction="http://tempuri.org/IService/LoginOnServerResponse")]
+        void LoginOnServer(ChateeWPF.ServiceReference.DataContractsUserContract connectedUser);
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/DoWork", ReplyAction="http://tempuri.org/IService/DoWorkResponse")]
-        System.Threading.Tasks.Task DoWorkAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/LoginOnServer", ReplyAction="http://tempuri.org/IService/LoginOnServerResponse")]
+        System.Threading.Tasks.Task LoginOnServerAsync(ChateeWPF.ServiceReference.DataContractsUserContract connectedUser);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Register", ReplyAction="http://tempuri.org/IService/RegisterResponse")]
+        bool Register(ChateeWPF.ServiceReference.DataContractsUserContract userToRegister);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Register", ReplyAction="http://tempuri.org/IService/RegisterResponse")]
+        System.Threading.Tasks.Task<bool> RegisterAsync(ChateeWPF.ServiceReference.DataContractsUserContract userToRegister);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserByEmail", ReplyAction="http://tempuri.org/IService/GetUserByEmailResponse")]
+        ChateeWPF.ServiceReference.DataContractsUserContract GetUserByEmail(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserByEmail", ReplyAction="http://tempuri.org/IService/GetUserByEmailResponse")]
+        System.Threading.Tasks.Task<ChateeWPF.ServiceReference.DataContractsUserContract> GetUserByEmailAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserInterlocutors", ReplyAction="http://tempuri.org/IService/GetUserInterlocutorsResponse")]
+        ChateeWPF.ServiceReference.DataContractsUserContract[] GetUserInterlocutors(int userID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserInterlocutors", ReplyAction="http://tempuri.org/IService/GetUserInterlocutorsResponse")]
+        System.Threading.Tasks.Task<ChateeWPF.ServiceReference.DataContractsUserContract[]> GetUserInterlocutorsAsync(int userID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUsersByUsername", ReplyAction="http://tempuri.org/IService/GetUsersByUsernameResponse")]
+        ChateeWPF.ServiceReference.DataContractsUserContract[] GetUsersByUsername(string usernameSubstring);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUsersByUsername", ReplyAction="http://tempuri.org/IService/GetUsersByUsernameResponse")]
+        System.Threading.Tasks.Task<ChateeWPF.ServiceReference.DataContractsUserContract[]> GetUsersByUsernameAsync(string usernameSubstring);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CheckEmailDatabaseExistence", ReplyAction="http://tempuri.org/IService/CheckEmailDatabaseExistenceResponse")]
+        bool CheckEmailDatabaseExistence(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CheckEmailDatabaseExistence", ReplyAction="http://tempuri.org/IService/CheckEmailDatabaseExistenceResponse")]
+        System.Threading.Tasks.Task<bool> CheckEmailDatabaseExistenceAsync(string email);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CheckUsernameDatabaseExistence", ReplyAction="http://tempuri.org/IService/CheckUsernameDatabaseExistenceResponse")]
+        bool CheckUsernameDatabaseExistence(string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CheckUsernameDatabaseExistence", ReplyAction="http://tempuri.org/IService/CheckUsernameDatabaseExistenceResponse")]
+        System.Threading.Tasks.Task<bool> CheckUsernameDatabaseExistenceAsync(string username);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextUserID", ReplyAction="http://tempuri.org/IService/GetNextUserIDResponse")]
+        int GetNextUserID();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextUserID", ReplyAction="http://tempuri.org/IService/GetNextUserIDResponse")]
+        System.Threading.Tasks.Task<int> GetNextUserIDAsync();
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -71,12 +538,68 @@ namespace ChateeWPF.ServiceReference {
             return base.Channel.ConnectAsync();
         }
         
-        public void DoWork() {
-            base.Channel.DoWork();
+        public void LoginOnServer(ChateeWPF.ServiceReference.DataContractsUserContract connectedUser) {
+            base.Channel.LoginOnServer(connectedUser);
         }
         
-        public System.Threading.Tasks.Task DoWorkAsync() {
-            return base.Channel.DoWorkAsync();
+        public System.Threading.Tasks.Task LoginOnServerAsync(ChateeWPF.ServiceReference.DataContractsUserContract connectedUser) {
+            return base.Channel.LoginOnServerAsync(connectedUser);
+        }
+        
+        public bool Register(ChateeWPF.ServiceReference.DataContractsUserContract userToRegister) {
+            return base.Channel.Register(userToRegister);
+        }
+        
+        public System.Threading.Tasks.Task<bool> RegisterAsync(ChateeWPF.ServiceReference.DataContractsUserContract userToRegister) {
+            return base.Channel.RegisterAsync(userToRegister);
+        }
+        
+        public ChateeWPF.ServiceReference.DataContractsUserContract GetUserByEmail(string email) {
+            return base.Channel.GetUserByEmail(email);
+        }
+        
+        public System.Threading.Tasks.Task<ChateeWPF.ServiceReference.DataContractsUserContract> GetUserByEmailAsync(string email) {
+            return base.Channel.GetUserByEmailAsync(email);
+        }
+        
+        public ChateeWPF.ServiceReference.DataContractsUserContract[] GetUserInterlocutors(int userID) {
+            return base.Channel.GetUserInterlocutors(userID);
+        }
+        
+        public System.Threading.Tasks.Task<ChateeWPF.ServiceReference.DataContractsUserContract[]> GetUserInterlocutorsAsync(int userID) {
+            return base.Channel.GetUserInterlocutorsAsync(userID);
+        }
+        
+        public ChateeWPF.ServiceReference.DataContractsUserContract[] GetUsersByUsername(string usernameSubstring) {
+            return base.Channel.GetUsersByUsername(usernameSubstring);
+        }
+        
+        public System.Threading.Tasks.Task<ChateeWPF.ServiceReference.DataContractsUserContract[]> GetUsersByUsernameAsync(string usernameSubstring) {
+            return base.Channel.GetUsersByUsernameAsync(usernameSubstring);
+        }
+        
+        public bool CheckEmailDatabaseExistence(string email) {
+            return base.Channel.CheckEmailDatabaseExistence(email);
+        }
+        
+        public System.Threading.Tasks.Task<bool> CheckEmailDatabaseExistenceAsync(string email) {
+            return base.Channel.CheckEmailDatabaseExistenceAsync(email);
+        }
+        
+        public bool CheckUsernameDatabaseExistence(string username) {
+            return base.Channel.CheckUsernameDatabaseExistence(username);
+        }
+        
+        public System.Threading.Tasks.Task<bool> CheckUsernameDatabaseExistenceAsync(string username) {
+            return base.Channel.CheckUsernameDatabaseExistenceAsync(username);
+        }
+        
+        public int GetNextUserID() {
+            return base.Channel.GetNextUserID();
+        }
+        
+        public System.Threading.Tasks.Task<int> GetNextUserIDAsync() {
+            return base.Channel.GetNextUserIDAsync();
         }
     }
 }

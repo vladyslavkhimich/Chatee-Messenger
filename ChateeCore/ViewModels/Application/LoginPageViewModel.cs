@@ -2,7 +2,10 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security;
 using System.Security.Cryptography;
 using System.Text;
@@ -50,14 +53,20 @@ namespace ChateeCore
         public LoginPageViewModel()
         {
             SetLoginPageCommands();
-            TryToLoginUserWithKeepMeLoggedInTrue();
+            
         }
         #endregion
         #region Commands Methods
         public void Register()
         {
+            
             IsRegisterPasswordHasError = false;
             IsRepeatRegisterPasswordHasError = false;
+            if(!ApplicationViewModel.IsServerReachable)
+            {
+                MessageBox.Show("Check your internet connection", "Registration error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             if (SecureStringHelpers.Unsecure(RegisterPassword) != SecureStringHelpers.Unsecure(RepeatRegisterPassword))
             {
                 IsRegisterPasswordHasError = true;
@@ -75,7 +84,10 @@ namespace ChateeCore
                 Username = RegisterUsername,
                 Name = RegisterName,
                 Email = RegisterEmail,
-                PasswordHash = SecureStringToHash(RegisterPassword, ApplicationViewModel.ServiceClient.GetNextUserID()),
+                PasswordHash = SecureStringHelpers.SecureStringToHash(RegisterPassword, ApplicationViewModel.ServiceClient.GetNextUserID()),
+                AvatarBytes = FileHelper.ConvertFileToArrayOfBytes(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location)  + "/ClientDatabase/Database/ImageDatabase/Avatars/black-tea.png"),
+                AvatarCheckSum = FileHelper.ComputeFileCheckSum(Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/ClientDatabase/Database/ImageDatabase/Avatars/black-tea.png"),
+                AvatarFileName = "black-tea.png",
                 Bio = string.Empty,
                 Initials = SetInitialsFromName(RegisterName),
                 ProfilePictureRGB = GenerateProfilePictureRGB()
@@ -102,38 +114,55 @@ namespace ChateeCore
                     MessageBox.Show("There is no user with such email", "Login error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                if (!loggedUser.PasswordHash.SequenceEqual(SecureStringToHash(LoginPassword, loggedUser.UserID)))
+                if (!loggedUser.PasswordHash.SequenceEqual(SecureStringHelpers.SecureStringToHash(LoginPassword, loggedUser.UserID)))
                 {
                     MessageBox.Show("Incorrect e-mail or password", "Login error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                ChangeClientDatabaseUser(loggedUser);
-                SetApplicationUser(loggedUser);
-                SetUsersAndFilesLists();
+                LoginHelper.ChangeClientDatabaseUser(loggedUser, IsKeepLoggedIn);
+                loggedUserClientDatabase = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
+                LoginHelper.SetApplicationUser(loggedUserClientDatabase, loggedUser.UserID);
+                LoginHelper.SetUsersAndFilesLists();
                 SwitchToChatPage();
             }
             else if (loggedUserClientDatabase != null && !ApplicationViewModel.IsServerReachable)
             {
-                if (!loggedUserClientDatabase.PasswordHash.SequenceEqual(SecureStringToHash(LoginPassword, loggedUserClientDatabase.UserID)))
+                if (!loggedUserClientDatabase.PasswordHash.SequenceEqual(SecureStringHelpers.SecureStringToHash(LoginPassword, loggedUserClientDatabase.ServerDatabaseUserID)))
                 {
                     MessageBox.Show("Incorrect e-mail or password", "Login error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
-                SetApplicationUser(loggedUserClientDatabase);
+                if (loggedUserClientDatabase.IsKeepLoggedIn != IsKeepLoggedIn)
+                    LoginHelper.ChangeClientDatabaseUser(loggedUserClientDatabase, IsKeepLoggedIn);
+                LoginHelper.SetApplicationUser(loggedUserClientDatabase, loggedUserClientDatabase.ServerDatabaseUserID);
                 SwitchToChatPage();
             }
-            else if (loggedUserClientDatabase != null)
+            else if (loggedUserClientDatabase != null && ApplicationViewModel.IsServerReachable)
             {
-                if (!loggedUserClientDatabase.PasswordHash.SequenceEqual(SecureStringToHash(LoginPassword, loggedUserClientDatabase.UserID)))
+                if (!loggedUserClientDatabase.PasswordHash.SequenceEqual(SecureStringHelpers.SecureStringToHash(LoginPassword, loggedUserClientDatabase.ServerDatabaseUserID)))
                 {
                     MessageBox.Show("Incorrect e-mail or password", "Login error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
                 }
                 var loggedUser = ApplicationViewModel.ServiceClient.GetUserByEmail(LoginEmail);
-                if (!IsServerAndClientUserSame(loggedUserClientDatabase, loggedUser))
-                    ChangeClientDatabaseUser(loggedUser);
-                SetApplicationUser(loggedUserClientDatabase);
-                SetUsersAndFilesLists();
+                if (!LoginHelper.IsServerAndClientUserSame(loggedUserClientDatabase, loggedUser))
+                    LoginHelper.ChangeClientDatabaseUser(loggedUser, IsKeepLoggedIn);
+                if (loggedUserClientDatabase.IsKeepLoggedIn != IsKeepLoggedIn)
+                    LoginHelper.ChangeClientDatabaseUser(loggedUser, IsKeepLoggedIn);
+                if(!string.Equals(loggedUser.AvatarCheckSum, loggedUserClientDatabase.AvatarCheckSum))
+                {
+                    if (!LoginHelper.IsClientDatabaseHasAvatar(loggedUser.AvatarCheckSum))
+                        Task.Run(() => LoginHelper.SetUserAvatar(loggedUser.UserID, loggedUser.AvatarCheckSum, loggedUser.AvatarFileName, loggedUser.AvatarBytes));
+                    else
+                    {
+                        Task<string> searchingAvatarTask = Task.Run(() => FileHelper.GetFilePathWithCheckSum(loggedUser.AvatarCheckSum, "/ClientDatabase/Database/ImageDatabase/Avatars/"));
+                        string avatarPath = searchingAvatarTask.Result;
+                        Task.Run(() => LoginHelper.SetUserAvatar(loggedUser.UserID, FileHelper.ComputeFileCheckSum(avatarPath), new FileInfo(avatarPath).Name));
+                    }
+                }
+                loggedUserClientDatabase = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
+                LoginHelper.SetApplicationUser(loggedUserClientDatabase, loggedUserClientDatabase.ServerDatabaseUserID);
+                LoginHelper.SetUsersAndFilesLists();
                 SwitchToChatPage();
             }
             else if (loggedUserClientDatabase == null && !ApplicationViewModel.IsServerReachable)
@@ -153,36 +182,8 @@ namespace ChateeCore
             RegisterCommand = new RelayCommand(Register);
             LoginCommand = new RelayCommand(Login);
         }
-        public void TryToLoginUserWithKeepMeLoggedInTrue()
-        {
-            if (ApplicationViewModel.ClientDatabase.UserContracts.ToList().Count != 0)
-            {
-                var userClientDatabase = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
-                if (userClientDatabase.IsKeepLoggedIn && ApplicationViewModel.IsServerReachable)
-                {
-                    var userServerDatabase = ApplicationViewModel.ServiceClient.GetUserByEmail(userClientDatabase.Email);
-                    if (!IsServerAndClientUserSame(userClientDatabase, userServerDatabase))
-                        ChangeClientDatabaseUser(userServerDatabase);
-                    SetApplicationUser(userClientDatabase);
-                    SetUsersAndFilesLists();
-                    SwitchToChatPage();
-                }
-                else if (userClientDatabase.IsKeepLoggedIn && !ApplicationViewModel.IsServerReachable)
-                {
-                    SetApplicationUser(userClientDatabase);
-                    SwitchToChatPage();
-                }
-            }
-        }
-        public byte[] SecureStringToHash(SecureString secureString, int userID)
-        {
-            using (SHA256 hash = SHA256.Create())
-            {
-                string input = SecureStringHelpers.Unsecure(secureString) + userID.ToString();
-                byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(input));
-                return result;
-            }
-        }
+        
+        
         public string SetInitialsFromName(string name)
         {
             string initials = string.Empty;
@@ -206,41 +207,10 @@ namespace ChateeCore
             Random byteGenerator = new Random();
             for (int i = 0; i < 3; i++)
             {
-                int byteValue = byteGenerator.Next(256);
+                int byteValue = byteGenerator.Next(17,255);
                 profilePictureRGB += byteValue.ToString("X");
             }
             return profilePictureRGB.ToLower();
-        }
-        public bool IsServerAndClientUserSame(UserContract clientUser, UserContract serverUser)
-        {
-            if (clientUser.Chats == null && serverUser.Chats == null)
-                return true;
-            if (clientUser.Chats == null && serverUser.Chats != null || clientUser.Chats != null && serverUser.Chats == null)
-                return false;
-            if (serverUser.Chats.Count != clientUser.Chats.Count)
-                return false;
-            for (int i = 0; i < clientUser.Chats.Count; i++)
-            {
-                if (clientUser.Chats[i].Messages.Count != serverUser.Chats[i].Messages.Count)
-                    return false;
-            }
-            return true;
-        }
-        public void ChangeClientDatabaseUser(UserContract serverUser)
-        {
-            ApplicationViewModel.ClientDatabase.UserContracts.Remove(ApplicationViewModel.ClientDatabase.UserContracts.Last());
-            ApplicationViewModel.ClientDatabase.UserContracts.Add(new UserContract(serverUser, IsKeepLoggedIn));
-            ApplicationViewModel.ClientDatabase.SaveChanges();
-        }
-        public void SetApplicationUser(UserContract loggedUser)
-        {
-            ApplicationViewModel.CurrentUser = new User(loggedUser);
-            ApplicationViewModel.CurrentUserContract = loggedUser;
-        }
-        public void SetUsersAndFilesLists()
-        {
-            ApplicationViewModel.UserInterlocutors = new ObservableCollection<UserContract>(ApplicationViewModel.ServiceClient.GetUserInterlocutors(ApplicationViewModel.CurrentUserContract.UserID).ToList());
-            IoCContainer.Get<UserListViewModel>().SetUsersFromDatabase(ApplicationViewModel.UserInterlocutors.ToList());
         }
         public void ClearRegisterTextBoxes()
         {

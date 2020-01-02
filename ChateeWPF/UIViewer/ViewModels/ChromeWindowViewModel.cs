@@ -29,7 +29,7 @@ namespace ChateeWPF
         public CornerRadius WindowCornerRadius { get { return new CornerRadius(WindowRadius); } }
         public int TitleHeight { get; set; } = 40;
         public GridLength TitleHeightGridLength { get { return new GridLength(TitleHeight + ResizeBorder); } }
-        public ApplicationPages CurrentPage { get; set; } = ApplicationPages.LoginPage;
+        public ApplicationPages CurrentPage { get; set; }
         public bool IsSettingsMenuVisible 
         { 
             get => IoCContainer.Get<ApplicationViewModel>().IsSettingsMenuVisible;

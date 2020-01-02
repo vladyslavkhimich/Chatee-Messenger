@@ -11,9 +11,10 @@ namespace ChateeCore
 {
     public class ChatListItemViewModel : BaseViewModel
     {
+        // TODO: Notify if new message available
         #region Public Properties
         public User Interlocutor { get; set; }
-        public int ChatID { get; set; }
+        public Chat Chat { get; set; }
         public bool NewMessageAvailable { get; set; }
         public bool IsSelected { get; set; }
         #endregion
@@ -25,16 +26,17 @@ namespace ChateeCore
         {
             OpenMessageCommand = new RelayCommand(OpenMessage);
         }
-        public ChatListItemViewModel(User interlocutor, int chatID)
+        public ChatListItemViewModel(User interlocutor, Chat chat)
         {
             Interlocutor = interlocutor;
-            ChatID = chatID;
+            Chat = chat;
             OpenMessageCommand = new RelayCommand(OpenMessage);
         }
         #endregion
         #region Commands Methods
         public void OpenMessage()
         {
+            IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, new ChatMessageListViewModel(Interlocutor, Chat));
             //User TestUser = new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto.");
             //ObservableCollection<Message> TestMessages = new ObservableCollection<Message>();
             //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));

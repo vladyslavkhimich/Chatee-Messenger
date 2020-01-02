@@ -15,7 +15,7 @@ namespace ChateeCore
         public static List<FileAttachment> filesFromDatabase = new List<FileAttachment>
         {
             new FileAttachment("D:/Test/TestFiles/OLX Skis.docx", "D:/Test/TestFiles/OLX Skis.docx", 1),
-            new FileAttachment("D:/Test/TestFiles/GTA Vice City Flash FM Complete Track (128 kbit s) (via Skyload).mp3", "D:/Test/TestFiles/GTA Vice City Flash FM Complete Track (128 kbit s) (via Skyload).mp3", 1),
+            new FileAttachment("D:/Test/TestFiles/GTA Vice City Flash FM Complete Track (128 kbit s) (via Skyload).audio.mp3", "GTA Vice City Flash FM Complete Track (128 kbit s) (via Skyload).audio.mp3", 1),
             new FileAttachment("D:/Test/TestFiles/Panama - The Highs.mp4", "D:/Test/TestFiles/Panama - The Highs.mp4", 1),
             new FileAttachment("D:/Test/TestFiles/Лабораторна робота 17 — копия.pdf", "D:/Test/TestFiles/Лабораторна робота 17 — копия.pdf", 1),
             new FileAttachment("D:/Test/TestFiles/LogoGray.psd", "D:/Test/TestFiles/LogoGray.psd", 1),

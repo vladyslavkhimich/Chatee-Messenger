@@ -90,11 +90,68 @@
   <wsdl:message name="IService_GetNextUserID_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetNextUserIDResponse" />
   </wsdl:message>
-  <wsdl:message name="IService_ConnectCallback_OutputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:ConnectCallback" />
+  <wsdl:message name="IService_GetNextChatID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNextChatID" />
   </wsdl:message>
-  <wsdl:message name="IService_ConnectCallback_InputCallbackMessage">
-    <wsdl:part name="parameters" element="tns:ConnectCallbackResponse" />
+  <wsdl:message name="IService_GetNextChatID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNextChatIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserName_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserName" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserName_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserNameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserEmail_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserEmail" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserEmail_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserEmailResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserPassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserPassword" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserPassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserPasswordResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserUsername_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserUsername" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserUsername_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserUsernameResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserBio_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserBio" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserBio_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserBioResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserAvatar_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserAvatar" />
+  </wsdl:message>
+  <wsdl:message name="IService_ChangeUserAvatar_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangeUserAvatarResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_SendMessage_InputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessage" />
+  </wsdl:message>
+  <wsdl:message name="IService_SendMessage_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SendMessageResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_IsServerHasChat_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsServerHasChat" />
+  </wsdl:message>
+  <wsdl:message name="IService_IsServerHasChat_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsServerHasChatResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateChat_InputMessage">
+    <wsdl:part name="parameters" element="tns:CreateChat" />
+  </wsdl:message>
+  <wsdl:message name="IService_CreateChat_OutputMessage">
+    <wsdl:part name="parameters" element="tns:CreateChatResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_ReceiveMessage_OutputCallbackMessage">
+    <wsdl:part name="parameters" element="tns:ReceiveMessage" />
   </wsdl:message>
   <wsdl:portType name="IService">
     <wsdl:operation name="Connect">
@@ -133,9 +190,48 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IService/GetNextUserID" message="tns:IService_GetNextUserID_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService/GetNextUserIDResponse" message="tns:IService_GetNextUserID_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="ConnectCallback">
-      <wsdl:output wsaw:Action="http://tempuri.org/IService/ConnectCallback" message="tns:IService_ConnectCallback_OutputCallbackMessage" />
-      <wsdl:input wsaw:Action="http://tempuri.org/IService/ConnectCallbackResponse" message="tns:IService_ConnectCallback_InputCallbackMessage" />
+    <wsdl:operation name="GetNextChatID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetNextChatID" message="tns:IService_GetNextChatID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetNextChatIDResponse" message="tns:IService_GetNextChatID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserName">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserName" message="tns:IService_ChangeUserName_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ChangeUserNameResponse" message="tns:IService_ChangeUserName_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserEmail">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserEmail" message="tns:IService_ChangeUserEmail_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ChangeUserEmailResponse" message="tns:IService_ChangeUserEmail_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserPassword">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserPassword" message="tns:IService_ChangeUserPassword_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ChangeUserPasswordResponse" message="tns:IService_ChangeUserPassword_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserUsername">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserUsername" message="tns:IService_ChangeUserUsername_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ChangeUserUsernameResponse" message="tns:IService_ChangeUserUsername_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserBio">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserBio" message="tns:IService_ChangeUserBio_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ChangeUserBioResponse" message="tns:IService_ChangeUserBio_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserAvatar">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserAvatar" message="tns:IService_ChangeUserAvatar_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ChangeUserAvatarResponse" message="tns:IService_ChangeUserAvatar_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/SendMessage" message="tns:IService_SendMessage_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/SendMessageResponse" message="tns:IService_SendMessage_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="IsServerHasChat">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/IsServerHasChat" message="tns:IService_IsServerHasChat_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/IsServerHasChatResponse" message="tns:IService_IsServerHasChat_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateChat">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/CreateChat" message="tns:IService_CreateChat_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/CreateChatResponse" message="tns:IService_CreateChat_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveMessage">
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/ReceiveMessage" message="tns:IService_ReceiveMessage_OutputCallbackMessage" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="NetTcpBinding_IService" type="tns:IService">
@@ -222,11 +318,98 @@
         <soap12:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="ConnectCallback">
-      <soap12:operation soapAction="http://tempuri.org/IService/ConnectCallback" style="document" />
+    <wsdl:operation name="GetNextChatID">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetNextChatID" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserName">
+      <soap12:operation soapAction="http://tempuri.org/IService/ChangeUserName" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserEmail">
+      <soap12:operation soapAction="http://tempuri.org/IService/ChangeUserEmail" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserPassword">
+      <soap12:operation soapAction="http://tempuri.org/IService/ChangeUserPassword" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserUsername">
+      <soap12:operation soapAction="http://tempuri.org/IService/ChangeUserUsername" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserBio">
+      <soap12:operation soapAction="http://tempuri.org/IService/ChangeUserBio" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ChangeUserAvatar">
+      <soap12:operation soapAction="http://tempuri.org/IService/ChangeUserAvatar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SendMessage">
+      <soap12:operation soapAction="http://tempuri.org/IService/SendMessage" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsServerHasChat">
+      <soap12:operation soapAction="http://tempuri.org/IService/IsServerHasChat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateChat">
+      <soap12:operation soapAction="http://tempuri.org/IService/CreateChat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ReceiveMessage">
+      <soap12:operation soapAction="http://tempuri.org/IService/ReceiveMessage" style="document" />
       <wsdl:output>
         <soap12:body use="literal" />
       </wsdl:output>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,7 @@ namespace ChateeCore
         public int UserID { get; set; }
         public string MessageText { get; set; }
         public bool IsSentByMe { get; set; }
-        public bool IsHasFileAttachment => FileCheckSum != string.Empty;
+        public bool IsHasFileAttachment => FileCheckSum != null;
         public bool IsHasImageAttachment 
         {
             get
@@ -29,13 +30,14 @@ namespace ChateeCore
         public DateTime MessageSentTime { get; set; }
         public string FileCheckSum { get; set; }
         public string FilePath { get; set; }
+        public string FileName { get; set; }
         #endregion
         #region Constructors
         public Message()
         {
 
         }
-        public Message(int chatID, int userID, bool isSentByMe, DateTime messageReadTime, DateTime messageSentTime, string messageText = "", string fileID = "", string imageID = "")
+        public Message(int chatID, int userID, bool isSentByMe, DateTime messageReadTime, DateTime messageSentTime, string messageText = "", string fileCheckSum = "", string filePath = "")
         {
             ChatID = chatID;
             UserID = userID;
@@ -43,7 +45,10 @@ namespace ChateeCore
             IsSentByMe = isSentByMe;
             MessageReadTime = messageReadTime;
             MessageSentTime = messageSentTime;
-            FileCheckSum = fileID;
+            FileCheckSum = fileCheckSum;
+            if (!string.IsNullOrEmpty(fileCheckSum))
+                FileName = messageText;
+            FilePath = filePath;
         }
         public Message(Message message)
         {
@@ -54,6 +59,9 @@ namespace ChateeCore
             MessageReadTime = message.MessageReadTime;
             MessageSentTime = message.MessageSentTime;
             FileCheckSum = message.FileCheckSum;
+            FilePath = message.FilePath;
+            if (!string.IsNullOrEmpty(FilePath))
+                FileName = new FileInfo(FilePath).Name;
         }
         public Message(WCF_Server.DataContracts.MessageContract messageContract)
         {

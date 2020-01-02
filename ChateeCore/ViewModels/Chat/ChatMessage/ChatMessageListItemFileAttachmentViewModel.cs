@@ -13,7 +13,8 @@ namespace ChateeCore
         #region Public Properties
         public ChatMessageListViewModel ParentChatMessageList { get; set; }
         public FileAttachment FileAttachment { get; set; }
-        public FileInfo SelectedFile { get; set; }
+        public FileInfo SelectedFileInfo { get; set; }
+        public bool IsFileLoading { get; set; }
         public string FileTypeImagePath { get; set; }
         public ICommand DeleteFileCommand { get; set; }
         #endregion
@@ -23,7 +24,7 @@ namespace ChateeCore
         }
         public ChatMessageListItemFileAttachmentViewModel(string selectedFilePath, User user)
         {
-            SelectedFile = new FileInfo(selectedFilePath);
+            SelectedFileInfo = new FileInfo(selectedFilePath);
             FileAttachment = new FileAttachment(selectedFilePath, selectedFilePath, user.UserID);
             FileTypeImagePath = ExtensionTypesContainer.SetFileTypeImage(selectedFilePath);
         }
@@ -32,7 +33,7 @@ namespace ChateeCore
             ParentChatMessageList = parentChatMessageList;
             FileAttachment = new FileAttachment(selectedFilePath, selectedFilePath, user.UserID);
             DeleteFileCommand = new RelayCommand(DeleteFile);
-            SelectedFile = new FileInfo(selectedFilePath);
+            SelectedFileInfo = new FileInfo(selectedFilePath);
             FileTypeImagePath = ExtensionTypesContainer.SetFileTypeImage(selectedFilePath);
         }
         #region Helper Methods

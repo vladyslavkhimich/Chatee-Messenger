@@ -37,6 +37,17 @@ namespace ChateeCore
             [DataMember]
             [NotMapped]
             public ObservableCollection<ChatContract> Chats { get; set; }
+            public UserContract(WCF_Server.DataContracts.UserContract userContract)
+            {
+                UserID = userContract.UserID;
+                Username = userContract.Username;
+                Email = userContract.Email;
+                PasswordHash = userContract.PasswordHash;
+                Name = userContract.Name;
+                Bio = userContract.Bio;
+                Initials = userContract.Initials;
+                ProfilePictureRGB = userContract.ProfilePictureRGB;
+            }
             public UserContract(WCF_Server.DataContracts.UserContract userContract, bool isKeepLoggedIn)
             {
                 UserID = userContract.UserID;

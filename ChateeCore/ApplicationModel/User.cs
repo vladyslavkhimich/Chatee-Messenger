@@ -26,8 +26,7 @@ namespace ChateeCore
             Chats = new ObservableCollection<Chat>();
         }
         public User(WCF_Server.DataContracts.UserContract userContract)
-        {
-            
+        {            
             UserID = userContract.UserID;
             Username = userContract.Username;
             Email = userContract.Email;

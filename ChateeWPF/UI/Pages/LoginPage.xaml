@@ -97,7 +97,7 @@
                                     <Binding.ValidationRules>
                                         <core:NameValidationRule/>
                                         <core:UsernameExistenceValidationRule/>
-                                        <core:UsernameLengthValidationRule/>
+                                        <core:UsernameValidationRule/>
                                     </Binding.ValidationRules>
                                 </Binding>
                             </TextBox.Text>

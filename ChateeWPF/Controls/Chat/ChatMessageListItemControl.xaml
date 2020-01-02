@@ -57,19 +57,23 @@
 
                     <Grid Visibility="{Binding Message.IsHasImageAttachment, Converter={local:BoolToVisibilityCollapsedConverter}}">
                             <Button Style="{StaticResource IconGrowButton}"
-                                            FontFamily="{StaticResource FontAwesome}"
-                                            Content="{StaticResource FontAwesomeDownloadArrowIcon}"
-                                            Foreground="{StaticResource DarkPinkBrush}"
-                                            HorizontalAlignment="Center"
-                                            VerticalAlignment="Center"
-                                            FontSize="20"
-                                            Height="50"
-                                            Opacity="0"                                                                                        
-                                            Canvas.ZIndex="2"
-                                            Cursor="Hand"
-                                            x:Name="DownloadImageButton"
-                                            Command="{Binding DownloadFileCommand}"
-                                            />
+                                    FontFamily="{StaticResource FontAwesome}"
+                                    Content="{StaticResource FontAwesomeDownloadArrowIcon}"
+                                    Foreground="{StaticResource DarkPinkBrush}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    FontSize="20"
+                                    Height="50"
+                                    Opacity="0"                                                                                        
+                                    Canvas.ZIndex="2"
+                                    Cursor="Hand"
+                                    Visibility="{Binding ImageAttachment.IsImageLoading, Converter={local:BoolToVisibilityCollapsedConverter}, ConverterParameter=True}"
+                                    x:Name="DownloadImageButton"
+                                    Command="{Binding DownloadFileCommand}"
+                                    />
+                        <local:CircularProgressBar Visibility="{Binding ImageAttachment.IsImageLoading, Converter={local:BoolToVisibilityCollapsedConverter}}"
+                                                   
+                                                   />
                         <Border CornerRadius="10"
                             Margin="0 0 0 15">
                             <Image DataContext="{Binding ImageAttachment}"
@@ -106,6 +110,7 @@
                         </Grid>
 
                     <Grid Grid.Row="1"
+                          HorizontalAlignment="{Binding Message.IsSentByMe, Converter={local:SentByMeToAlignmentConverter}}"
                           Visibility="{Binding IsHasMessage, Converter={local:BoolToVisibilityCollapsedConverter}}">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

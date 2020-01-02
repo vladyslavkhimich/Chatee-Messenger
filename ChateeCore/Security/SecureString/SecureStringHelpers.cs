@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,6 +24,15 @@ namespace ChateeCore
             finally
             {
                 Marshal.ZeroFreeGlobalAllocUnicode(unmanagedString);
+            }
+        }
+        public static byte[] SecureStringToHash(SecureString secureString, int userID)
+        {
+            using (SHA256 hash = SHA256.Create())
+            {
+                string input = Unsecure(secureString) + userID.ToString();
+                byte[] result = hash.ComputeHash(Encoding.UTF8.GetBytes(input));
+                return result;
             }
         }
     }

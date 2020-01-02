@@ -6,12 +6,14 @@ using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 using ChateeCore.ServiceReference;
 using static WCF_Server.DataContracts;
 
 namespace ChateeCore
 {
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ApplicationViewModel : BaseViewModel, IServiceCallback
     {
         #region Public Properties
@@ -20,8 +22,9 @@ namespace ChateeCore
         public UserContract CurrentUserContract { get; set; }
         public User CurrentUser { get; set; }
         public ObservableCollection<UserContract> UserInterlocutors { get; set; } = new ObservableCollection<UserContract>();
-        public ApplicationPages CurrentPage { get; private set; } = ApplicationPages.LoginPage;
+        public ApplicationPages CurrentPage { get; private set; }
         public SideMenuControls CurrentControl { get; private set; } = SideMenuControls.ChatList;
+        public ChatListViewModel ChatListViewModel { get; set; }
         public BaseViewModel CurrentPageViewModel { get; set; }
         public bool IsSideMenuVisible { get; set; } = false;
         public bool IsSettingsMenuVisible { get; set; } = false;
@@ -42,7 +45,7 @@ namespace ChateeCore
             OpenFileListCommand = new RelayCommand(OpenFileList);
             ClientDatabase = new ClientDatabase();
             ServiceClient = new ServiceClient(new InstanceContext(this));
-            //CheckConnectionAsync();
+            CheckConnectionAsync();
         }
         #endregion
         #region Helper Methods
@@ -78,7 +81,7 @@ namespace ChateeCore
                 ServiceClient.Connect();
                 IsServerReachable = true;
                 if (IsUserLogged)
-                    ServiceClient.LoginOnServer(CurrentUserContract);
+                    ServiceClient.LoginOnServer(CurrentUserContract, CurrentUserContract.ServerDatabaseUserID);
             }
             catch
             {
@@ -101,9 +104,11 @@ namespace ChateeCore
             CurrentControl = SideMenuControls.FileList;
         }
 
-        public void ConnectCallback(string testCallbackString)
+
+        public void ReceiveMessage(MessageContract messageContract)
         {
-            throw new NotImplementedException();
+            ChatListItemViewModel chatToAddMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
+            chatToAddMessage.Chat.Messages.Add(new Message(messageContract));
         }
         #endregion
     }

@@ -17,10 +17,16 @@ namespace ChateeCore
         public string CurrentPasswordHintText { get; set; }
         public string NewPasswordHintText { get; set; }
         public string ConfirmPasswordHintText { get; set; }
+        public string CurrentPasswordErrorToolTip { get; set; }
+        public string ConfirmPasswordErrorToolTip { get; set; }
         public SecureString CurrentPassword { get; set; }
         public SecureString NewPassword { get; set; }
         public SecureString ConfirmPassword { get; set; }
         public bool IsEditing { get; set; }
+        public bool IsWorking { get; set; }
+        public bool IsCurrentPasswordHasError { get; set; } = false;
+        public bool IsConfirmPasswordHasError { get; set; } = false;
+        public Func<Task<bool>> CommitAction { get; set; }
         #endregion
         #region Public Commands
         public ICommand EditCommand { get; set; } 
@@ -52,27 +58,39 @@ namespace ChateeCore
         }
         public void Save()
         {
-            var storedPassword = "Testing";
-            if (storedPassword != CurrentPassword.Unsecure())
-            {
-                MessageBox.Show("The current password is invalid", "Wrong Password", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (NewPassword.Unsecure() != ConfirmPassword.Unsecure())
-            {
-                MessageBox.Show("The new and confirmed password do not match", "Password mismatch", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            if (NewPassword.Unsecure().Length == 0)
-            {
-                MessageBox.Show("You must enter a password", "Password is too short", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            CurrentPassword = new SecureString();
-            foreach (var c in NewPassword.Unsecure().ToCharArray())
-            {
-                CurrentPassword.AppendChar(c);
-            }
+                bool result = true;
+                RunCommandAsync(() => IsWorking, async () =>
+                {
+                    IsEditing = false;
+                    if (!IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.PasswordHash.SequenceEqual(SecureStringHelpers.SecureStringToHash(CurrentPassword, IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.ServerDatabaseUserID)))
+                    {
+                        IsCurrentPasswordHasError = true;
+                        CurrentPasswordErrorToolTip = "Password does not match existing password";
+                        IsEditing = true;
+                        return;
+                    }
+                    else if(ConfirmPassword.Length < 6 || NewPassword.Length < 6)
+                    {
+                        IsCurrentPasswordHasError = true;
+                        CurrentPasswordErrorToolTip = "Password must be at least 6 characters";
+                        IsEditing = true;
+                        return;
+                    }
+                    else if(ConfirmPassword.Unsecure() != NewPassword.Unsecure())
+                    {
+                        IsConfirmPasswordHasError = true;
+                        ConfirmPasswordErrorToolTip = "Passwords are not equal";
+                        IsEditing = true;
+                        return;
+                    }
+                    result = await CommitAction();
+                }).ContinueWith(t =>
+                {
+                    if (!result)
+                    {
+                        IsEditing = true;
+                    }
+                });
             IsEditing = false;
         }
         #endregion

@@ -95,7 +95,7 @@
     <Compile Include="ApplicationModel\FileAttachment.cs" />
     <Compile Include="ApplicationModel\Message.cs" />
     <Compile Include="ApplicationModel\User.cs" />
-    <Compile Include="ClientDatabase\ClientDatabase.cs" />
+    <Compile Include="ClientDatabase\SQLiteDatabase\ClientDatabase.cs" />
     <Compile Include="Connected Services\ServiceReference\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -108,10 +108,15 @@
     <Compile Include="DataModels\IconType.cs" />
     <Compile Include="DataModels\MenuItemType.cs" />
     <Compile Include="DataModels\SideMenuControls.cs" />
+    <Compile Include="DuplexContract\ServiceCallbackHandler.cs" />
+    <Compile Include="Expressions\ExpressionHelpers.cs" />
     <Compile Include="Icons\IconTypeExtensions.cs" />
     <Compile Include="Images\ExtensionTypeImagePath.cs" />
     <Compile Include="Images\ExtensionTypesContainer.cs" />
     <Compile Include="Security\SecureString\SecureStringHelpers.cs" />
+    <Compile Include="Static Helpers\FileHelper.cs" />
+    <Compile Include="Static Helpers\LoginHelper.cs" />
+    <Compile Include="Validators\LoginPage\UsernameValidationRule.cs" />
     <Compile Include="Validators\LoginPage\UsernameLengthValidationRule.cs" />
     <Compile Include="Validators\LoginPage\UsernameExistenceValidationRule.cs" />
     <Compile Include="Validators\LoginPage\EmailExistenceValidationRule.cs" />
@@ -199,7 +204,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="ClientDatabase\ClientDatabase.db">
+    <Content Include="ClientDatabase\SQLiteDatabase\ClientDatabase.db">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
