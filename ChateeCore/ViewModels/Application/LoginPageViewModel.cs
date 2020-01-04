@@ -123,6 +123,7 @@ namespace ChateeCore
                 loggedUserClientDatabase = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
                 LoginHelper.SetApplicationUser(loggedUserClientDatabase, loggedUser.UserID);
                 LoginHelper.SetUsersAndFilesLists();
+                LoginHelper.SetUsersChatMessageLists();
                 SwitchToChatPage();
             }
             else if (loggedUserClientDatabase != null && !ApplicationViewModel.IsServerReachable)
@@ -163,6 +164,7 @@ namespace ChateeCore
                 loggedUserClientDatabase = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
                 LoginHelper.SetApplicationUser(loggedUserClientDatabase, loggedUserClientDatabase.ServerDatabaseUserID);
                 LoginHelper.SetUsersAndFilesLists();
+                LoginHelper.SetUsersChatMessageLists();
                 SwitchToChatPage();
             }
             else if (loggedUserClientDatabase == null && !ApplicationViewModel.IsServerReachable)

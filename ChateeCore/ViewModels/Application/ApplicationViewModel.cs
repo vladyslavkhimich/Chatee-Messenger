@@ -22,6 +22,7 @@ namespace ChateeCore
         public UserContract CurrentUserContract { get; set; }
         public User CurrentUser { get; set; }
         public ObservableCollection<UserContract> UserInterlocutors { get; set; } = new ObservableCollection<UserContract>();
+        public ObservableCollection<ChatMessageListViewModel> UserChatMessageLists { get; set; } = new ObservableCollection<ChatMessageListViewModel>();
         public ApplicationPages CurrentPage { get; private set; }
         public SideMenuControls CurrentControl { get; private set; } = SideMenuControls.ChatList;
         public ChatListViewModel ChatListViewModel { get; set; }
@@ -89,6 +90,10 @@ namespace ChateeCore
                 ServiceClient = new ServiceClient(new InstanceContext(this));
             }
         }
+        public void AddChatMessageList(ChatContract chatContract)
+        {
+            UserChatMessageLists.Add(new ChatMessageListViewModel(new User(UserInterlocutors.ToList().Find(interlocutor => interlocutor.UserID == chatContract.UserID1 || interlocutor.UserID == chatContract.UserID2)), chatContract));
+        }
         #endregion
         #region Commands Methods
         public void OpenChatList()
@@ -103,12 +108,20 @@ namespace ChateeCore
         {
             CurrentControl = SideMenuControls.FileList;
         }
-
-
         public void ReceiveMessage(MessageContract messageContract)
         {
-            ChatListItemViewModel chatToAddMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
-            chatToAddMessage.Chat.Messages.Add(new Message(messageContract));
+            if (ClientDatabase.ChatContracts.ToList().Find(chatContract => chatContract.ChatID == messageContract.ChatID) == null)
+            {
+                ObservableCollection<MessageContract> newChatMessagesCollection = new ObservableCollection<MessageContract>();
+                newChatMessagesCollection.Add(messageContract);
+                ClientDatabase.ChatContracts.Add(new ChatContract(messageContract.UserID, CurrentUserContract.ServerDatabaseUserID, messageContract.ChatID, newChatMessagesCollection));
+                ClientDatabase.SaveChanges();
+            }
+            ChatMessageListViewModel chatMessageListToAddMessage = UserChatMessageLists.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
+            chatMessageListToAddMessage.AddNewMessage(messageContract);
+            ChatListItemViewModel chatListItemToDisplayNewMessage = IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
+            chatListItemToDisplayNewMessage.Chat.IsHasNewMessages = true;
+            chatListItemToDisplayNewMessage.LastMessage = messageContract.MessageText;
         }
         #endregion
     }

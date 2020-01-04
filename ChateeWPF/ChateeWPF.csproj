@@ -121,9 +121,6 @@
     <Compile Include="Controls\Chat\ChatListItemControl.xaml.cs">
       <DependentUpon>ChatListItemControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CircularProgressBar.xaml.cs">
-      <DependentUpon>CircularProgressBar.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Controls\Input\PasswordEntryControl.xaml.cs">
       <DependentUpon>PasswordEntryControl.xaml</DependentUpon>
     </Compile>
@@ -187,6 +184,7 @@
     <Compile Include="Styles\Converters\ToBitmapImageConverter.cs" />
     <Compile Include="Styles\Converters\ToUserControlConverter.cs" />
     <Compile Include="Styles\Converters\ToPageConverter.cs" />
+    <Compile Include="Styles\AttachedProperties\IsBusyProperty.cs" />
     <Compile Include="UIViewer\ViewModels\ChromeWindowViewModel.cs" />
     <Compile Include="UIViewer\ViewModels\ViewModelLocator.cs" />
     <Compile Include="UI\Pages\Base\BasePage.cs" />
@@ -214,10 +212,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\Chat\ChatListItemControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Controls\CircularProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

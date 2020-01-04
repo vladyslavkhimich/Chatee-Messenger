@@ -9,7 +9,8 @@ namespace ChateeCore
 {
     public class ChatListViewModel : BaseViewModel
     {
-        public ObservableCollection<ChatListItemViewModel> Chats { get; set; }
+        public ObservableCollection<ChatListItemViewModel> Chats { get; 
+            set; } = new ObservableCollection<ChatListItemViewModel>();
 
         public ChatListViewModel()
         {

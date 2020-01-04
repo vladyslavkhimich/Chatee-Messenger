@@ -43,7 +43,7 @@ namespace ChateeWPF
                     textBox.CaretIndex = index + Environment.NewLine.Length;
                 }
                 else
-                    viewModel.SendMessage();
+                    viewModel.SendMessageAsync();
             }
         }
     }

@@ -82,12 +82,14 @@ namespace ChateeWPF
                     }
                     LoginHelper.SetApplicationUser(userClientDatabase, userClientDatabase.ServerDatabaseUserID);
                     LoginHelper.SetUsersAndFilesLists();
+                    LoginHelper.SetUsersChatMessageLists();
                     LoginHelper.SwitchToChatPage();
                     return true;
                 }
                 else if (userClientDatabase.IsKeepLoggedIn && !IoCContainer.Get<ApplicationViewModel>().IsServerReachable)
                 {
                     LoginHelper.SetApplicationUser(userClientDatabase, userClientDatabase.ServerDatabaseUserID);
+                    LoginHelper.SetUsersChatMessageLists();
                     LoginHelper.SwitchToChatPage();
                     return true;
                 }

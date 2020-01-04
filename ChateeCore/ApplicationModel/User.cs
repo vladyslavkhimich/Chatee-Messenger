@@ -17,7 +17,6 @@ namespace ChateeCore
         public string Bio { get; set; }
         public string Initials { get; set; }
         public string ProfilePictureRGB { get; set; }
-        public string LastMessage { get; set; }
         public ObservableCollection<Chat> Chats { get; set; }
         #endregion
         #region Constructors
@@ -48,7 +47,6 @@ namespace ChateeCore
             Bio = bio;
             Initials = initials;
             ProfilePictureRGB = profilePictureRGB;
-            LastMessage = lastMessage;
             if(chats != null)
                Chats = new ObservableCollection<Chat>(chats);
         }
@@ -60,8 +58,7 @@ namespace ChateeCore
             Name = user.Name;
             Bio = user.Bio;
             Initials = user.Initials;
-            ProfilePictureRGB = user.ProfilePictureRGB;
-            LastMessage = user.LastMessage;
+            ProfilePictureRGB = user.ProfilePictureRGB;;
             Chats = new ObservableCollection<Chat>(user.Chats);
         }
         #endregion

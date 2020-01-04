@@ -14,18 +14,10 @@ namespace ChateeCore
         public int ChatID { get; set; }
         public int UserID { get; set; }
         public string MessageText { get; set; }
-        public bool IsSentByMe { get; set; }
-        public bool IsHasFileAttachment => FileCheckSum != null;
-        public bool IsHasImageAttachment 
-        {
-            get
-            {
-                if (IsHasFileAttachment)
-                    return ExtensionTypesContainer.IsImage(FilePath);
-                return false;
-            }
-        }
-        public bool IsMessageRead => MessageReadTime > DateTime.MinValue;
+        public bool IsSentByMe => UserID == IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.ServerDatabaseUserID;
+        public bool IsHasFileAttachment { get; set; }
+        public bool IsHasImageAttachment { get; set; }
+        public bool IsMessageRead => MessageReadTime > new DateTime(2000, 1, 1);
         public DateTime MessageReadTime { get; set; }
         public DateTime MessageSentTime { get; set; }
         public string FileCheckSum { get; set; }
@@ -37,12 +29,11 @@ namespace ChateeCore
         {
 
         }
-        public Message(int chatID, int userID, bool isSentByMe, DateTime messageReadTime, DateTime messageSentTime, string messageText = "", string fileCheckSum = "", string filePath = "")
+        public Message(int chatID, int userID, DateTime messageReadTime, DateTime messageSentTime, string messageText = "", string fileCheckSum = "", string filePath = "")
         {
             ChatID = chatID;
             UserID = userID;
             MessageText = messageText;
-            IsSentByMe = isSentByMe;
             MessageReadTime = messageReadTime;
             MessageSentTime = messageSentTime;
             FileCheckSum = fileCheckSum;
@@ -55,7 +46,6 @@ namespace ChateeCore
             ChatID = message.ChatID;
             UserID = message.UserID;
             MessageText = message.MessageText;
-            IsSentByMe = message.IsSentByMe;
             MessageReadTime = message.MessageReadTime;
             MessageSentTime = message.MessageSentTime;
             FileCheckSum = message.FileCheckSum;
@@ -68,7 +58,6 @@ namespace ChateeCore
             ChatID = messageContract.ChatID;
             UserID = messageContract.UserID;
             MessageText = messageContract.MessageText;
-            IsSentByMe = messageContract.IsSentByMe;
             MessageReadTime = messageContract.MessageReadTime;
             MessageSentTime = messageContract.MessageSentTime;
             FileCheckSum = messageContract.FileCheckSum;

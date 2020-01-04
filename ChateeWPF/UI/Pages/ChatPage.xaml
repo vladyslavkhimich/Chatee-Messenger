@@ -29,7 +29,7 @@
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <TextBlock Text="{Binding User.Name}"
+            <TextBlock Text="{Binding Interlocutor.Name}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        Grid.ColumnSpan="2"                       
@@ -125,7 +125,7 @@
                                         <ColumnDefinition/>
                                         <ColumnDefinition Width="Auto"/>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Text="{Binding SelectedFile.Name}"
+                                    <TextBlock Text="{Binding SelectedFileInfo.Name}"
                                                VerticalAlignment="Center"
                                                FontFamily="{StaticResource LatoRegular}"
                                                    Margin="5 0 0 0"/>
@@ -181,13 +181,14 @@
                             Height="30"   
                             Content="{StaticResource FontAwesomeSmileIcon}"
                             Foreground="{StaticResource DarkerYellowBrush}"
-                            Command="{Binding SendMessageTestCommand}"/>
+                            />
                     <Button Content="Send"
                         FontSize="16"
                         Focusable="False"
                         Padding="20 5"
                         Margin="5 10 5 10"
-                        Command="{Binding SendMessageCommand}"
+                        local:IsBusyProperty.Value="False"
+                        Command="{Binding SendMessageAsyncCommand}"
                         Background="{StaticResource DarkPinkBrush}"/>
 
                 </StackPanel>

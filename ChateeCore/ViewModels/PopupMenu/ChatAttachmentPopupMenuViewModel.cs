@@ -52,7 +52,8 @@ namespace ChateeCore
             {
                 IsAttachmentsListVisible = true;
                 for (int i = 0; i < openFileDialog.FileNames.Length; i++)
-                    SelectedFiles.Add(new ChatMessageListItemFileAttachmentViewModel(openFileDialog.FileNames[i], ParentChatMessageList, ParentChatMessageList.Interlocutor));
+                    if(new FileInfo(openFileDialog.FileNames[i]).Length < 209715201)
+                        SelectedFiles.Add(new ChatMessageListItemFileAttachmentViewModel(openFileDialog.FileNames[i], ParentChatMessageList, ParentChatMessageList.Interlocutor));
                 ParentChatMessageList.IsAttachmentMenuVisible = false;
             }
             

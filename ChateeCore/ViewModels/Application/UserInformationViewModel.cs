@@ -51,15 +51,21 @@ namespace ChateeCore
         }
         public void OpenChat()
         {
-            User Interlocutor = new User(User);
-            if (ApplicationViewModel.ClientDatabase.ChatContracts.ToList().Find(chat => ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID == chat.UserID1 && Interlocutor.UserID == chat.UserID2 || Interlocutor.UserID == chat.UserID2 && ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID == chat.UserID1) == null)
+            User interlocutor = new User(User);
+            if (ApplicationViewModel.ClientDatabase.ChatContracts.ToList().Find(chat => ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID == chat.UserID1 && interlocutor.UserID == chat.UserID2 || interlocutor.UserID == chat.UserID2 && ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID == chat.UserID1) == null)
             { 
-                bool isServerHasChat = ApplicationViewModel.ServiceClient.IsServerHasChat(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID);
+                bool isServerHasChat = ApplicationViewModel.ServiceClient.IsServerHasChat(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, interlocutor.UserID);
                 if (!isServerHasChat)
                 {
-                    Chat newChat = CreateLocalChat(Interlocutor);
-                    ChatMessageListViewModel TestMessageList = new ChatMessageListViewModel(Interlocutor, newChat);
+                    ChatContract newChat = CreateLocalChat(interlocutor);
+                    ChatMessageListViewModel TestMessageList = new ChatMessageListViewModel(interlocutor, newChat);
+                    IoCContainer.Get<ApplicationViewModel>().UserChatMessageLists.Add(TestMessageList);
                     IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, TestMessageList);
+                }
+                else
+                {
+                    ChatMessageListViewModel chatToGoTo = IoCContainer.Get<ApplicationViewModel>().UserChatMessageLists.ToList().Find(chatMessageList => chatMessageList.Interlocutor.UserID == interlocutor.UserID);
+                    IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, chatToGoTo);
                 }
             }
             //ObservableCollection<Message> TestMessages = new ObservableCollection<Message>();
@@ -76,9 +82,10 @@ namespace ChateeCore
         }
         #endregion
         #region Helper Methods
-        public Chat CreateLocalChat(User interlocutor)
+        public ChatContract CreateLocalChat(User interlocutor)
         {
-            Chat newChat = new Chat(ApplicationViewModel.ServiceClient.GetNextChatID(), ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, interlocutor.UserID);
+            ChatContract newChat = new ChatContract(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, interlocutor.UserID);
+            
             IoCContainer.Get<ChatListViewModel>().Chats.Add(new ChatListItemViewModel(interlocutor, newChat));
             return newChat;
         }

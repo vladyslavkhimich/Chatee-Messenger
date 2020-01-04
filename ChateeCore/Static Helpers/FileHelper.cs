@@ -20,6 +20,11 @@ namespace ChateeCore
             string avatarPath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/ClientDatabase/Database/ImageDatabase/Avatars/" + avatarFileName;
             File.WriteAllBytes(avatarPath, avatarBytes);
         }
+        public static void SaveFileToLocalDatabase(string fileName, byte[] fileBytes)
+        {
+            string filePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/ClientDatabase/Database/FileDatabase/" + fileName;
+            File.WriteAllBytes(filePath, fileBytes);
+        }
         public static string ComputeFileCheckSum(string filePath)
         {
             using(var md5 = MD5.Create())
@@ -49,5 +54,6 @@ namespace ChateeCore
                     return filePath;
             return string.Empty;
         }
+        
     }
 }

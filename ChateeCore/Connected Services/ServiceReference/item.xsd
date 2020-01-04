@@ -26,6 +26,18 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="Disconnect">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="userID" type="xs:int" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DisconnectResponse">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
   <xs:element name="Register">
     <xs:complexType>
       <xs:sequence>
@@ -275,7 +287,7 @@
   <xs:element name="ReceiveMessage">
     <xs:complexType>
       <xs:sequence>
-        <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+        <xs:element xmlns:q7="http://schemas.datacontract.org/2004/07/WCF_Server" minOccurs="0" name="Message" nillable="true" type="q7:DataContracts.MessageContract" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

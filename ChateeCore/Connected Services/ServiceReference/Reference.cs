@@ -27,6 +27,12 @@ namespace ChateeCore.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/LoginOnServer", ReplyAction="http://tempuri.org/IService/LoginOnServerResponse")]
         System.Threading.Tasks.Task LoginOnServerAsync(WCF_Server.DataContracts.UserContract connectedUser, int userServerDatabaseID);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Disconnect", ReplyAction="http://tempuri.org/IService/DisconnectResponse")]
+        void Disconnect(int userID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Disconnect", ReplyAction="http://tempuri.org/IService/DisconnectResponse")]
+        System.Threading.Tasks.Task DisconnectAsync(int userID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/Register", ReplyAction="http://tempuri.org/IService/RegisterResponse")]
         bool Register(WCF_Server.DataContracts.UserContract userToRegister);
         
@@ -134,7 +140,7 @@ namespace ChateeCore.ServiceReference {
     public interface IServiceCallback {
         
         [System.ServiceModel.OperationContractAttribute(IsOneWay=true, Action="http://tempuri.org/IService/ReceiveMessage")]
-        void ReceiveMessage(string Message);
+        void ReceiveMessage(WCF_Server.DataContracts.MessageContract Message);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -179,6 +185,14 @@ namespace ChateeCore.ServiceReference {
         
         public System.Threading.Tasks.Task LoginOnServerAsync(WCF_Server.DataContracts.UserContract connectedUser, int userServerDatabaseID) {
             return base.Channel.LoginOnServerAsync(connectedUser, userServerDatabaseID);
+        }
+        
+        public void Disconnect(int userID) {
+            base.Channel.Disconnect(userID);
+        }
+        
+        public System.Threading.Tasks.Task DisconnectAsync(int userID) {
+            return base.Channel.DisconnectAsync(userID);
         }
         
         public bool Register(WCF_Server.DataContracts.UserContract userToRegister) {

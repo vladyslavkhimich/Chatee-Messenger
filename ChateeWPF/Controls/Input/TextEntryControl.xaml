@@ -65,7 +65,10 @@
                        FontSize="14"
                        Visibility="{Binding IsEditing, Converter={local:BoolToVisibilityConverterViceVersa}}"
                        VerticalAlignment="Center"/>
-            <Grid Grid.Column="2">
+            <Grid Grid.Column="2"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding IsWorking, Converter={local:BoolToVisibilityCollapsedConverter}, ConverterParameter=True}">
                 <Button Content="{StaticResource FontAwesomeEllipsisHorizontalIcon}"
                         FontFamily="{StaticResource FontAwesome}"
                         Padding="-5 0"
@@ -78,6 +81,14 @@
                         Background="{StaticResource ForegroundDarkBrush}"
                         VerticalAlignment="Center"/>
             </Grid>
+            <Grid Grid.Column="2"
+                  HorizontalAlignment="Right"
+                  VerticalAlignment="Center"
+                  Visibility="{Binding IsWorking, Converter={local:BoolToVisibilityCollapsedConverter}}">
+                <TextBlock Style="{StaticResource SpinningText}"
+                           />
+            </Grid>
+            
             <StackPanel Grid.Column="2"
                         Orientation="Horizontal">
                 <Button IsDefault="True"
@@ -87,6 +98,7 @@
                         Padding="8 5"
                         Margin="0 0 5 0"
                         Cursor="Hand"
+                        local:IsBusyProperty.Value="False"
                         VerticalAlignment="Center"
                         FontFamily="{StaticResource FontAwesome}"
                         FontSize="12"
@@ -98,6 +110,7 @@
                         Padding="8 5"
                         Margin="0"
                         FontFamily="{StaticResource FontAwesome}"
+                        local:IsBusyProperty.Value="False"
                         VerticalAlignment="Center"
                         FontSize="12"
                         Content="{StaticResource FontAwesomeCancelIcon}"/>

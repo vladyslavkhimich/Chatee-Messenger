@@ -49,7 +49,11 @@ namespace ChateeWPF
             mWindow.StateChanged += (sender, e) => { WindowResized(); };
             MinimizeCommand = new RelayCommand(() => mWindow.WindowState = WindowState.Minimized);
             MaximizeCommand = new RelayCommand(() => mWindow.WindowState ^= WindowState.Maximized);
-            CloseCommand = new RelayCommand(() => mWindow.Close());
+            CloseCommand = new RelayCommand(() => {
+                if (IoCContainer.Get<ApplicationViewModel>().CurrentUserContract != null)
+                    IoCContainer.Get<ApplicationViewModel>().ServiceClient.Disconnect(IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.UserID);
+                mWindow.Close();
+                });
             MenuCommand = new RelayCommand(() => SystemCommands.ShowSystemMenu(mWindow, GetMousePosition()));
         }
         #endregion

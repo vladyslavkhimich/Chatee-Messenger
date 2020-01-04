@@ -7,7 +7,7 @@
              xmlns:core="clr-namespace:ChateeCore;assembly=ChateeCore"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="300">
-    <Grid DataContext="{x:Static core:ChatListDesignModel.Instance}">
+    <Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Chats}">
                 <ItemsControl.ItemTemplate>

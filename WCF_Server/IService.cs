@@ -17,6 +17,8 @@ namespace WCF_Server
         [OperationContract]
         void LoginOnServer(UserContract connectedUser, int userServerDatabaseID);
         [OperationContract]
+        void Disconnect(int userID);
+        [OperationContract]
         bool Register(UserContract userToRegister);
         [OperationContract]
         UserContract GetUserByEmail(string email);

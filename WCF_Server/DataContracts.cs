@@ -62,6 +62,10 @@ namespace WCF_Server
                 Bio = userContract.Bio;
                 Initials = userContract.Initials;
                 ProfilePictureRGB = userContract.ProfilePictureRGB;
+                Chats = new ObservableCollection<ChatContract>();
+                if (userContract.Chats != null)
+                    foreach (var chat in userContract.Chats)
+                        Chats.Add(chat);
             }
             public UserContract(WCF_Server.DataContracts.UserContract userContract, bool isKeepLoggedIn)
             {
@@ -74,6 +78,10 @@ namespace WCF_Server
                 Initials = userContract.Initials;
                 ProfilePictureRGB = userContract.ProfilePictureRGB;
                 IsKeepLoggedIn = isKeepLoggedIn;
+                Chats = new ObservableCollection<ChatContract>();
+                if (userContract.Chats != null)
+                    foreach (var chat in userContract.Chats)
+                        Chats.Add(chat);
             }
         }
         [DataContract]
@@ -82,6 +90,11 @@ namespace WCF_Server
             [DataMember]
             [Key]
             public int ChatID { get; set; }
+            [IgnoreDataMember]
+            public int ServerDatabaseChatID { get; set; }
+            [IgnoreDataMember]
+            [NotMapped]
+            public bool IsHasNewMessages { get; set; }
             [DataMember]
             public int UserID1 { get; set; }
             [DataMember]
@@ -97,6 +110,14 @@ namespace WCF_Server
             {
                 UserID1 = userID1;
                 UserID2 = userID2;
+                Messages = new ObservableCollection<MessageContract>();
+            }
+            public ChatContract(int userID1, int userID2, int serverDatabaseChatID, ObservableCollection<MessageContract> messages)
+            {
+                UserID1 = userID1;
+                UserID2 = userID2;
+                ServerDatabaseChatID = serverDatabaseChatID;
+                Messages = new ObservableCollection<MessageContract>(messages);
             }
         }
         [DataContract]
@@ -111,8 +132,6 @@ namespace WCF_Server
             public int UserID { get; set; }
             [DataMember]
             public string MessageText { get; set; }
-            [DataMember]
-            public bool IsSentByMe { get; set; }
             [DataMember]
             public DateTime MessageReadTime { get; set; }
             [DataMember]

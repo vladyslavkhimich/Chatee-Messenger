@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 using System.Linq;
 using System.Runtime.InteropServices;
@@ -168,7 +169,8 @@ namespace WCF_Server
                  {
                      if (chat.UserID1 != userToFindInterlocutors.UserID)
                          usersInterlocutors.Add(ServerDatabase.UserContracts.ToList().Find(user => user.UserID == chat.UserID1));
-                     usersInterlocutors.Add(ServerDatabase.UserContracts.ToList().Find(user => user.UserID == chat.UserID2));
+                    if (chat.UserID2 != userToFindInterlocutors.UserID)
+                        usersInterlocutors.Add(ServerDatabase.UserContracts.ToList().Find(user => user.UserID == chat.UserID2));
                  }
             return usersInterlocutors;
         }
@@ -186,7 +188,15 @@ namespace WCF_Server
         {
             try
             {
-                ServerDatabase.ChatContracts.Add(new ChatContract(userID1, userID2));
+                ChatContract newChatContract = new ChatContract(userID1, userID2);
+                List<UserContract> userContracts = ServerDatabase.UserContracts.ToList().FindAll(userContract => userContract.UserID == userID1 || userContract.UserID == userID2);
+                foreach (var userContract in userContracts)
+                {
+                    if (userContract.Chats == null)
+                        userContract.Chats = new ObservableCollection<ChatContract>();
+                    userContract.Chats.Add(newChatContract);
+                }
+                ServerDatabase.ChatContracts.Add(newChatContract);
                 ServerDatabase.SaveChanges();
                 return true;
             }
@@ -201,20 +211,16 @@ namespace WCF_Server
             MessageProperties MessageProperties = OperationContext.IncomingMessageProperties;
             RemoteEndpointMessageProperty remoteEndpointMessageProperty = (RemoteEndpointMessageProperty)MessageProperties[RemoteEndpointMessageProperty.Name];
             ConnectedUser connectedUser = new ConnectedUser(remoteEndpointMessageProperty.Address + ":" + remoteEndpointMessageProperty.Port.ToString(), userServerDatabaseID);
-            //ConnectedUser alreadyConnectedUser = ConnectedUsers.Find(user => user.UserID == connectedUser.UserID);
-            //if (alreadyConnectedUser != null && alreadyConnectedUser.IPAddress != connectedUser.IPAddress)
-            //{
-            //    ConnectedUsers.Remove(alreadyConnectedUser);
-            //    ConnectedUsers.Add(connectedUser);
-            //    return;
-            //}
             if (ConnectedUsers.Find(user => user.UserID == connectedUser.UserID) == null)
             {
                 ConnectedUsers.Add(connectedUser);
                 ConnectedUsersDictionary.Add(connectedUser, ServiceCallback);
             }
         }
-
+        public void Disconnect(int userToDisconnectID)
+        {
+            ConnectedUsers.Remove(ConnectedUsers.Find(user => user.UserID == userToDisconnectID));
+        }
         public bool Register(UserContract userToRegister)
         {
             try
@@ -229,16 +235,26 @@ namespace WCF_Server
             }
         }
 
-        public bool SendMessage(int sentByUserID, int sentToUserID, MessageContract messageContract = null)
+        public bool SendMessage(int sentByUserID, int sentToUserID, MessageContract messageContract)
         {
-            ConnectedUser userToSentMessage = ConnectedUsers.Find(user => user.UserID == sentToUserID);
-            if (userToSentMessage != null)
+            ConnectedUser userToSendMessage = ConnectedUsers.Find(user => user.UserID == sentToUserID);
+            UserContract userContractToAddMessage = ServerDatabase.UserContracts.ToList().Find(userContract => userContract.UserID == sentByUserID || userContract.UserID == sentToUserID);
+            if (userToSendMessage != null)
             {
-                IServiceCallback serviceCallback = ConnectedUsersDictionary[userToSentMessage];
+                IServiceCallback serviceCallback = ConnectedUsersDictionary[userToSendMessage];
                 serviceCallback.ReceiveMessage(messageContract);
+                userContractToAddMessage.Chats.ToList().Find(chat => chat.ChatID == messageContract.ChatID).Messages.Add(messageContract);
+                ServerDatabase.MessageContracts.Add(messageContract);
+                ServerDatabase.SaveChanges();
                 return true;
             }
-            return false;
+            else
+            {
+                userContractToAddMessage.Chats.ToList().Find(chat => chat.ChatID == messageContract.ChatID).Messages.Add(messageContract);
+                ServerDatabase.MessageContracts.Add(messageContract);
+                ServerDatabase.SaveChanges();
+                return true;
+            }
 
         }
         #region Helper Methods

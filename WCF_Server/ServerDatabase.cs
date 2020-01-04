@@ -19,6 +19,16 @@ namespace WCF_Server
             ChatContracts.Load();
             MessageContracts.Load();
             List<UserContract> userContracts = new List<UserContract>(UserContracts.ToList());
+            List<ChatContract> chatContracts = new List<ChatContract>(ChatContracts.ToList());
+            //MessageContracts.Remove(MessageContracts.ToList().Last());
+            //MessageContracts.Remove(MessageContracts.ToList().Last());
+            //this.SaveChanges();
+            List<MessageContract> messageContracts = new List<MessageContract>(MessageContracts.ToList());
+            //foreach (var chat in ChatContracts)
+            //    ChatContracts.Remove(chat);
+            //foreach (var message in MessageContracts)
+            //    MessageContracts.Remove(message);
+
             SetUsersData();
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

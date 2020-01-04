@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -58,16 +59,18 @@ namespace ChateeCore
         }
         public void Logout()
         {
+            ApplicationViewModel.ServiceClient.Disconnect(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID);
             LoginHelper.RemoveClientDatabaseUser(ApplicationViewModel.CurrentUserContract);
             ClearUserData();
             ApplicationViewModel.IsSideMenuVisible = false;
-            ApplicationViewModel.IsSettingsMenuVisible = false;
+            ApplicationViewModel.IsSettingsMenuVisible = false;            
             ApplicationViewModel.GoToPage(ApplicationPages.LoginPage);
         }
         public void ClearUserData()
         {
             ApplicationViewModel.CurrentUser = null;
             ApplicationViewModel.CurrentUserContract = null;
+            ApplicationViewModel.UserChatMessageLists = new ObservableCollection<ChatMessageListViewModel>();
         }
         public void SetUsersData()
         {

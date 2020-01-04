@@ -28,7 +28,7 @@
                             <Border Background="{StaticResource DarkPinkBrush}" 
                                     Width="4" 
                                     HorizontalAlignment="Left" 
-                                    Visibility="{Binding NewMessageAvailable, Converter={local:BoolToVisibilityConverter}, ConverterParameter=True}"/>
+                                    Visibility="{Binding Chat.IsNewMessageAvailable, Converter={local:BoolToVisibilityConverter}, ConverterParameter=True}"/>
                             <Border Grid.Column="0" Padding="8">
                                 <Border Background="{Binding Interlocutor.ProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}" 
                                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" 
@@ -47,7 +47,7 @@
                                                FontFamily="{StaticResource LatoRegular}" 
                                                Padding="0 0 0 3"
                                                TextTrimming="CharacterEllipsis"/>
-                                    <TextBlock Text="{Binding Interlocutor.LastMessage, FallbackValue=Loremipsumdolorsitametseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.}" 
+                                    <TextBlock Text="{Binding LastMessage, FallbackValue=Loremipsumdolorsitametseddoeiusmodtemporincididuntutlaboreetdoloremagnaaliqua.}" 
                                                FontFamily="{StaticResource LatoThin}" 
                                                TextTrimming="CharacterEllipsis"/>
                                 </StackPanel>

@@ -13,7 +13,6 @@ namespace ChateeCore
         public string ImagePath { get; set; }
         public bool IsNewImage { get; set; }
         #endregion
-        // TODO: Check in Database if image is new 
         #region Constructors
         public ImageAttachment()
         {

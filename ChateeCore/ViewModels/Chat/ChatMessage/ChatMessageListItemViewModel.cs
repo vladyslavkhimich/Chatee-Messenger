@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace ChateeCore
@@ -15,7 +18,7 @@ namespace ChateeCore
         public ChatMessageListItemImageAttachmentViewModel ImageAttachment { get; set; }
         public ChatMessageListItemFileAttachmentViewModel FileAttachment { get; set; }
         public bool IsHasMessage => Message.MessageText != null;
-        public bool IsMessageSent { get; set; }
+        public bool IsMessageSent { get; set; } = true;
         public bool IsMessageRead { get; set; }
         #region Public Commands
         public ICommand DownloadFileCommand { get; set; }
@@ -29,17 +32,40 @@ namespace ChateeCore
         {
             Message = message;
             User = user;
-            if (message.FileCheckSum != null && !ExtensionTypesContainer.IsImage(message.FilePath))
-                FileAttachment = new ChatMessageListItemFileAttachmentViewModel(message.FilePath, user);
-            else if (message.FileCheckSum != null && ExtensionTypesContainer.IsImage(message.FilePath))
-                ImageAttachment = new ChatMessageListItemImageAttachmentViewModel(message.FilePath);
+            if (!string.IsNullOrEmpty(message.FileCheckSum))
+            {
+                string localDatabaseFilePath = FileHelper.GetFilePathWithCheckSum(message.FileCheckSum, "/ClientDatabase/Database/FileDatabase/");
+                if (string.IsNullOrEmpty(localDatabaseFilePath))
+                {
+                    FileHelper.SaveFileToLocalDatabase(message.FileName, FileHelper.ConvertFileToArrayOfBytes(message.FilePath));
+                    localDatabaseFilePath = Path.GetDirectoryName(Assembly.GetEntryAssembly().Location) + "/ClientDatabase/Database/FileDatabase/" + message.FileName;
+                }
+                if (!ExtensionTypesContainer.IsImage(localDatabaseFilePath))
+                {
+                    FileAttachment = new ChatMessageListItemFileAttachmentViewModel(localDatabaseFilePath, user);
+                    Message.IsHasFileAttachment = true;
+                }
+                else if (ExtensionTypesContainer.IsImage(localDatabaseFilePath))
+                {
+                    ImageAttachment = new ChatMessageListItemImageAttachmentViewModel(localDatabaseFilePath);
+                    Message.IsHasImageAttachment = true;
+                }
+            }
             DownloadFileCommand = new RelayCommand(DownloadFile);
         }
         #endregion
         #region Commands Methods
         public void DownloadFile()
         {
-            
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = $"(*{FileAttachment.SelectedFileInfo.Extension})|*{FileAttachment.SelectedFileInfo.Extension}|All files(*.*)|*.*",
+                AddExtension = true
+            };
+            if((bool)saveFileDialog.ShowDialog())
+            {
+                File.WriteAllBytes(saveFileDialog.FileName, FileHelper.ConvertFileToArrayOfBytes(FileAttachment.SelectedFileInfo.FullName));
+            }
         }
         #endregion
     }
