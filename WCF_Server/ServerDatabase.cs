@@ -33,11 +33,10 @@ namespace WCF_Server
         }
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //Database.SetInitializer<ServerDatabase>(new DropCreateDatabaseAlways<ServerDatabase>());
+            //Database.SetInitializer<ServerDatabase>(new DropCreateDatabaseIfModelChanges<ServerDatabase>());
             base.OnModelCreating(modelBuilder);
         }
-        public DbSet<UserContract> UserContracts { get; 
-            set; }
+        public DbSet<UserContract> UserContracts { get; set; }
         public DbSet<ChatContract> ChatContracts { get; set; }
         public DbSet<MessageContract> MessageContracts { get; set; }
         #region Helper Methods

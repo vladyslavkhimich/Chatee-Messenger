@@ -28,31 +28,11 @@ namespace ChateeWPF
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            
-            List<FileAttachment> filesFromDatabase = new List<FileAttachment>
-        {
-            new FileAttachment("D:/Test/TestFiles/OLX Skis.docx", "D:/Test/TestFiles/OLX Skis.docx", 1),
-            //new FileAttachment("D:/Test/TestFiles/GTA Vice City Flash FM Complete Track (128 kbit s) (via Skyload).mp3", "D:/Test/TestFiles/GTA Vice City Flash FM Complete Track (128 kbit s) (via Skyload).mp3", 1),
-            new FileAttachment("D:/Test/TestFiles/Panama - The Highs.mp4", "D:/Test/TestFiles/Panama - The Highs.mp4", 1),
-            new FileAttachment("D:/Test/TestFiles/Лабораторна робота 17 — копия.pdf", "D:/Test/TestFiles/Лабораторна робота 17 — копия.pdf", 1),
-            new FileAttachment("D:/Test/TestFiles/LogoGray.psd", "D:/Test/TestFiles/LogoGray.psd", 1),
-            new FileAttachment("D:/Test/TestFiles/Text for birthday.docx", "D:/Test/TestFiles/Text for birthday.docx", 1),
-            new FileAttachment("D:/Test/TestFiles/OLX books description.docx", "D:/Test/TestFiles/OLX books description.docx", 1)
-        };
-            List<User> usersFromDatabase = new List<User>
+            IoCContainer.Setup();
+            if (!TryToLoginUserWithKeepMeLoggedInTrue())
             {
-                new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto."),
-                new User(1, "Miha", "mihanya228@gmail.com", "Misha", "Wordpress is power", "MS", "EF1266", "Lorem ipsum dor color iotred locusto."),
-                new User(1, "Violent", "himich01092001@gmail.com", "Vladyslav", "Fuck da maximalism", "VK", "889F66", "Lorem ipsum dor color iotred locusto."),
-                new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto."),
-                new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto."),
-                new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto."),
-                new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto."),
-        };
-            IoCContainer.Setup(filesFromDatabase);
-            IoCContainer.Get<UserListViewModel>().UsersFromDatabase = new ObservableCollection<User>(usersFromDatabase);
-            if(!TryToLoginUserWithKeepMeLoggedInTrue())
-            IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.LoginPage);
+                IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.LoginPage);
+            }
             Current.MainWindow = new MainWindow();
             Current.MainWindow.Show();
         }
@@ -81,17 +61,16 @@ namespace ChateeWPF
                         }
                     }
                     LoginHelper.SetApplicationUser(userClientDatabase, userClientDatabase.ServerDatabaseUserID);
-                    LoginHelper.SetUsersAndFilesLists();
+                    LoginHelper.SetInterlocutorsList();
                     LoginHelper.SetUsersChatMessageLists();
-                    LoginHelper.SwitchToChatPage();
+                    IoCContainer.Get<SettingsViewModel>().SetUsersData();
+                    IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage);
                     return true;
                 }
-                else if (userClientDatabase.IsKeepLoggedIn && !IoCContainer.Get<ApplicationViewModel>().IsServerReachable)
+                else if (!IoCContainer.Get<ApplicationViewModel>().IsServerReachable)
                 {
-                    LoginHelper.SetApplicationUser(userClientDatabase, userClientDatabase.ServerDatabaseUserID);
-                    LoginHelper.SetUsersChatMessageLists();
-                    LoginHelper.SwitchToChatPage();
-                    return true;
+                    
+                    return false;
                 }
             }
             return false;

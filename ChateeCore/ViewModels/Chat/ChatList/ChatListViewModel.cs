@@ -14,7 +14,7 @@ namespace ChateeCore
 
         public ChatListViewModel()
         {
-
+            Chats = new ObservableCollection<ChatListItemViewModel>();
         }
     }
 }

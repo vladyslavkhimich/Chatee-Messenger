@@ -21,12 +21,22 @@ namespace ChateeCore
         {
             FileInfo fileInfo = new FileInfo(filePath);
             var extension = fileInfo.Extension.Replace(".", string.Empty);
-            if (ExtensionTypesContainer.ExtensionsTypesToStringList.Contains(extension))
-                return  "pack://application:,,,/Images/Files/" + extension + ".png";
-            else if (string.Equals(extension, "docx"))
-                return "pack://application:,,,/Images/Files/" + "doc.png";
+            if (IsImage(filePath))
+            {
+                if (extension == "png")
+                    return "pack://application:,,,/Images/Files/" + "png.png";
+                else
+                    return "pack://application:,,,/Images/Files/" + "jpg.png";
+            }
             else
-                return "pack://application:,,,/Images/Files/" + "default.png";
+            {
+                if (ExtensionsTypesToStringList.Contains(extension))
+                    return "pack://application:,,,/Images/Files/" + extension + ".png";
+                else if (string.Equals(extension, "docx"))
+                    return "pack://application:,,,/Images/Files/" + "doc.png";
+                else
+                    return "pack://application:,,,/Images/Files/" + "default.png";
+            }
         }
     }
 }

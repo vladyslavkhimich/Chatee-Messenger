@@ -71,6 +71,7 @@ namespace ChateeCore
             ApplicationViewModel.CurrentUser = null;
             ApplicationViewModel.CurrentUserContract = null;
             ApplicationViewModel.UserChatMessageLists = new ObservableCollection<ChatMessageListViewModel>();
+            IoCContainer.Get<FileListViewModel>().Files = new ObservableCollection<FileListItemViewModel>();
         }
         public void SetUsersData()
         {

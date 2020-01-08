@@ -35,6 +35,10 @@ namespace WCF_Server
         [OperationContract]
         int GetNextChatID();
         [OperationContract]
+        int GetNextMessageID();
+        [OperationContract]
+        void SetMessageReadTime(int messageID, DateTime messageReadTime);
+        [OperationContract]
         bool ChangeUserName(int userID, string name);
         [OperationContract]
         bool ChangeUserEmail(int userID, string email);

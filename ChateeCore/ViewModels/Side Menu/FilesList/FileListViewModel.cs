@@ -10,13 +10,11 @@ namespace ChateeCore
 {
     public class FileListViewModel : BaseViewModel
     {
-        // TODO: Get list of files from database
-        // TODO: Notify about changing database files collection Files collection same as in UserListViewModel
         protected string LastSearchText;
         protected string ActualSearchText;
         protected ObservableCollection<FileListItemViewModel> files { get; set; }
         #region Public Properties
-        public ObservableCollection<FileAttachment> DatabaseFiles { get; set; }
+        //public ObservableCollection<FileAttachment> DatabaseFiles { get; set; }
         public ObservableCollection<FileListItemViewModel> Files 
         {
             get => files;
@@ -37,8 +35,10 @@ namespace ChateeCore
                 if (ActualSearchText == value)
                     return;
                 ActualSearchText = value;
-                if (string.IsNullOrEmpty(SearchText))
+                if (!string.IsNullOrEmpty(SearchText))
                     Search();
+                else
+                    ClearSearch();
             }
         }
         #endregion
@@ -51,27 +51,21 @@ namespace ChateeCore
         {
             ClearSearchCommand = new RelayCommand(ClearSearch);
             SearchCommand = new RelayCommand(Search);
-        }
-        public FileListViewModel(List<FileAttachment> files)
-        {
-            DatabaseFiles = new ObservableCollection<FileAttachment>(files);
-            List<FileListItemViewModel> fileListItems = new List<FileListItemViewModel>();
-            foreach (var fileFromDatabase in DatabaseFiles)
-                fileListItems.Add(new FileListItemViewModel(fileFromDatabase));
-            Files = new ObservableCollection<FileListItemViewModel>(fileListItems);
+            Files = new ObservableCollection<FileListItemViewModel>();
         }
         #endregion
         #region Commands Methods
         public void ClearSearch()
         {
-            if (!string.IsNullOrEmpty(SearchText))
-                SearchText = string.Empty;
+            SearchText = string.Empty;
+            FilteredFiles = new ObservableCollection<FileListItemViewModel>(Files);
         }
         // TODO: Make files search function 
         public void Search()
         {
             if ((string.IsNullOrEmpty(LastSearchText) && string.IsNullOrEmpty(SearchText)) || string.Equals(LastSearchText, SearchText))
                 return;
+            FilteredFiles = new ObservableCollection<FileListItemViewModel>(Files.Where(file => file.FileInfo.Name.ToLower().Contains(SearchText.ToLower())));
             LastSearchText = SearchText;
         }
         #endregion

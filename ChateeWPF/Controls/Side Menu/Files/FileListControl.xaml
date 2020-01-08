@@ -25,7 +25,7 @@
                         <KeyBinding Command="{Binding SearchCommand}" Key="Return"/>
                     </TextBox.InputBindings>
                 </TextBox>
-                <ItemsControl ItemsSource="{Binding Files}">
+                <ItemsControl ItemsSource="{Binding FilteredFiles}">
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <local:FileListItemControl/>

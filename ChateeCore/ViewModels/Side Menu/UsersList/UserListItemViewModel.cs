@@ -13,10 +13,7 @@ namespace ChateeCore
     {
         #region Public Properties
         public User User { get; set; }
-        // TODO: Define if users have chat
-        // TODO: Uncomment line of defining if users have chat
-        public bool IsHasChat => (bool)User.Chats?.Intersect(IoCContainer.Get<ApplicationViewModel>().CurrentUser.Chats).Any();
-        //public bool IsHasChat => false;
+        public bool IsHasChat { get; set; }
         #endregion
         #region Public Commands
         public ICommand OpenUserProfileCommand { get; set; }
@@ -29,6 +26,8 @@ namespace ChateeCore
         public UserListItemViewModel(User user)
         {
             User = user;
+            if (user.Chats.ToList().Find(chat => chat.UserID1 == IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.ServerDatabaseUserID || chat.UserID2 == IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.ServerDatabaseUserID) != null)
+                IsHasChat = true;
             OpenUserProfileCommand = new RelayCommand(OpenUserProfile);
         }
         #endregion

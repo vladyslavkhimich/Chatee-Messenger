@@ -16,8 +16,6 @@ namespace ChateeCore
         protected ObservableCollection<UserListItemViewModel> users { get; set; }
         protected ObservableCollection<User> usersFromDatabase { get; set; }
         #region Public Properties
-        // TODO: Notify other collections if database collection changes 
-        // TODO: Bind collection of users to database
         public ObservableCollection<User> UsersFromDatabase
         {
             get { return usersFromDatabase; }
@@ -76,7 +74,6 @@ namespace ChateeCore
             }
 
         }
-        // TODO: Make user search function
         public void Search()
         {
             if ((string.IsNullOrEmpty(LastSearchText) && string.IsNullOrEmpty(SearchText)) || string.Equals(LastSearchText, SearchText))

@@ -27,7 +27,6 @@
     <xs:sequence>
       <xs:element minOccurs="0" name="ChatID" type="xs:int" />
       <xs:element minOccurs="0" name="Messages" nillable="true" type="tns:ArrayOfDataContracts.MessageContract" />
-      <xs:element minOccurs="0" name="ServerDatabaseChatID" type="xs:int" />
       <xs:element minOccurs="0" name="UserID1" type="xs:int" />
       <xs:element minOccurs="0" name="UserID2" type="xs:int" />
     </xs:sequence>

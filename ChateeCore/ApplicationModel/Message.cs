@@ -12,6 +12,7 @@ namespace ChateeCore
     {
         #region Public Properties
         public int ChatID { get; set; }
+        public int MessageID { get; set; }
         public int UserID { get; set; }
         public string MessageText { get; set; }
         public bool IsSentByMe => UserID == IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.ServerDatabaseUserID;
@@ -29,9 +30,10 @@ namespace ChateeCore
         {
 
         }
-        public Message(int chatID, int userID, DateTime messageReadTime, DateTime messageSentTime, string messageText = "", string fileCheckSum = "", string filePath = "")
+        public Message(int chatID, int messageID, int userID, DateTime messageReadTime, DateTime messageSentTime, string messageText = "", string fileCheckSum = "", string filePath = "")
         {
             ChatID = chatID;
+            MessageID = messageID;
             UserID = userID;
             MessageText = messageText;
             MessageReadTime = messageReadTime;
@@ -55,6 +57,7 @@ namespace ChateeCore
         }
         public Message(WCF_Server.DataContracts.MessageContract messageContract)
         {
+            MessageID = messageContract.MessageID;
             ChatID = messageContract.ChatID;
             UserID = messageContract.UserID;
             MessageText = messageContract.MessageText;

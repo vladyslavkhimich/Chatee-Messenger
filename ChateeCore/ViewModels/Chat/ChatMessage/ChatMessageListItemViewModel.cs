@@ -43,11 +43,15 @@ namespace ChateeCore
                 if (!ExtensionTypesContainer.IsImage(localDatabaseFilePath))
                 {
                     FileAttachment = new ChatMessageListItemFileAttachmentViewModel(localDatabaseFilePath, user);
+                    IoCContainer.Get<FileListViewModel>().Files.Add(new FileListItemViewModel(localDatabaseFilePath, user));
+                    IoCContainer.Get<FileListViewModel>().FilteredFiles.Add(new FileListItemViewModel(localDatabaseFilePath, user));
                     Message.IsHasFileAttachment = true;
                 }
                 else if (ExtensionTypesContainer.IsImage(localDatabaseFilePath))
                 {
                     ImageAttachment = new ChatMessageListItemImageAttachmentViewModel(localDatabaseFilePath);
+                    IoCContainer.Get<FileListViewModel>().Files.Add(new FileListItemViewModel(localDatabaseFilePath, user));
+                    IoCContainer.Get<FileListViewModel>().FilteredFiles.Add(new FileListItemViewModel(localDatabaseFilePath, user));
                     Message.IsHasImageAttachment = true;
                 }
             }
@@ -59,12 +63,12 @@ namespace ChateeCore
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog
             {
-                Filter = $"(*{FileAttachment.SelectedFileInfo.Extension})|*{FileAttachment.SelectedFileInfo.Extension}|All files(*.*)|*.*",
+                Filter = $"(*{(FileAttachment != null ? $"{FileAttachment.SelectedFileInfo.Extension}" : $"{ImageAttachment.SelectedImageInfo.Extension}")})|*{(FileAttachment != null ? $"{FileAttachment.SelectedFileInfo.Extension}" : $"{ImageAttachment.SelectedImageInfo.Extension}")}|All files(*.*)|*.*",
                 AddExtension = true
             };
             if((bool)saveFileDialog.ShowDialog())
             {
-                File.WriteAllBytes(saveFileDialog.FileName, FileHelper.ConvertFileToArrayOfBytes(FileAttachment.SelectedFileInfo.FullName));
+                File.WriteAllBytes(saveFileDialog.FileName, FileHelper.ConvertFileToArrayOfBytes((FileAttachment != null ? FileAttachment.SelectedFileInfo.FullName : ImageAttachment.SelectedImageInfo.FullName).ToString()));
             }
         }
         #endregion

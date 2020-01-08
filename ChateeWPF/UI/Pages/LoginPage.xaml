@@ -63,17 +63,14 @@
                                        />
                         </Grid>
                         
-                            <Button Style="{StaticResource TextButton}" 
-                                Content="I can't remember my password" 
-                                HorizontalAlignment="Right" 
-                                Margin="0 5 0 0"
-                                    Grid.Column="1"/>
                         
                             <Button 
                             Style="{StaticResource SignButton}" 
                             Content="Sign In" 
                             IsDefault="True"
-                            Command="{Binding LoginCommand}"/>
+                            Command="{Binding LoginAsyncCommand}"
+                                local:IsBusyProperty.Value="{Binding IsLoginRunning}"
+                                />
                         <CheckBox Style="{StaticResource CheckBoxStyle}"
                                       Content="Keep me logged in"
                                       FontSize="18"
@@ -179,7 +176,8 @@
                         </Grid>
                         <Button Style="{StaticResource SignButton}" 
                                 Content="Sign Up"
-                                Command="{Binding RegisterCommand}"/>
+                                Command="{Binding RegisterAsyncCommand}"
+                                local:IsBusyProperty.Value="{Binding IsRegisterRunning}"/>
                     </StackPanel>
                 </TabItem>
             </TabControl>

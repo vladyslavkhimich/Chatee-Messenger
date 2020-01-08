@@ -13,9 +13,10 @@ namespace ChateeCore
     public class FileListItemViewModel : BaseViewModel
     {
         #region Public Properties
-        public FileAttachment File { get; set; }
+        //public FileAttachment FileAttachment { get; set; }
         public FileInfo FileInfo { get; set; }
         public User User { get; set; }
+        public string FileCheckSum { get; set; }
         public string FileTypeImagePath { get; set; }
         #endregion
         #region Public Commands
@@ -26,27 +27,28 @@ namespace ChateeCore
         {
             DownloadFileCommand = new RelayCommand(DownloadFile);
         }
-        // TODO: Get user from database by ID
-        public FileListItemViewModel(FileAttachment fileAttachment)
+        //TODO: Define if this class needs checksum
+        public FileListItemViewModel(string filePath, User user)
         {
-            File = new FileAttachment(fileAttachment.FilePath, fileAttachment.FilePath, fileAttachment.UserID);
-            FileInfo = new FileInfo(fileAttachment.FilePath);
-            User = new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto.");
-            FileTypeImagePath = ExtensionTypesContainer.SetFileTypeImage(fileAttachment.FilePath);
-        }
-        public FileListItemViewModel(FileAttachment fileAttachment, User user)
-        {
-            File = new FileAttachment(fileAttachment.FilePath, fileAttachment.FilePath, fileAttachment.UserID);
-            FileInfo = new FileInfo(fileAttachment.FilePath);
-            User = new User(user);
-            FileTypeImagePath = ExtensionTypesContainer.SetFileTypeImage(fileAttachment.FilePath);
+            FileInfo = new FileInfo(filePath);
+            FileCheckSum = FileHelper.ComputeFileCheckSum(filePath);
+            User = user;
+            FileTypeImagePath = ExtensionTypesContainer.SetFileTypeImage(filePath);
+            DownloadFileCommand = new RelayCommand(DownloadFile);
         }
         #endregion
         #region Commands Methods
         public void DownloadFile()
         {
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.ShowDialog();
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Filter = $"(*({FileInfo.Extension})|*{FileInfo.Extension}|All files(*.*)|*.*",
+                AddExtension = true
+            };
+            if ((bool)saveFileDialog.ShowDialog())
+            {
+                File.WriteAllBytes(saveFileDialog.FileName, FileHelper.ConvertFileToArrayOfBytes(FileInfo.FullName));
+            }
         }
         #endregion
     }

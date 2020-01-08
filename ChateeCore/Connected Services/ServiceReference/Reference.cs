@@ -81,6 +81,18 @@ namespace ChateeCore.ServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextChatID", ReplyAction="http://tempuri.org/IService/GetNextChatIDResponse")]
         System.Threading.Tasks.Task<int> GetNextChatIDAsync();
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextMessageID", ReplyAction="http://tempuri.org/IService/GetNextMessageIDResponse")]
+        int GetNextMessageID();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetNextMessageID", ReplyAction="http://tempuri.org/IService/GetNextMessageIDResponse")]
+        System.Threading.Tasks.Task<int> GetNextMessageIDAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SetMessageReadTime", ReplyAction="http://tempuri.org/IService/SetMessageReadTimeResponse")]
+        void SetMessageReadTime(int messageID, System.DateTime messageReadTime);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/SetMessageReadTime", ReplyAction="http://tempuri.org/IService/SetMessageReadTimeResponse")]
+        System.Threading.Tasks.Task SetMessageReadTimeAsync(int messageID, System.DateTime messageReadTime);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/ChangeUserName", ReplyAction="http://tempuri.org/IService/ChangeUserNameResponse")]
         bool ChangeUserName(int userID, string name);
         
@@ -257,6 +269,22 @@ namespace ChateeCore.ServiceReference {
         
         public System.Threading.Tasks.Task<int> GetNextChatIDAsync() {
             return base.Channel.GetNextChatIDAsync();
+        }
+        
+        public int GetNextMessageID() {
+            return base.Channel.GetNextMessageID();
+        }
+        
+        public System.Threading.Tasks.Task<int> GetNextMessageIDAsync() {
+            return base.Channel.GetNextMessageIDAsync();
+        }
+        
+        public void SetMessageReadTime(int messageID, System.DateTime messageReadTime) {
+            base.Channel.SetMessageReadTime(messageID, messageReadTime);
+        }
+        
+        public System.Threading.Tasks.Task SetMessageReadTimeAsync(int messageID, System.DateTime messageReadTime) {
+            return base.Channel.SetMessageReadTimeAsync(messageID, messageReadTime);
         }
         
         public bool ChangeUserName(int userID, string name) {

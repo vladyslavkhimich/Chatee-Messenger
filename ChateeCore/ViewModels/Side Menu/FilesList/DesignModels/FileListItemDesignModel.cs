@@ -14,8 +14,7 @@ namespace ChateeCore
         #region Constructor
         public FileListItemDesignModel()
         {
-            User = new User(1, "Vidzhel", "olezhka228@gmail.com", "Oleg", "Anime is my life", "OT", "FF9466", "Lorem ipsum dor color iotred locusto.");
-            File = new FileAttachment("D:/Test/TestFiles/Palermo Story.txt");
+            
         }
         #endregion
     }

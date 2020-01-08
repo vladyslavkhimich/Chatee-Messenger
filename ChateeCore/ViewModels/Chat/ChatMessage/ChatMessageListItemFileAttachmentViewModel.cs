@@ -36,18 +36,6 @@ namespace ChateeCore
             SelectedFileInfo = new FileInfo(selectedFilePath);
             FileTypeImagePath = ExtensionTypesContainer.SetFileTypeImage(selectedFilePath);
         }
-        #region Helper Methods
-        //public void SetFileTypeImage()
-        //{
-        //    var extension = SelectedFile.Extension.Replace(".", string.Empty);
-        //    if (ExtensionTypesContainer.ExtensionsTypesToStringList.Contains(extension))
-        //        FileTypeImagePath += extension + ".png";
-        //    else if (string.Equals(extension, "docx"))
-        //        FileTypeImagePath += "doc.png";
-        //    else
-        //        FileTypeImagePath += "default.png";
-        //}
-        #endregion
         #region Commands Methods
         public void DeleteFile()
         {

@@ -25,7 +25,7 @@ namespace ChateeCore
         public ObservableCollection<ChatMessageListViewModel> UserChatMessageLists { get; set; } = new ObservableCollection<ChatMessageListViewModel>();
         public ApplicationPages CurrentPage { get; private set; }
         public SideMenuControls CurrentControl { get; private set; } = SideMenuControls.ChatList;
-        public ChatListViewModel ChatListViewModel { get; set; }
+        public ChatListViewModel ChatListViewModel { get; set; } = IoCContainer.Get<ChatListViewModel>();
         public BaseViewModel CurrentPageViewModel { get; set; }
         public bool IsSideMenuVisible { get; set; } = false;
         public bool IsSettingsMenuVisible { get; set; } = false;
@@ -119,9 +119,19 @@ namespace ChateeCore
             }
             ChatMessageListViewModel chatMessageListToAddMessage = UserChatMessageLists.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
             chatMessageListToAddMessage.AddNewMessage(messageContract);
-            ChatListItemViewModel chatListItemToDisplayNewMessage = IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
-            chatListItemToDisplayNewMessage.Chat.IsHasNewMessages = true;
-            chatListItemToDisplayNewMessage.LastMessage = messageContract.MessageText;
+            ChatListItemViewModel chatListItemToDisplayNewMessage;
+            //if (chatMessageListToAddMessage.FilteredMessages.Count == 1)
+            //{
+            //    chatListItemToDisplayNewMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
+            //}
+            //else
+            //{
+            //    chatListItemToDisplayNewMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == messageContract.ChatID);
+            //}
+            ClientDatabase.MessageContracts.Add(messageContract);
+            ClientDatabase.SaveChanges();
+            //chatListItemToDisplayNewMessage.IsNewMessageAvailable = true;
+            //chatListItemToDisplayNewMessage.LastMessage = messageContract.MessageText;
         }
         #endregion
     }

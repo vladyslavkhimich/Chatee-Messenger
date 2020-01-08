@@ -102,6 +102,18 @@
   <wsdl:message name="IService_GetNextChatID_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetNextChatIDResponse" />
   </wsdl:message>
+  <wsdl:message name="IService_GetNextMessageID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetNextMessageID" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetNextMessageID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetNextMessageIDResponse" />
+  </wsdl:message>
+  <wsdl:message name="IService_SetMessageReadTime_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetMessageReadTime" />
+  </wsdl:message>
+  <wsdl:message name="IService_SetMessageReadTime_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetMessageReadTimeResponse" />
+  </wsdl:message>
   <wsdl:message name="IService_ChangeUserName_InputMessage">
     <wsdl:part name="parameters" element="tns:ChangeUserName" />
   </wsdl:message>
@@ -203,6 +215,14 @@
     <wsdl:operation name="GetNextChatID">
       <wsdl:input wsaw:Action="http://tempuri.org/IService/GetNextChatID" message="tns:IService_GetNextChatID_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService/GetNextChatIDResponse" message="tns:IService_GetNextChatID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetNextMessageID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetNextMessageID" message="tns:IService_GetNextMessageID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetNextMessageIDResponse" message="tns:IService_GetNextMessageID_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="SetMessageReadTime">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/SetMessageReadTime" message="tns:IService_SetMessageReadTime_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/SetMessageReadTimeResponse" message="tns:IService_SetMessageReadTime_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ChangeUserName">
       <wsdl:input wsaw:Action="http://tempuri.org/IService/ChangeUserName" message="tns:IService_ChangeUserName_InputMessage" />
@@ -339,6 +359,24 @@
     </wsdl:operation>
     <wsdl:operation name="GetNextChatID">
       <soap12:operation soapAction="http://tempuri.org/IService/GetNextChatID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetNextMessageID">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetNextMessageID" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SetMessageReadTime">
+      <soap12:operation soapAction="http://tempuri.org/IService/SetMessageReadTime" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

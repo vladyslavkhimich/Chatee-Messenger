@@ -209,6 +209,7 @@
                              Margin="0,0,15,0"
                            />
                             <TextBlock
+                                Visibility="{Binding Message.IsMessageRead, Converter={local:BoolToVisibilityConverter}}"
                            Text="{Binding Message.MessageReadTime, Converter={local:TimeToReadTimeConverter}}"
                            FontSize="12"
                            FontFamily="{StaticResource LatoRegular}"

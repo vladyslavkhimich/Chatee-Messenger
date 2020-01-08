@@ -25,17 +25,6 @@ namespace ChateeCore
         {
             CloseCommand = new RelayCommand(Close);
             OpenChatCommand = new RelayCommand(OpenChat);
-
-            //NameDisplayer = new TextDisplayerViewModel
-            //{
-            //    Label = "Name",
-            //    Text = "DefaultText"
-            //};
-            //BioDisplayer = new TextDisplayerViewModel
-            //{
-            //    Label = "Bio",
-            //    Text = "DefaultText"
-            //};
         }
         public UserInformationViewModel(User user, bool isOpenChatVisible)
         {
@@ -60,32 +49,27 @@ namespace ChateeCore
                     ChatContract newChat = CreateLocalChat(interlocutor);
                     ChatMessageListViewModel TestMessageList = new ChatMessageListViewModel(interlocutor, newChat);
                     IoCContainer.Get<ApplicationViewModel>().UserChatMessageLists.Add(TestMessageList);
+                    foreach (var chatListItem in IoCContainer.Get<ChatListViewModel>().Chats)
+                        chatListItem.IsSelected = false;
+                    IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == TestMessageList.Chat.ServerDatabaseChatID).IsSelected = true;
                     IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, TestMessageList);
                 }
                 else
                 {
                     ChatMessageListViewModel chatToGoTo = IoCContainer.Get<ApplicationViewModel>().UserChatMessageLists.ToList().Find(chatMessageList => chatMessageList.Interlocutor.UserID == interlocutor.UserID);
+                    IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == chatToGoTo.Chat.ServerDatabaseChatID).IsSelected = true;
                     IoCContainer.Get<ApplicationViewModel>().GoToPage(ApplicationPages.ChatPage, chatToGoTo);
                 }
             }
-            //ObservableCollection<Message> TestMessages = new ObservableCollection<Message>();
-            //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            //TestMessages.Add(new Message(1, 2, true, DateTime.UtcNow, DateTime.MinValue, "Dummy Message"));
-            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message", "C:/Users/Владелец/source/repos/Chatee/ChateeWPF/Images/Samples/black-tea.png"));
-            //TestMessages.Add(new Message(1, 2, false, DateTime.UtcNow, DateTime.MinValue, "Dummy Message", "D:/Test/TestFiles/Palermo Story.txt"));
-
-            //Chat TestChat = new Chat(1, 1, 2, TestMessages);
             
         }
         #endregion
         #region Helper Methods
         public ChatContract CreateLocalChat(User interlocutor)
         {
-            ChatContract newChat = new ChatContract(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, interlocutor.UserID);
-            
+            ChatContract newChat = new ChatContract(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, interlocutor.UserID, ApplicationViewModel.ServiceClient.GetNextChatID(), new ObservableCollection<MessageContract>());
+            ApplicationViewModel.UserInterlocutors.Add(new UserContract(interlocutor.UserID, interlocutor.Username, interlocutor.Name, interlocutor.Bio, interlocutor.Initials, interlocutor.ProfilePictureRGB));
+            IoCContainer.Get<UserListViewModel>().SetUsersFromDatabase(ApplicationViewModel.UserInterlocutors.ToList());
             IoCContainer.Get<ChatListViewModel>().Chats.Add(new ChatListItemViewModel(interlocutor, newChat));
             return newChat;
         }

@@ -49,9 +49,6 @@
                         Content="{StaticResource FontAwesomeSearchIcon}"
                         Command="{Binding OpenSearchCommand}"
                         />
-                <Button Style="{StaticResource IconButton}" 
-                        Background="Transparent"
-                        Content="{StaticResource FontAwesomeEllipsisVerticalIcon}"/>
             </StackPanel>
             <Grid Grid.ColumnSpan="2"
                   Visibility="{Binding IsSearchOpened, Converter={local:BoolToVisibilityCollapsedConverter}}">
@@ -177,11 +174,6 @@
                      Background="{StaticResource ForegroundLightBrush}"
                      VerticalScrollBarVisibility="Auto"/>
                 <StackPanel Grid.Column="2" Orientation="Horizontal">
-                    <Button Style="{StaticResource IconGrowButton}" 
-                            Height="30"   
-                            Content="{StaticResource FontAwesomeSmileIcon}"
-                            Foreground="{StaticResource DarkerYellowBrush}"
-                            />
                     <Button Content="Send"
                         FontSize="16"
                         Focusable="False"

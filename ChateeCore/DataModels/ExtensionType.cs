@@ -51,6 +51,8 @@ namespace ChateeCore
         wmv,
         xls,
         xml,
-        zip
+        zip, 
+        jpg, 
+        png
     }
 }

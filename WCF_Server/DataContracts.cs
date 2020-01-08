@@ -83,6 +83,16 @@ namespace WCF_Server
                     foreach (var chat in userContract.Chats)
                         Chats.Add(chat);
             }
+            public UserContract(int userID, string username, string name, string bio, string initials, string profilePictureRGB)
+            {
+                ServerDatabaseUserID = userID;
+                Username = username;
+                Name = name;
+                Bio = bio;
+                Initials = initials;
+                ProfilePictureRGB = profilePictureRGB;
+                Chats = new ObservableCollection<ChatContract>();
+            }
         }
         [DataContract]
         public class ChatContract
@@ -94,7 +104,7 @@ namespace WCF_Server
             public int ServerDatabaseChatID { get; set; }
             [IgnoreDataMember]
             [NotMapped]
-            public bool IsHasNewMessages { get; set; }
+            public bool IsHasNewMessages { get; set; } = false;
             [DataMember]
             public int UserID1 { get; set; }
             [DataMember]
@@ -119,6 +129,13 @@ namespace WCF_Server
                 ServerDatabaseChatID = serverDatabaseChatID;
                 Messages = new ObservableCollection<MessageContract>(messages);
             }
+            public ChatContract(ChatContract chatContract)
+            {
+                UserID1 = chatContract.UserID1;
+                UserID2 = chatContract.UserID2;
+                ServerDatabaseChatID = chatContract.ChatID;
+                Messages = new ObservableCollection<MessageContract>(chatContract.Messages);
+            }
         }
         [DataContract]
         public class MessageContract
@@ -126,6 +143,8 @@ namespace WCF_Server
             [DataMember]
             [Key]
             public int MessageID { get; set; }
+            [IgnoreDataMember]
+            public int ServerDatabaseMessageID { get; set; }
             [DataMember]
             public int ChatID { get; set; }
             [DataMember]
@@ -146,22 +165,18 @@ namespace WCF_Server
             {
 
             }
-        }
-        [DataContract]
-        public class FileContract
-        {
-            [DataMember]
-            public string FileName { get; set; }
-            [DataMember]
-            public string FileCheckSum { get; set; }
-            [DataMember]
-            public byte[] FileData { get; set; }
-            [DataMember]
-            public int UserID { get; set; }
-            [DataMember]
-            public int ChatID { get; set; }
-            [DataMember]
-            public bool IsNewFile { get; set; }
+            public MessageContract(MessageContract messageContract)
+            {
+                ServerDatabaseMessageID = messageContract.MessageID;
+                ChatID = messageContract.ChatID;
+                UserID = messageContract.UserID;
+                MessageText = messageContract.MessageText;
+                MessageReadTime = messageContract.MessageReadTime;
+                MessageSentTime = messageContract.MessageSentTime;
+                FileCheckSum = messageContract.FileCheckSum;
+                FileBytes = messageContract.FileBytes;
+                FileName = messageContract.FileName;
+            }
         }
     }
 }

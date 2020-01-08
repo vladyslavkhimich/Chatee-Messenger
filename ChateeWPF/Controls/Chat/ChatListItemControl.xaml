@@ -28,7 +28,7 @@
                             <Border Background="{StaticResource DarkPinkBrush}" 
                                     Width="4" 
                                     HorizontalAlignment="Left" 
-                                    Visibility="{Binding Chat.IsNewMessageAvailable, Converter={local:BoolToVisibilityConverter}, ConverterParameter=True}"/>
+                                    Visibility="{Binding IsNewMessageAvailable, Converter={local:BoolToVisibilityConverter}}"/>
                             <Border Grid.Column="0" Padding="8">
                                 <Border Background="{Binding Interlocutor.ProfilePictureRGB, Converter={local:StringRGBToBrushConverter}}" 
                                         Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" 

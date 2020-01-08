@@ -15,7 +15,7 @@ using static WCF_Server.DataContracts;
 
 namespace WCF_Server
 {
- 
+
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, ConcurrencyMode = ConcurrencyMode.Multiple)]
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class Service : IService
@@ -24,6 +24,13 @@ namespace WCF_Server
         public Dictionary<ConnectedUser, IServiceCallback> ConnectedUsersDictionary { get; set; } = new Dictionary<ConnectedUser, IServiceCallback>();
         public List<ConnectedUser> ConnectedUsers { get; set; } = new List<ConnectedUser>();
         public IServiceCallback ServiceCallback => OperationContext.Current.GetCallbackChannel<IServiceCallback>();
+        public void SetMessageReadTime(int messageID, DateTime messageReadTime)
+        {
+            MessageContract messageToSetReadTime = ServerDatabase.MessageContracts.ToList().Find(messageContract => messageContract.MessageID == messageID);
+            messageToSetReadTime.MessageReadTime = messageReadTime;
+            ServerDatabase.Entry(messageToSetReadTime).State = EntityState.Modified;
+            ServerDatabase.SaveChanges();
+        }
         public bool ChangeUserBio(int userID, string newBio)
         {
             UserContract userToChangeBio = ServerDatabase.UserContracts.Find(userID);
@@ -153,7 +160,14 @@ namespace WCF_Server
             }
             return 1;
         }
-
+        public int GetNextMessageID()
+        {
+            if (ServerDatabase.MessageContracts.ToList().Count != 0)
+            {
+                return ServerDatabase.MessageContracts.ToList().Last().MessageID + 1;
+            }
+            return 1;
+        }
         public UserContract GetUserByEmail(string email)
         {
             UserContract returnUser = ServerDatabase.UserContracts.ToList().Find(user => user.Email == email);

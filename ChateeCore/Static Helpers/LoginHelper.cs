@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using static WCF_Server.DataContracts;
 
 namespace ChateeCore
@@ -16,11 +17,6 @@ namespace ChateeCore
         public static ApplicationViewModel ApplicationViewModel => IoCContainer.Get<ApplicationViewModel>();
         public static bool IsServerAndClientUserSame(UserContract clientUser, UserContract serverUser)
         {
-            if (clientUser.Chats == null && serverUser.Chats != null || clientUser.Chats != null && serverUser.Chats == null)
-                return false;
-            if (serverUser.Chats != null && clientUser.Chats != null)
-                if (serverUser.Chats.Count != clientUser.Chats.Count)
-                    return false;
             if (serverUser.Name != clientUser.Name)
                 return false;
             if (serverUser.Email != clientUser.Email)
@@ -33,16 +29,17 @@ namespace ChateeCore
                 return false;
             if (serverUser.AvatarCheckSum != clientUser.AvatarCheckSum)
                 return false;
-            for (int i = 0; i < clientUser.Chats.Count; i++)
-            {
-                if (clientUser.Chats[i].Messages.Count != serverUser.Chats[i].Messages.Count)
-                    return false;
-            }
+            if (!IsUserChatsSame(serverUser))
+                return false;
             return true;
         }
         public static bool IsUserChatsSame(UserContract serverUser)
         {
+            if (ApplicationViewModel.ClientDatabase.UserContracts == null || ApplicationViewModel.ClientDatabase.UserContracts.Count() == 0)
+                return false;
             UserContract clientUser = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
+            if (clientUser.Chats != null && serverUser.Chats == null || clientUser.Chats == null && serverUser.Chats != null)
+                return false;
             if (clientUser.Chats != null && serverUser.Chats != null)
             {
                 if (clientUser.Chats.Count != serverUser.Chats.Count)
@@ -56,16 +53,40 @@ namespace ChateeCore
             return true;
         }
         public static void ChangeClientDatabaseUser(UserContract serverUser, bool isKeepLoggedIn)
-        {  
+        {
+            bool isClientAndDatabaseUsersHasSameChats = IsUserChatsSame(serverUser);
             if (ApplicationViewModel.ClientDatabase.UserContracts.ToList().Count != 0)
             {
                 if (ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last() != null)
                 {
-                    if (!IsUserChatsSame(serverUser))
-                         SetNewMessagesAvailable(serverUser);
+                    if(ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last().Chats != null && serverUser.Chats != null)
+                    if (!isClientAndDatabaseUsersHasSameChats)
+                    {
+                        SetNewMessagesAvailable(serverUser);
+                        foreach (var chat in ApplicationViewModel.ClientDatabase.ChatContracts)
+                        {
+                            ApplicationViewModel.ClientDatabase.ChatContracts.Remove(chat);
+                            ApplicationViewModel.ClientDatabase.Entry(chat).State = EntityState.Deleted;
+                        }
+                        foreach (var message in ApplicationViewModel.ClientDatabase.MessageContracts)
+                        {
+                            ApplicationViewModel.ClientDatabase.MessageContracts.Remove(message);
+                            ApplicationViewModel.ClientDatabase.Entry(message).State = EntityState.Deleted;
+                        }
+
+                    }
                     ApplicationViewModel.ClientDatabase.UserContracts.Remove(ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last());
-                    ApplicationViewModel.ClientDatabase.Entry(ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last()).State = EntityState.Deleted;
+                    ApplicationViewModel.ClientDatabase.Entry(ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last()).State = EntityState.Deleted;                   
                     ApplicationViewModel.ClientDatabase.SaveChanges();
+                }
+            }
+            if (!isClientAndDatabaseUsersHasSameChats && serverUser.Chats != null)
+            {
+                foreach (var chat in serverUser.Chats)
+                {
+                    ApplicationViewModel.ClientDatabase.ChatContracts.Add(new ChatContract(chat));
+                    foreach (var message in chat.Messages)
+                        ApplicationViewModel.ClientDatabase.MessageContracts.Add(new MessageContract(message));
                 }
             }
             ApplicationViewModel.ClientDatabase.UserContracts.Add(new UserContract(serverUser, isKeepLoggedIn));
@@ -76,40 +97,53 @@ namespace ChateeCore
             UserContract clientUser = ApplicationViewModel.ClientDatabase.UserContracts.ToList().Last();
             if(clientUser.Chats.Count != serverUser.Chats.Count)
             {
-                List<ChatContract> newChatContracts = serverUser.Chats.ToList().GetRange(clientUser.Chats.Count - 1, serverUser.Chats.Count - clientUser.Chats.Count);
+                List<ChatContract> newChatContracts = serverUser.Chats.ToList().GetRange(clientUser.Chats.Count == 0 ? 0 : clientUser.Chats.Count - 1, serverUser.Chats.Count - clientUser.Chats.Count);
                 foreach (var chatContract in newChatContracts)
                     chatContract.IsHasNewMessages = true;
             }
             for (int i = 0; i < clientUser.Chats.Count; i++)
-                if (clientUser.Chats[i].Messages.Count != serverUser.Chats[i].Messages.Count)
-                    clientUser.Chats[i].IsHasNewMessages = true;
+                if (clientUser.Chats[i].Messages.Count != serverUser.Chats[i].Messages.Count && serverUser.Chats[i].Messages.ToList().GetRange(clientUser.Chats[i].Messages.Count == 0 ? 0 : clientUser.Chats[i].Messages.Count - 1, serverUser.Chats[i].Messages.Count - clientUser.Chats[i].Messages.Count).Find(message => message.UserID != serverUser.UserID) != null)
+                    serverUser.Chats[i].IsHasNewMessages = true;
         }
         public static void RemoveClientDatabaseUser(UserContract userToRemove)
         {
             ApplicationViewModel.ClientDatabase.UserContracts.Remove(userToRemove);
             ApplicationViewModel.ClientDatabase.Entry(userToRemove).State = EntityState.Deleted;
+            foreach (var chat in ApplicationViewModel.ClientDatabase.ChatContracts)
+            {
+                ApplicationViewModel.ClientDatabase.ChatContracts.Remove(chat);
+                ApplicationViewModel.ClientDatabase.Entry(chat).State = EntityState.Deleted;
+            }
+            foreach (var message in ApplicationViewModel.ClientDatabase.MessageContracts)
+            {
+                ApplicationViewModel.ClientDatabase.MessageContracts.Remove(message);
+                ApplicationViewModel.ClientDatabase.Entry(message).State = EntityState.Deleted;
+            }
             ApplicationViewModel.ClientDatabase.SaveChanges();
         }
-        public static void SetApplicationUser(WCF_Server.DataContracts.UserContract loggedUser, int serverDatabaseUserID)
+        public static void SetApplicationUser(UserContract loggedUser, int serverDatabaseUserID)
         {
             ApplicationViewModel.CurrentUser = new User(loggedUser);
             ApplicationViewModel.CurrentUserContract = loggedUser;
             ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID = serverDatabaseUserID;
         }
-        public static void SetUsersAndFilesLists()
+        public static void SetInterlocutorsList()
         {
             ApplicationViewModel.UserInterlocutors = new ObservableCollection<UserContract>(IoCContainer.Get<ApplicationViewModel>().ServiceClient.GetUserInterlocutors(IoCContainer.Get<ApplicationViewModel>().CurrentUserContract.ServerDatabaseUserID).ToList());
             IoCContainer.Get<UserListViewModel>().SetUsersFromDatabase(IoCContainer.Get<ApplicationViewModel>().UserInterlocutors.ToList());
         }
         public static void SetUsersChatMessageLists()
         {
-            IoCContainer.Get<ChatListViewModel>().Chats.Clear();
-            ApplicationViewModel.UserChatMessageLists.Clear();
-            for (int i = 0; i < ApplicationViewModel.UserInterlocutors.Count; i++)
+            Application.Current.Dispatcher.Invoke((Action)delegate 
             {
-                ApplicationViewModel.UserChatMessageLists.Add(new ChatMessageListViewModel(new User(ApplicationViewModel.UserInterlocutors[i]), ApplicationViewModel.CurrentUserContract.Chats.ToList().Find(chatContract => chatContract.UserID1 == ApplicationViewModel.UserInterlocutors[i].UserID || chatContract.UserID2 == ApplicationViewModel.UserInterlocutors[i].UserID)));
-                IoCContainer.Get<ChatListViewModel>().Chats.Add(new ChatListItemViewModel(new User(ApplicationViewModel.UserInterlocutors[i]), ApplicationViewModel.CurrentUserContract.Chats.ToList().Find(chatContract => chatContract.UserID1 == ApplicationViewModel.UserInterlocutors[i].UserID || chatContract.UserID2 == ApplicationViewModel.UserInterlocutors[i].UserID)));
-            }
+                IoCContainer.Get<ChatListViewModel>().Chats.Clear();
+                ApplicationViewModel.UserChatMessageLists.Clear();
+                for (int i = 0; i < ApplicationViewModel.UserInterlocutors.Count; i++)
+                {
+                    ApplicationViewModel.UserChatMessageLists.Add(new ChatMessageListViewModel(new User(ApplicationViewModel.UserInterlocutors[i]), ApplicationViewModel.CurrentUserContract.Chats.ToList().Find(chatContract => chatContract.UserID1 == ApplicationViewModel.UserInterlocutors[i].UserID || chatContract.UserID2 == ApplicationViewModel.UserInterlocutors[i].UserID)));
+                    IoCContainer.Get<ChatListViewModel>().Chats.Add(new ChatListItemViewModel(new User(ApplicationViewModel.UserInterlocutors[i]), ApplicationViewModel.CurrentUserContract.Chats.ToList().Find(chatContract => chatContract.UserID1 == ApplicationViewModel.UserInterlocutors[i].UserID || chatContract.UserID2 == ApplicationViewModel.UserInterlocutors[i].UserID)));
+                }
+            });      
         }
         public static void SwitchToChatPage()
         {

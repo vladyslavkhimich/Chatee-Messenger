@@ -87,9 +87,11 @@ namespace ChateeCore
             Interlocutor = user;
             Chat = chat;
             messages = new ObservableCollection<ChatMessageListItemViewModel>();
-            if(Chat.Messages != null)
+            if (Chat.Messages != null)
             foreach (var message in Chat.Messages)
+            {
                 messages.Add(new ChatMessageListItemViewModel(new Message(message), user));
+            }
             Messages = new ObservableCollection<ChatMessageListItemViewModel>(messages);
             SetCommandsMethods();
             AttachmentMenu = new ChatAttachmentPopupMenuViewModel(this);
@@ -131,7 +133,7 @@ namespace ChateeCore
             {
                 chatID = ApplicationViewModel.ServiceClient.GetNextChatID();
                 ApplicationViewModel.ServiceClient.CreateChat(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID);
-                ApplicationViewModel.ClientDatabase.ChatContracts.Add(new ChatContract(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID));
+                ApplicationViewModel.ClientDatabase.ChatContracts.Add(new ChatContract(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID, chatID, new ObservableCollection<MessageContract>()));
                 ApplicationViewModel.ClientDatabase.SaveChanges();
             }
             Message newMessage;
@@ -139,21 +141,30 @@ namespace ChateeCore
             {
                 for (int i = 0; i < AttachmentMenu.SelectedFiles.Count; i++)
                 {
-                    newMessage = new Message(chatID, ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, new DateTime(2000, 1, 1), DateTime.Now, AttachmentMenu.SelectedFiles[i].SelectedFileInfo.Name, FileHelper.ComputeFileCheckSum(AttachmentMenu.SelectedFiles[i].SelectedFileInfo.FullName), AttachmentMenu.SelectedFiles[i].SelectedFileInfo.FullName);
-                    await Task.Run(() => SendMessage(newMessage));
+                    newMessage = new Message(chatID, ApplicationViewModel.ServiceClient.GetNextMessageID(), ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, new DateTime(2000, 1, 1), DateTime.Now, AttachmentMenu.SelectedFiles[i].SelectedFileInfo.Name, FileHelper.ComputeFileCheckSum(AttachmentMenu.SelectedFiles[i].SelectedFileInfo.FullName), AttachmentMenu.SelectedFiles[i].SelectedFileInfo.FullName);
+                    Application.Current.Dispatcher.Invoke((Action)async delegate
+                    {
+                        await Task.Run(() => SendMessage(newMessage));
+                    });
                 }
                 AttachmentMenu.SelectedFiles = new ObservableCollection<ChatMessageListItemFileAttachmentViewModel>();
                 AttachmentMenu.IsAttachmentsListVisible = false;
                 if (!string.IsNullOrEmpty(PendingMessageText))
                 {
-                    newMessage = new Message(chatID, ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, new DateTime(2000, 1, 1), DateTime.Now, PendingMessageText);
-                    await Task.Run(() => SendMessage(newMessage));
+                    newMessage = new Message(chatID, ApplicationViewModel.ServiceClient.GetNextMessageID(), ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, new DateTime(2000, 1, 1), DateTime.Now, PendingMessageText);
+                    Application.Current.Dispatcher.Invoke((Action)async delegate
+                    {
+                        await Task.Run(() => SendMessage(newMessage));
+                    });
                 }
             }
             else
             {
-                newMessage = new Message(chatID, ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, new DateTime(2000, 1, 1), DateTime.Now, PendingMessageText);
-                await Task.Run(() => SendMessage(newMessage));
+                newMessage = new Message(chatID, ApplicationViewModel.ServiceClient.GetNextMessageID(), ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, new DateTime(2000, 1, 1), DateTime.Now, PendingMessageText);
+                Application.Current.Dispatcher.Invoke((Action)async delegate
+                {
+                    await Task.Run(() => SendMessage(newMessage));
+                });
             }
         }
         public async Task SendMessage(Message messageToSend)
@@ -171,6 +182,7 @@ namespace ChateeCore
                   {
                       ChatID = messageToSend.ChatID,
                       UserID = ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID,
+                      ServerDatabaseMessageID = messageToSend.MessageID,
                       MessageText = string.IsNullOrEmpty(newMessageListItem.Message.MessageText) ? string.Empty : newMessageListItem.Message.MessageText,
                       MessageReadTime = messageToSend.MessageReadTime,
                       MessageSentTime = DateTime.UtcNow,
@@ -184,6 +196,7 @@ namespace ChateeCore
                   {
                       ChatID = messageToSend.ChatID,
                       UserID = ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID,
+                      ServerDatabaseMessageID = messageToSend.MessageID,
                       MessageText = string.IsNullOrEmpty(newMessageListItem.Message.MessageText) ? string.Empty : newMessageListItem.Message.MessageText,
                       MessageReadTime = messageToSend.MessageReadTime,
                       MessageSentTime = DateTime.UtcNow,
@@ -194,7 +207,11 @@ namespace ChateeCore
                   ApplicationViewModel.ClientDatabase.SaveChanges();
                   newMessageListItem.IsMessageSent = true;
                   PendingMessageText = string.Empty;
-                  IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == newMessageListItem.Message.ChatID).LastMessage = newMessageListItem.Message.MessageText;
+                  List<ChatListItemViewModel> chats = IoCContainer.Get<ChatListViewModel>().Chats.ToList();
+                  if(FilteredMessages.Count == 1)
+                  IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == newMessageListItem.Message.ChatID).LastMessage = newMessageListItem.Message.MessageText;
+                  else
+                      IoCContainer.Get<ChatListViewModel>().Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == newMessageListItem.Message.ChatID).LastMessage = newMessageListItem.Message.MessageText;
               });
         }
         public void OpenUserInformation()
@@ -237,7 +254,9 @@ namespace ChateeCore
         public void AddNewMessage(MessageContract messageContract)
         {
             Chat.Messages.Add(messageContract);
-            Messages.Add(new ChatMessageListItemViewModel(new Message(messageContract), Interlocutor));
+            ChatMessageListItemViewModel newReceivedMessage = new ChatMessageListItemViewModel(new Message(messageContract), Interlocutor);
+            Messages.Add(newReceivedMessage);
+            FilteredMessages.Add(newReceivedMessage);
         }
         #endregion
     }

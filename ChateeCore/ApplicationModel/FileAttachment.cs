@@ -15,9 +15,6 @@ namespace ChateeCore
         public string FilePath { get; set; }
         public string LocalDatabasePath { get; set; }
         public int UserID { get; set; }
-        public int ChatID { get; set; }
-        public bool IsNewFile { get; set; }
-        public bool IsDownloaded => File.Exists(LocalDatabasePath);
         #endregion
         #region Constructors
         // TODO: Check in Database if file is new
