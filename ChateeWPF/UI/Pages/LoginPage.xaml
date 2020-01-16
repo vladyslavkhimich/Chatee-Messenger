@@ -68,6 +68,7 @@
                             Style="{StaticResource SignButton}" 
                             Content="Sign In" 
                             IsDefault="True"
+                                IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"
                             Command="{Binding LoginAsyncCommand}"
                                 local:IsBusyProperty.Value="{Binding IsLoginRunning}"
                                 />
@@ -176,6 +177,7 @@
                         </Grid>
                         <Button Style="{StaticResource SignButton}" 
                                 Content="Sign Up"
+                                IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"
                                 Command="{Binding RegisterAsyncCommand}"
                                 local:IsBusyProperty.Value="{Binding IsRegisterRunning}"/>
                     </StackPanel>

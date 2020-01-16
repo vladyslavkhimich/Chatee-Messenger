@@ -13,7 +13,6 @@ namespace ChateeCore
     public class FileListItemViewModel : BaseViewModel
     {
         #region Public Properties
-        //public FileAttachment FileAttachment { get; set; }
         public FileInfo FileInfo { get; set; }
         public User User { get; set; }
         public string FileCheckSum { get; set; }
@@ -27,7 +26,6 @@ namespace ChateeCore
         {
             DownloadFileCommand = new RelayCommand(DownloadFile);
         }
-        //TODO: Define if this class needs checksum
         public FileListItemViewModel(string filePath, User user)
         {
             FileInfo = new FileInfo(filePath);

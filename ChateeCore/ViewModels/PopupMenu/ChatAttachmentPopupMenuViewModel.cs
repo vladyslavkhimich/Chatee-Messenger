@@ -21,9 +21,6 @@ namespace ChateeCore
         public ObservableCollection<ChatMessageListItemFileAttachmentViewModel> SelectedFiles { get; set; }
         public bool IsAttachmentsListVisible { get; set; } 
         #endregion
-        #region Public Commands
-
-        #endregion
         #region Constructors
         public ChatAttachmentPopupMenuViewModel(ChatMessageListViewModel parentChatMessageList)
         {
@@ -58,9 +55,6 @@ namespace ChateeCore
             }
             
         }
-        #endregion
-        #region Commands Methods
-       
         #endregion
     }
 }

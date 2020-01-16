@@ -78,7 +78,7 @@
                                     <TextBlock  
                                                FontFamily="{StaticResource LatoThin}" 
                                                TextTrimming="CharacterEllipsis">
-                                        <Run Text="Sent by"/>
+                                        <Run Text="Sent in chat with"/>
                                         <Run Text="{Binding User.Username, FallbackValue=Vladyslav}"
                                              FontFamily="{StaticResource LatoRegular}"/>
                                     </TextBlock>

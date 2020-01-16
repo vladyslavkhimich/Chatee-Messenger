@@ -17,7 +17,6 @@ namespace ChateeCore
         public int UserID { get; set; }
         #endregion
         #region Constructors
-        // TODO: Check in Database if file is new
         public FileAttachment()
         {
 

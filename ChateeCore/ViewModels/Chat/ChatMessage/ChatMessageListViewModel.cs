@@ -121,7 +121,6 @@ namespace ChateeCore
         }
         public async void SendMessageAsync()
         {
-
             if (string.IsNullOrEmpty(PendingMessageText) && AttachmentMenu.SelectedFiles.Count == 0)
                 return;
             if (Messages == null)
@@ -131,7 +130,7 @@ namespace ChateeCore
             int chatID = Chat.ChatID;
             if (FilteredMessages.Count == 0)
             {
-                chatID = ApplicationViewModel.ServiceClient.GetNextChatID();
+                chatID = Chat.ServerDatabaseChatID;
                 ApplicationViewModel.ServiceClient.CreateChat(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID);
                 ApplicationViewModel.ClientDatabase.ChatContracts.Add(new ChatContract(ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID, Interlocutor.UserID, chatID, new ObservableCollection<MessageContract>()));
                 ApplicationViewModel.ClientDatabase.SaveChanges();

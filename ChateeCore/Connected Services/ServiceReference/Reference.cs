@@ -146,6 +146,12 @@ namespace ChateeCore.ServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/CreateChat", ReplyAction="http://tempuri.org/IService/CreateChatResponse")]
         System.Threading.Tasks.Task<bool> CreateChatAsync(int userID1, int userID2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserByID", ReplyAction="http://tempuri.org/IService/GetUserByIDResponse")]
+        WCF_Server.DataContracts.UserContract GetUserByID(int userID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IService/GetUserByID", ReplyAction="http://tempuri.org/IService/GetUserByIDResponse")]
+        System.Threading.Tasks.Task<WCF_Server.DataContracts.UserContract> GetUserByIDAsync(int userID);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -357,6 +363,14 @@ namespace ChateeCore.ServiceReference {
         
         public System.Threading.Tasks.Task<bool> CreateChatAsync(int userID1, int userID2) {
             return base.Channel.CreateChatAsync(userID1, userID2);
+        }
+        
+        public WCF_Server.DataContracts.UserContract GetUserByID(int userID) {
+            return base.Channel.GetUserByID(userID);
+        }
+        
+        public System.Threading.Tasks.Task<WCF_Server.DataContracts.UserContract> GetUserByIDAsync(int userID) {
+            return base.Channel.GetUserByIDAsync(userID);
         }
     }
 }

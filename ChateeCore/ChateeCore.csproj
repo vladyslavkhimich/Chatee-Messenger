@@ -103,7 +103,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.svcmap</DependentUpon>
     </Compile>
-    <Compile Include="ClientDatabase\DataContracts.cs" />
     <Compile Include="DataModels\ApplicationPages.cs" />
     <Compile Include="DataModels\ElementHorizontalAlignment.cs" />
     <Compile Include="DataModels\ExtensionType.cs" />
@@ -112,7 +111,6 @@
     <Compile Include="DataModels\SideMenuControls.cs" />
     <Compile Include="Expressions\ExpressionHelpers.cs" />
     <Compile Include="Icons\IconTypeExtensions.cs" />
-    <Compile Include="Images\ExtensionTypeImagePath.cs" />
     <Compile Include="Images\ExtensionTypesContainer.cs" />
     <Compile Include="Security\SecureString\SecureStringHelpers.cs" />
     <Compile Include="Static Helpers\FileHelper.cs" />

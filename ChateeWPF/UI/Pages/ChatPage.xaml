@@ -181,7 +181,9 @@
                         Margin="5 10 5 10"
                         local:IsBusyProperty.Value="False"
                         Command="{Binding SendMessageAsyncCommand}"
-                        Background="{StaticResource DarkPinkBrush}"/>
+                        Background="{StaticResource DarkPinkBrush}"
+                            IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"
+                            />
 
                 </StackPanel>
             </Grid>

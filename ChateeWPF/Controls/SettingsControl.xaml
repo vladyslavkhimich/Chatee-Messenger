@@ -98,11 +98,17 @@
                 <StackPanel Grid.Column="1"
                             local:TextEntryWidthMatcherProperty.Value="True"
                             >
-                    <local:TextEntryControl DataContext="{Binding Name}"/>
-                    <local:TextEntryControl DataContext="{Binding Username}"/>
-                    <local:TextEntryControl DataContext="{Binding Bio}"/>
-                    <local:PasswordEntryControl DataContext="{Binding Password}"/>
-                    <local:TextEntryControl DataContext="{Binding Email}"/>
+                    <local:TextEntryControl DataContext="{Binding Name}"
+                                            IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"
+                                            />
+                    <local:TextEntryControl DataContext="{Binding Username}"
+                                            IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"/>
+                    <local:TextEntryControl DataContext="{Binding Bio}"
+                                            IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"/>
+                    <local:PasswordEntryControl DataContext="{Binding Password}"
+                                                IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"/>
+                    <local:TextEntryControl DataContext="{Binding Email}"
+                                            IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"/>
                     <Button Content="Logout"
                             Style="{StaticResource SignButton}"
                             Command="{Binding LogoutCommand}"

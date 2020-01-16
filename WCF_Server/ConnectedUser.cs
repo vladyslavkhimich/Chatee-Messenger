@@ -9,16 +9,14 @@ namespace WCF_Server
 {
     public class ConnectedUser
     {
-        public string IPAddress { get; set; }
         public int UserID { get; set; }
         public IServiceCallback ServiceCallback => OperationContext.Current.GetCallbackChannel<IServiceCallback>();
         public ConnectedUser()
         {
 
         }
-        public ConnectedUser(string ipAddress, int userID)
+        public ConnectedUser(int userID)
         {
-            IPAddress = ipAddress;
             UserID = userID;
         }
     }

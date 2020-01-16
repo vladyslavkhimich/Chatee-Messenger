@@ -32,7 +32,6 @@ namespace ChateeWPF
     }
     public class HasTextProperty : BaseAttachedProperty<HasTextProperty, bool>
     {
-        //Sets the HasText property 
         public static void SetValue(DependencyObject sender)
         {
             SetValue(sender, ((PasswordBox)sender).SecurePassword.Length > 0);

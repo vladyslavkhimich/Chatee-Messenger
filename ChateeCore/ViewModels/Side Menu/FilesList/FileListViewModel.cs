@@ -14,7 +14,6 @@ namespace ChateeCore
         protected string ActualSearchText;
         protected ObservableCollection<FileListItemViewModel> files { get; set; }
         #region Public Properties
-        //public ObservableCollection<FileAttachment> DatabaseFiles { get; set; }
         public ObservableCollection<FileListItemViewModel> Files 
         {
             get => files;
@@ -60,7 +59,6 @@ namespace ChateeCore
             SearchText = string.Empty;
             FilteredFiles = new ObservableCollection<FileListItemViewModel>(Files);
         }
-        // TODO: Make files search function 
         public void Search()
         {
             if ((string.IsNullOrEmpty(LastSearchText) && string.IsNullOrEmpty(SearchText)) || string.Equals(LastSearchText, SearchText))

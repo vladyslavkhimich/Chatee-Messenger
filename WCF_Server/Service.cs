@@ -224,7 +224,7 @@ namespace WCF_Server
             OperationContext OperationContext = OperationContext.Current;
             MessageProperties MessageProperties = OperationContext.IncomingMessageProperties;
             RemoteEndpointMessageProperty remoteEndpointMessageProperty = (RemoteEndpointMessageProperty)MessageProperties[RemoteEndpointMessageProperty.Name];
-            ConnectedUser connectedUser = new ConnectedUser(remoteEndpointMessageProperty.Address + ":" + remoteEndpointMessageProperty.Port.ToString(), userServerDatabaseID);
+            ConnectedUser connectedUser = new ConnectedUser(userServerDatabaseID);
             if (ConnectedUsers.Find(user => user.UserID == connectedUser.UserID) == null)
             {
                 ConnectedUsers.Add(connectedUser);
@@ -271,7 +271,15 @@ namespace WCF_Server
             }
 
         }
+        public UserContract GetUserByID(int userID)
+        {
+            return ServerDatabase.UserContracts.ToList().Find(user => user.UserID == userID);
+        }
         #region Helper Methods
+
+
+
+
         public bool IsEmailValid(string email)
         {
             Regex emailRegex = new Regex(@"^[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-zA-Z0-9](?:[a-zA-Z0-9-]*[a-zA-Z0-9])?\.)+(?:[a-zA-Z]{2}|aero|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel)$");

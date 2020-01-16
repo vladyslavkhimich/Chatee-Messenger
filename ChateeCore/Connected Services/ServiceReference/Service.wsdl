@@ -168,6 +168,12 @@
   <wsdl:message name="IService_CreateChat_OutputMessage">
     <wsdl:part name="parameters" element="tns:CreateChatResponse" />
   </wsdl:message>
+  <wsdl:message name="IService_GetUserByID_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserByID" />
+  </wsdl:message>
+  <wsdl:message name="IService_GetUserByID_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetUserByIDResponse" />
+  </wsdl:message>
   <wsdl:message name="IService_ReceiveMessage_OutputCallbackMessage">
     <wsdl:part name="parameters" element="tns:ReceiveMessage" />
   </wsdl:message>
@@ -259,6 +265,10 @@
     <wsdl:operation name="CreateChat">
       <wsdl:input wsaw:Action="http://tempuri.org/IService/CreateChat" message="tns:IService_CreateChat_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IService/CreateChatResponse" message="tns:IService_CreateChat_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetUserByID">
+      <wsdl:input wsaw:Action="http://tempuri.org/IService/GetUserByID" message="tns:IService_GetUserByID_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IService/GetUserByIDResponse" message="tns:IService_GetUserByID_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="ReceiveMessage">
       <wsdl:output wsaw:Action="http://tempuri.org/IService/ReceiveMessage" message="tns:IService_ReceiveMessage_OutputCallbackMessage" />
@@ -458,6 +468,15 @@
     </wsdl:operation>
     <wsdl:operation name="CreateChat">
       <soap12:operation soapAction="http://tempuri.org/IService/CreateChat" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetUserByID">
+      <soap12:operation soapAction="http://tempuri.org/IService/GetUserByID" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>

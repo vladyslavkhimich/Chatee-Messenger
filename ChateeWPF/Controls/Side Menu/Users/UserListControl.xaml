@@ -15,6 +15,7 @@
                      Tag="Search Text..." 
                      Margin="0 0 0 0"
                      FontSize="16"
+                     IsEnabled="{Binding ApplicationViewModel.IsServerReachable, Source={x:Static local:ViewModelLocator.Instance}}"
                      local:FocusProperty.Value="True"
                      Text="{Binding SearchText, UpdateSourceTrigger=PropertyChanged}"
                      HorizontalAlignment="Stretch"

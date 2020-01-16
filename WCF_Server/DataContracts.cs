@@ -126,6 +126,7 @@ namespace WCF_Server
             {
                 UserID1 = userID1;
                 UserID2 = userID2;
+                ChatID = serverDatabaseChatID;
                 ServerDatabaseChatID = serverDatabaseChatID;
                 Messages = new ObservableCollection<MessageContract>(messages);
             }

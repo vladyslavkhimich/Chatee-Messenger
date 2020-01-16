@@ -65,11 +65,17 @@ namespace ChateeCore
                 if (notReadMessages[i].UserID == ApplicationViewModel.CurrentUserContract.ServerDatabaseUserID)
                     continue;
                 notReadMessages[i].MessageReadTime = DateTime.UtcNow;
+                List<MessageContract> testList = ApplicationViewModel.ClientDatabase.MessageContracts.ToList();
                 MessageContract clientDatabaseMessage = ApplicationViewModel.ClientDatabase.MessageContracts.ToList().Find(messageContract => messageContract.ServerDatabaseMessageID == notReadMessageContracts[i].MessageID);
-                clientDatabaseMessage.MessageReadTime = DateTime.UtcNow;
-                ApplicationViewModel.ServiceClient.SetMessageReadTime(notReadMessages[i].MessageID, DateTime.UtcNow);
-                ApplicationViewModel.ClientDatabase.Entry(clientDatabaseMessage).State = EntityState.Modified;
-                ApplicationViewModel.ClientDatabase.SaveChanges();
+                if (clientDatabaseMessage != null)
+                {
+                     clientDatabaseMessage.MessageReadTime = DateTime.UtcNow;
+                    ApplicationViewModel.ClientDatabase.Entry(clientDatabaseMessage).State = EntityState.Modified;
+                    ApplicationViewModel.ClientDatabase.SaveChanges();
+                    ApplicationViewModel.ServiceClient.SetMessageReadTime(notReadMessages[i].MessageID, DateTime.UtcNow);
+                }
+                
+                
             }
             ApplicationViewModel.GoToPage(ApplicationPages.ChatPage, chatToOpen);
         }

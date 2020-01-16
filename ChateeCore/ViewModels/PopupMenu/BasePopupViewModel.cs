@@ -12,8 +12,6 @@ namespace ChateeCore
 {
     public class BasePopupMenuViewModel : BaseViewModel
     {
-        #region Dependency Properties
-        #endregion
         #region Public Properties
         public BaseViewModel Content { get; set; }
         public string BubbleBackgroundRGB { get; set; }

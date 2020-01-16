@@ -56,6 +56,8 @@ namespace WCF_Server
         bool IsServerHasChat(int userID1, int userID2);
         [OperationContract]
         bool CreateChat(int userID1, int userID2);
+        [OperationContract]
+        UserContract GetUserByID(int userID);
     }
     public interface IServiceCallback
     {

@@ -114,24 +114,35 @@ namespace ChateeCore
             {
                 ObservableCollection<MessageContract> newChatMessagesCollection = new ObservableCollection<MessageContract>();
                 newChatMessagesCollection.Add(messageContract);
-                ClientDatabase.ChatContracts.Add(new ChatContract(messageContract.UserID, CurrentUserContract.ServerDatabaseUserID, messageContract.ChatID, newChatMessagesCollection));
+                ChatContract newChat = new ChatContract(messageContract.UserID, CurrentUserContract.ServerDatabaseUserID, messageContract.ChatID, newChatMessagesCollection);
+                ClientDatabase.ChatContracts.Add(newChat);
                 ClientDatabase.SaveChanges();
             }
+            
             ChatMessageListViewModel chatMessageListToAddMessage = UserChatMessageLists.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
+            if (chatMessageListToAddMessage == null)
+            {
+                ObservableCollection<MessageContract> newChatMessagesCollection = new ObservableCollection<MessageContract>();
+                ChatContract newChat = new ChatContract(messageContract.UserID, CurrentUserContract.ServerDatabaseUserID, messageContract.ChatID, newChatMessagesCollection);
+                UserContract newInterlocutor = ServiceClient.GetUserByID(messageContract.UserID);
+                UserChatMessageLists.Add(new ChatMessageListViewModel(new User(newInterlocutor), newChat));
+                UserInterlocutors.Add(newInterlocutor);
+                IoCContainer.Get<ChatListViewModel>().Chats.Add(new ChatListItemViewModel(new User(newInterlocutor), newChat));
+                chatMessageListToAddMessage = UserChatMessageLists.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == messageContract.ChatID);
+            }
+            
             chatMessageListToAddMessage.AddNewMessage(messageContract);
-            ChatListItemViewModel chatListItemToDisplayNewMessage;
-            //if (chatMessageListToAddMessage.FilteredMessages.Count == 1)
-            //{
-            //    chatListItemToDisplayNewMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ChatID == messageContract.ChatID);
-            //}
-            //else
-            //{
-            //    chatListItemToDisplayNewMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == messageContract.ChatID);
-            //}
+            List<ChatListItemViewModel> testList = ChatListViewModel.Chats.ToList();
+            //ChatListItemViewModel chatListItemToDisplayNewMessage;
+
+            ChatListItemViewModel chatListItemToDisplayNewMessage = ChatListViewModel.Chats.ToList().Find(chatListItem => chatListItem.Chat.ServerDatabaseChatID == messageContract.ChatID);
             ClientDatabase.MessageContracts.Add(messageContract);
             ClientDatabase.SaveChanges();
-            //chatListItemToDisplayNewMessage.IsNewMessageAvailable = true;
-            //chatListItemToDisplayNewMessage.LastMessage = messageContract.MessageText;
+            if (chatListItemToDisplayNewMessage != null)
+            {
+                chatListItemToDisplayNewMessage.IsNewMessageAvailable = true;
+                chatListItemToDisplayNewMessage.LastMessage = messageContract.MessageText;
+            }
         }
         #endregion
     }
